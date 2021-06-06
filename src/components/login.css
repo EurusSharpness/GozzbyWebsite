@@ -1,0 +1,151 @@
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+
+}
+
+/* Control the left side */
+.left {
+    left: 0;
+    background-image: url("./pics/UntitledPost (40).jpg");
+    background-size: cover;
+}
+
+/* Control the right side */
+.right {
+    right: 0;
+    background-image: url("./pics/UntitledPost (40).jpg");
+    background-size: cover;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+    width: 150px;
+    border-radius: 50%;
+}
+.btn{
+    float: bottom;
+}
+.back{
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    display: block;
+    background-image: url("./pics/baryy.jpg");
+    background-size: 800px;
+    width: 100%;
+    height: 100%;
+
+}
+
+.logincontainer1{
+    width: 200px;
+    height: 400px;
+    background: url("./pics/mokE4.png");
+    background-size: cover;
+}
+.logincontainer2{
+    border-radius: 5%;
+    width: 700px;
+    height: 400px;
+    background: url("./pics/gozzbylogin.jpg");
+    background-size: 778px 480px;
+    padding-top: 40px;
+
+
+}
+.inputs{
+    width: 100%;
+    float: bottom;
+    border-radius: 5%;
+    font-weight:bold;
+    padding:12px 12px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #528ecc;
+    height: 20px;
+    color:white;
+    box-shadow: 3px 4px 25px 6px #ad5e15;
+    background-color: aliceblue;
+}
+.inputs:hover {
+    background:linear-gradient(to bottom, grey 5%, #e0c009 100%);
+    background-color:#ff5100;
+    color: white;
+}
+.inputs:active {
+    position:relative;
+    top:1px;
+}
+.AppBar{
+    background: url("./pics/bar3.png");
+    height: 130px;
+    background-size: contain;
+}
+.topnav {
+
+    width: 100%;
+    position: center;
+    overflow: hidden;
+
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: #04AA6D;
+    color: white;
+}
+
+.topnav .icon {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .topnav a:not(:first-child) {display: none;}
+    .topnav a.icon {
+        float: right;
+        display: block;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .topnav.responsive {position: relative;}
+    .topnav.responsive .icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .topnav.responsive a {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+}
