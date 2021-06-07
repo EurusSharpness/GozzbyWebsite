@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {auth} from "./firebase_functions";
+import {auth} from "./firebase";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -40,8 +40,8 @@ export function SignIn(props) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div class="split left" style={{display: "flex", justifyContent: "center"}}>
-                <Paper class="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
+            <div style={{display: "flex", justifyContent: "center"}}>
+                <Paper style={{width: "400px", marginTop: 30, padding: "40px"}}>
                     <TextField
                         fullWidth={true}
                         placeholder="email"
