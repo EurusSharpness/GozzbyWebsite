@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {auth} from "./firebase";
+import {auth} from "./firebase_functions";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -7,6 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import './login.css';
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
@@ -39,8 +40,8 @@ export function SignIn(props) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div style={{display: "flex", justifyContent: "center"}}>
-                <Paper style={{width: "400px", marginTop: 30, padding: "40px"}}>
+            <div class="split left" style={{display: "flex", justifyContent: "center"}}>
+                <Paper class="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
                     <TextField
                         fullWidth={true}
                         placeholder="email"

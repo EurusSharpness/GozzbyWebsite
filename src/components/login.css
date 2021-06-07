@@ -12,14 +12,14 @@
 /* Control the left side */
 .left {
     left: 0;
-    background-image: url("./pics/UntitledPost (40).jpg");
+    background-image: url("./assets/loginpics/UntitledPost (40).jpg");
     background-size: cover;
 }
 
 /* Control the right side */
 .right {
     right: 0;
-    background-image: url("./pics/UntitledPost (40).jpg");
+    background-image: url("./assets/loginpics/UntitledPost (40).jpg");
     background-size: cover;
 }
 
@@ -46,7 +46,6 @@
     right: 0;
     z-index: 1;
     display: block;
-    background-image: url("./pics/baryy.jpg");
     background-size: 800px;
     width: 100%;
     height: 100%;
@@ -56,14 +55,12 @@
 .logincontainer1{
     width: 200px;
     height: 400px;
-    background: url("./pics/mokE4.png");
     background-size: cover;
 }
 .logincontainer2{
     border-radius: 5%;
     width: 700px;
     height: 400px;
-    background: url("./pics/gozzbylogin.jpg");
     background-size: 778px 480px;
     padding-top: 40px;
 
@@ -92,7 +89,6 @@
     top:1px;
 }
 .AppBar{
-    background: url("./pics/bar3.png");
     height: 130px;
     background-size: contain;
 }
