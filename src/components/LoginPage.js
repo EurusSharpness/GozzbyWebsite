@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {auth} from "./firebase";
+import {auth, db} from "./firebase_functions";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -7,6 +7,12 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
+
+
+
+const USERS = db.collection('users');
+
+
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
@@ -102,6 +108,10 @@ export function SignUp(props) {
         auth
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
+                USERS.doc(email).set({
+                    name: email.split('@')[0],
+                    cart: null,
+                });
             })
             .catch(error => {
                 alert(error.message);

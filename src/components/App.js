@@ -6,13 +6,12 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
-import {auth} from "./firebase_functions";
-
+import {auth, users} from "./firebase_functions";
 
 export function App(props) {
     const [user, setUser] = useState(null);
     const [drawer_open, setDrawerOpen] = useState(false);
-
+    const [client, setClient] = useState(null);
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
     };
@@ -21,6 +20,9 @@ export function App(props) {
         return auth.onAuthStateChanged(u => {
             if (u) {
                 setUser(u);
+                users.doc(u.email).get().then((doc)=>{
+                    setClient(doc.data());
+                });
             } else {
                 props.history.push("/");
             }
@@ -37,7 +39,16 @@ export function App(props) {
                 alert(error.message);
             });
     };
-
+    const getClientCart = (client) => {
+        if(!client)
+            return;
+        if(client.cart == null)
+            client.cart = [];
+        client.cart.push(25);
+        for(const item in client.cart)
+            console.log(item);
+        console.log('completed');
+    }
     if (!user) {
         return <div/>;
     }
@@ -63,7 +74,8 @@ export function App(props) {
                         My App
                     </Typography>
                     <Typography color="inherit" style={{marginRight: 30}}>
-                        Hi! {user.email}
+                        Hi! {client ? client.name : ""}
+                        {getClientCart(client)}
                     </Typography>
                     <Button color="inherit" onClick={handleSignOut}>
                         Sign out
@@ -73,9 +85,6 @@ export function App(props) {
             <Drawer open={drawer_open} onClose={handleCloseDrawer}>
                 I'm a drawer
             </Drawer>
-            {
-
-            }
         </div>
     );
 }
