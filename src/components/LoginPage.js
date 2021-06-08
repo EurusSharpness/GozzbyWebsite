@@ -52,6 +52,7 @@ export function SignIn(props) {
                             setEmail(e.target.value);
                         }}
                     />
+                    <span className="error"><p id="Name_error"></p></span>
                     <TextField
                         class="inputs"
                         type={"password"}
@@ -66,6 +67,7 @@ export function SignIn(props) {
                         }}
                         style={{marginTop: 20}}
                     />
+                    <span className="error"><p id="Name_error"></p></span>
                     <div
                         style={{
                             display: "flex",

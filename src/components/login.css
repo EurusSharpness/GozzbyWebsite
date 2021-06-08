@@ -1,19 +1,23 @@
-.resetpass{
+
+.resetpass {
     background-image: url("../assets/LoginPagePics/yellowreset.jpg");
     background-size: cover;
     border-top-right-radius: 15%;
     border-bottom-left-radius: 15%;
 }
-.back{
+
+.back {
     background-image: url("../assets/LoginPagePics/blackbricks.jpg");
 }
-.text{
+
+.text {
     color: black;
     float: bottom;
-    padding:12px 12px;
-    text-decoration:none;
-    text-shadow:0px 1px 0px #528ecc;
+    padding: 12px 12px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #528ecc;
 }
+
 .split {
     height: 100%;
     width: 50%;
@@ -35,6 +39,7 @@
     background-image: url("../assets/LoginPagePics/gozzbyback1.jpg");
     background-size: contain;
 }
+
 .left1 {
     border-bottom-left-radius: 25%;
     width: 43%;
@@ -51,29 +56,39 @@
     width: 40%;
     height: 80%;
     right: 10%;
-    top: 10%;    background-image: url("../assets/LoginPagePics/wiskey1.jpg");
+    top: 10%;
+    background-image: url("../assets/LoginPagePics/wiskey1.jpg");
     background-size: contain;
 }
 
 /* If you want the content centered horizontally and vertically */
 .centered {
     background-color: #528ecc;
-background-image: url("../assets/LoginPagePics/backk.jpg");
+
+    background-image: url("../assets/LoginPagePics/backk.jpg");
     background-size: cover;
-   border-radius: 11%;
-position: absolute;
+    border-radius: 11%;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     height: 50%;
 }
-
+.error {
+    color: #cc0033;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1px;
+    text-shadow: 1px 1px rgba(250,250,250,.3);
+}
 /* Style the image inside the centered container, if needed */
 .centered img {
     width: 150px;
     border-radius: 50%;
 }
+
 .btn {
     border: 3px;
     background-color: white;
@@ -81,22 +96,24 @@ position: absolute;
     font-size: 16px;
     cursor: pointer;
     display: inline-block;
-    color:black;
+    color: black;
     box-shadow: 3px 4px 25px 6px #528ecc;
-    font-weight:bold;
+    font-weight: bold;
     float: bottom;
     border-radius: 13%;
-    margin:0 auto;
+    margin: 0 auto;
     width: 100px;
     height: 35px;
 
 }
-.btn:hover{
-    background:linear-gradient(to bottom, darkgrey 5%, #dddddd 100%);
+
+.btn:hover {
+    background: linear-gradient(to bottom, darkgrey 5%, #dddddd 100%);
     background-color: grey; /* Green */
     color: white;
 }
-.back{
+
+.back {
     position: fixed;
     left: 0;
     right: 0;
@@ -108,12 +125,13 @@ position: absolute;
 
 }
 
-.logincontainer1{
+.logincontainer1 {
     width: 200px;
     height: 400px;
     background-size: cover;
 }
-.logincontainer2{
+
+.logincontainer2 {
     border-radius: 5%;
     width: 700px;
     height: 400px;
@@ -122,39 +140,44 @@ position: absolute;
 
 
 }
-.inputs{
+
+.inputs {
     left: 0;
     text-align: center;
     width: 100%;
     position: center;
     float: bottom;
     border-radius: 5%;
-    font-weight:bold;
-    padding:12px 12px;
-    text-decoration:none;
-    text-shadow:0px 1px 0px black;
+    font-weight: bold;
+    padding: 12px 12px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px black;
     height: 20px;
-    color:white;
+    color: white;
     box-shadow: 3px 4px 25px 6px #528ecc;
     background-color: white;
 
     display: block;
-    margin : 0 auto;
+    margin: 0 auto;
 }
+
 .inputs:hover {
-    background:linear-gradient(to bottom, darkgrey 5%, #dddddd 100%);
+    background: linear-gradient(to bottom, darkgrey 5%, #dddddd 100%);
     background-color: grey; /* Green */
     color: white;
 }
+
 .inputs:active {
-    position:relative;
-    top:1px;
+    position: relative;
+    top: 1px;
 }
-.appbar{
+
+.appbar {
     height: 60px;
     background-size: contain;
     background-image: url("../assets/LoginPagePics/blackbricks.jpg");
 }
+
 .topnav {
 
     width: 100%;
@@ -188,7 +211,10 @@ position: absolute;
 }
 
 @media screen and (max-width: 600px) {
-    .topnav a:not(:first-child) {display: none;}
+    .topnav a:not(:first-child) {
+        display: none;
+    }
+
     .topnav a.icon {
         float: right;
         display: block;
@@ -196,12 +222,16 @@ position: absolute;
 }
 
 @media screen and (max-width: 600px) {
-    .topnav.responsive {position: relative;}
+    .topnav.responsive {
+        position: relative;
+    }
+
     .topnav.responsive .icon {
         position: absolute;
         right: 0;
         top: 0;
     }
+
     .topnav.responsive a {
         float: none;
         display: block;
