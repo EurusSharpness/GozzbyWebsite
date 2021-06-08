@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {auth} from "./firebase";
+import {auth} from "./firebase_functions";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -32,17 +32,19 @@ export function SignIn(props) {
     };
 
     return (
-        <div>
-            <AppBar position="static" color="primary">
+
+        <div class="back">
+            <AppBar class="appbar"  position="static" color="primary">
                 <Toolbar>
                     <Typography color="inherit" variant="h6">
-                        Sign In
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div style={{display: "flex", justifyContent: "center"}}>
-                <Paper style={{width: "400px", marginTop: 30, padding: "40px"}}>
+            <div class="split left" style={{display: "flex", justifyContent: "center"}}>
+                <div class="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
+
                     <TextField
+                        class="inputs"
                         fullWidth={true}
                         placeholder="email"
                         value={email}
@@ -51,6 +53,7 @@ export function SignIn(props) {
                         }}
                     />
                     <TextField
+                        class="inputs"
                         type={"password"}
                         fullWidth={true}
                         placeholder="password"
@@ -68,20 +71,36 @@ export function SignIn(props) {
                             display: "flex",
                             justifyContent: "space-between",
                             marginTop: "30px",
-                            alignItems: "center"
+                            alignItems: "center",
+                            color:"black"
                         }}
                     >
-                        <div>
+                        <div >
                             Don't have an account? <Link to="/signup">Sign up!</Link>
                         </div>
-                        <Button color="primary" variant="contained" onClick={handleSignIn}>
-                            Sign In
-                        </Button>
                     </div>
-                    <div>
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginTop: "30px",
+                        alignItems: "center",
+                        color:"black"
+                    }}>
+                        <div>
                         Forgot your password? <Link to="/reset_password">Reset password!</Link>
+                        </div>
                     </div>
-                </Paper>
+                    <br/>
+                    <Button class="btn" color="primary" variant="contained" onClick={handleSignIn}>
+                        login
+                    </Button>
+
+                </div>
+            </div>
+            <div class="split right">
+                <div class="centered">
+
+                </div>
             </div>
         </div>
     );
@@ -110,17 +129,18 @@ export function SignUp(props) {
     };
 
     return (
-        <div>
-            <AppBar position="static">
+        <div className="back">
+            <AppBar class="appbar" position="static" color="primary">
                 <Toolbar>
                     <Typography color="inherit" variant="h6">
-                        Sign Up
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div style={{display: "flex", justifyContent: "center"}}>
-                <Paper style={{width: "400px", marginTop: 30, padding: "40px"}}>
+            <div className="split left1" style={{ display: "flex", justifyContent: "center"}}>
+                <div className="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
+
                     <TextField
+                        class="inputs"
                         fullWidth={true}
                         placeholder="email"
                         value={email}
@@ -129,9 +149,21 @@ export function SignUp(props) {
                         }}
                     />
                     <TextField
+                        class="inputs"
                         type={"password"}
                         fullWidth={true}
-                        placeholder="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={e => {
+                            setPassword(e.target.value);
+                        }}
+                        style={{marginTop: 20}}
+                    />
+                    <TextField
+                        class="inputs"
+                        type={"password"}
+                        fullWidth={true}
+                        placeholder="Confirm password"
                         value={password}
                         onChange={e => {
                             setPassword(e.target.value);
@@ -146,20 +178,36 @@ export function SignUp(props) {
                             display: "flex",
                             justifyContent: "space-between",
                             marginTop: "30px",
-                            alignItems: "center"
+                            alignItems: "center",
+                            color: "black"
                         }}
                     >
                         <div>
-                            Already have an account? <Link to="/">Sign in!</Link>
+                            login into existing account <Link to="/">Sign in!</Link>
                         </div>
-                        <Button color="primary" variant="contained" onClick={handleSignUp}>
-                            Sign Up
-                        </Button>
                     </div>
-                    <div>
-                        Forgot your password? <Link to="/reset_password">Reset password!</Link>
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginTop: "30px",
+                        alignItems: "center",
+                        color: "black"
+                    }}>
+                        <div>
+                            Forgot your password? <Link to="/reset_password">Reset password!</Link>
+                        </div>
                     </div>
-                </Paper>
+                    <br/>
+                    <Button class="btn" color="primary" variant="contained" onClick={handleSignUp}>
+                        login
+                    </Button>
+
+                </div>
+            </div>
+            <div className="split right">
+                <div className="centered">
+
+                </div>
             </div>
         </div>
     );
@@ -185,8 +233,8 @@ export function ResetPassword(props) {
 
     }
     return (
-        <div>
-            <AppBar position="static" color="primary">
+        <div class="back">
+            <AppBar class="appbar" position="static" color="primary">
                 <Toolbar>
                     <Typography color="inherit" variant="h6">
                         Reset Password
@@ -194,7 +242,10 @@ export function ResetPassword(props) {
                 </Toolbar>
             </AppBar>
             <div style={{display: "flex", justifyContent: "center"}}>
-                <Paper style={{width: "400px", marginTop: 30, padding: "40px"}}>
+
+                <Paper class="resetpass" style={{width: "400px", marginTop: 30, padding: "40px" , textAlign:"center", justifyContent: "center"}}>
+                    <br/><br/>
+                    <h4>when you fill in your email address , you will receive a instruction on how to reset your password.</h4>
                     <TextField
                         fullWidth={true}
                         placeholder="email"
@@ -206,13 +257,13 @@ export function ResetPassword(props) {
                             if (key.key === 'Enter') handleResetPassword();
                         }}
                     />
-                    <Button style={{
+                    <Button class="btn" style={{
                         display: "flex",
                         justifyContent: "space-between",
                         marginTop: "30px",
                         alignItems: "center"
                     }} color="primary" variant="contained" onClick={handleResetPassword}>
-                        Reset Password
+                        send
                     </Button>
                 </Paper>
             </div>

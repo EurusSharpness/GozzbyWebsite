@@ -1,3 +1,19 @@
+.resetpass{
+    background-image: url("IntroductionPics/yellowreset.jpg");
+    background-size: cover;
+    border-top-right-radius: 15%;
+    border-bottom-left-radius: 15%;
+}
+.back{
+    background-image: url("IntroductionPics/blackbricks.jpg");
+}
+.text{
+    color: black;
+    float: bottom;
+    padding:12px 12px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #528ecc;
+}
 .split {
     height: 100%;
     width: 50%;
@@ -11,25 +27,46 @@
 
 /* Control the left side */
 .left {
-    left: 0;
-    background-image: url("./assets/loginpics/UntitledPost (40).jpg");
-    background-size: cover;
+    border-bottom-left-radius: 25%;
+    width: 43%;
+    height: 80%;
+    left: 10%;
+    top: 10%;
+    background-image: url("IntroductionPics/gozzbyback1.jpg");
+    background-size: contain;
+}
+.left1 {
+    border-bottom-left-radius: 25%;
+    width: 43%;
+    height: 80%;
+    left: 10%;
+    top: 10%;
+    background-image: url("IntroductionPics/gozzbysignup.jpg");
+    background-size: contain;
 }
 
 /* Control the right side */
 .right {
-    right: 0;
-    background-image: url("./assets/loginpics/UntitledPost (40).jpg");
-    background-size: cover;
+    border-top-right-radius: 30%;
+    width: 40%;
+    height: 80%;
+    right: 10%;
+    top: 10%;    background-image: url("IntroductionPics/wiskey1.jpg");
+    background-size: contain;
 }
 
 /* If you want the content centered horizontally and vertically */
 .centered {
-    position: absolute;
+    background-color: #528ecc;
+background-image: url("IntroductionPics/backk.jpg");
+    background-size: cover;
+   border-radius: 11%;
+position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    height: 50%;
 }
 
 /* Style the image inside the centered container, if needed */
@@ -37,8 +74,27 @@
     width: 150px;
     border-radius: 50%;
 }
-.btn{
+.btn {
+    border: 3px;
+    background-color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    color:black;
+    box-shadow: 3px 4px 25px 6px #528ecc;
+    font-weight:bold;
     float: bottom;
+    border-radius: 13%;
+    margin:0 auto;
+    width: 100px;
+    height: 35px;
+
+}
+.btn:hover{
+    background:linear-gradient(to bottom, darkgrey 5%, #dddddd 100%);
+    background-color: grey; /* Green */
+    color: white;
 }
 .back{
     position: fixed;
@@ -67,30 +123,37 @@
 
 }
 .inputs{
+    left: 0;
+    text-align: center;
     width: 100%;
+    position: center;
     float: bottom;
     border-radius: 5%;
     font-weight:bold;
     padding:12px 12px;
     text-decoration:none;
-    text-shadow:0px 1px 0px #528ecc;
+    text-shadow:0px 1px 0px black;
     height: 20px;
     color:white;
-    box-shadow: 3px 4px 25px 6px #ad5e15;
-    background-color: aliceblue;
+    box-shadow: 3px 4px 25px 6px #528ecc;
+    background-color: white;
+
+    display: block;
+    margin : 0 auto;
 }
 .inputs:hover {
-    background:linear-gradient(to bottom, grey 5%, #e0c009 100%);
-    background-color:#ff5100;
+    background:linear-gradient(to bottom, darkgrey 5%, #dddddd 100%);
+    background-color: grey; /* Green */
     color: white;
 }
 .inputs:active {
     position:relative;
     top:1px;
 }
-.AppBar{
-    height: 130px;
+.appbar{
+    height: 60px;
     background-size: contain;
+    background-image: url("IntroductionPics/blackbricks.jpg");
 }
 .topnav {
 
