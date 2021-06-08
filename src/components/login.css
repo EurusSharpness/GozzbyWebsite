@@ -76,6 +76,7 @@
     height: 50%;
 }
 .error {
+    float: left;
     color: #cc0033;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 11px;

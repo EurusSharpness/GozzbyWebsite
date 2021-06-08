@@ -125,11 +125,12 @@ export function SignUp(props) {
     const handleSignUp = () => {
         if(password !== confirm_password)
         {
-            // ERROR ayham do something :)
+            document.getElementById("password2error").innerText='Passwords do not match';
             return;
         }
         if(strongRegex.test(password)){
             // PASSWORD IS STRONG!!
+
         }else if(mediumRegex.test(password)){
             // Password is medium!
         }else{
@@ -177,6 +178,7 @@ export function SignUp(props) {
                         }}
                         style={{marginTop: 20}}
                     />
+                    <span className="error"><p id="password1error"></p></span>
                     <TextField
                         class="inputs"
                         type={"password"}
@@ -191,6 +193,7 @@ export function SignUp(props) {
                         }}
                         style={{marginTop: 20}}
                     />
+                    <span className="error"><p id="password2error"></p></span>
                     <div
                         style={{
                             display: "flex",
