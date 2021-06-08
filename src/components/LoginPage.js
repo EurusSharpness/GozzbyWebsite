@@ -109,7 +109,9 @@ export function SignIn(props) {
 export function SignUp(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const [confirm_password, setConfirm_Password] = useState("");
+    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
+    const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
     useEffect(() => {
         return auth.onAuthStateChanged(u => {
             if (u) {
@@ -119,6 +121,20 @@ export function SignUp(props) {
     }, [props.history]);
 
     const handleSignUp = () => {
+        if(password !== confirm_password)
+        {
+            // ERROR ayham do something :)
+            return;
+        }
+        if(strongRegex.test(password)){
+            // PASSWORD IS STRONG!!
+        }else if(mediumRegex.test(password)){
+            // Password is medium!
+        }else{
+            // Password is too weak, show error... ayham do something :)
+            return;
+        }
+        // if got here then all good.
         auth
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
@@ -164,9 +180,9 @@ export function SignUp(props) {
                         type={"password"}
                         fullWidth={true}
                         placeholder="Confirm password"
-                        value={password}
+                        value={confirm_password}
                         onChange={e => {
-                            setPassword(e.target.value);
+                            setConfirm_Password(e.target.value);
                         }}
                         onKeyDown={(key) => {
                             if (key.key === 'Enter') handleSignUp();
