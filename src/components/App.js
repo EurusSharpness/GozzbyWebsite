@@ -36,14 +36,14 @@ class Client {
     };
 
     getCartDataInListForm() {
-
+        const handleItem= (itemID)=>{
+            return <li key={itemID}>id: {itemID}, quantity {this.cart[itemID]}</li>
+        }
         return (
             <div>
                 <p>   User Cart</p>
             <ul>
-                {Object.keys(this.cart).map((item)=>{
-                    return <li key={item}>{item}: {this.cart[item]}</li>
-                })}
+                {Object.keys(this.cart).map((item)=> handleItem(item))}
             </ul>
             </div>
         );
