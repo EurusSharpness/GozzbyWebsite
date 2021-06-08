@@ -1,11 +1,11 @@
 .resetpass{
-    background-image: url("IntroductionPics/yellowreset.jpg");
+    background-image: url("../assets/LoginPagePics/yellowreset.jpg");
     background-size: cover;
     border-top-right-radius: 15%;
     border-bottom-left-radius: 15%;
 }
 .back{
-    background-image: url("IntroductionPics/blackbricks.jpg");
+    background-image: url("../assets/LoginPagePics/blackbricks.jpg");
 }
 .text{
     color: black;
@@ -32,7 +32,7 @@
     height: 80%;
     left: 10%;
     top: 10%;
-    background-image: url("IntroductionPics/gozzbyback1.jpg");
+    background-image: url("../assets/LoginPagePics/gozzbyback1.jpg");
     background-size: contain;
 }
 .left1 {
@@ -41,7 +41,7 @@
     height: 80%;
     left: 10%;
     top: 10%;
-    background-image: url("IntroductionPics/gozzbysignup.jpg");
+    background-image: url("../assets/LoginPagePics/gozzbysignup.jpg");
     background-size: contain;
 }
 
@@ -51,14 +51,14 @@
     width: 40%;
     height: 80%;
     right: 10%;
-    top: 10%;    background-image: url("IntroductionPics/wiskey1.jpg");
+    top: 10%;    background-image: url("../assets/LoginPagePics/wiskey1.jpg");
     background-size: contain;
 }
 
 /* If you want the content centered horizontally and vertically */
 .centered {
     background-color: #528ecc;
-background-image: url("IntroductionPics/backk.jpg");
+background-image: url("../assets/LoginPagePics/backk.jpg");
     background-size: cover;
    border-radius: 11%;
 position: absolute;
@@ -153,7 +153,7 @@ position: absolute;
 .appbar{
     height: 60px;
     background-size: contain;
-    background-image: url("IntroductionPics/blackbricks.jpg");
+    background-image: url("../assets/LoginPagePics/blackbricks.jpg");
 }
 .topnav {
 
