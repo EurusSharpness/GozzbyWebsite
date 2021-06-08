@@ -52,7 +52,7 @@ export function SignIn(props) {
                             setEmail(e.target.value);
                         }}
                     />
-                    <span className="error"><p id="Name_error"></p></span>
+                    <span className="error"><p id="Name_error"/></span>
                     <TextField
                         class="inputs"
                         type={"password"}
@@ -67,7 +67,7 @@ export function SignIn(props) {
                         }}
                         style={{marginTop: 20}}
                     />
-                    <span className="error"><p id="Name_error"></p></span>
+                    <span className="error"><p id="Name_error"/></span>
                     <div
                         style={{
                             display: "flex",
@@ -178,14 +178,14 @@ export function SignUp(props) {
                         }}
                         style={{marginTop: 20}}
                     />
-                    <span className="error"><p id="password1error"></p></span>
+                    <span className="error"><p id="password1error"/></span>
                     <TextField
                         class="inputs"
                         type={"password"}
                         fullWidth={true}
                         placeholder="Confirm password"
                         value={confirm_password}
-                        onChange={e => {
+                        onChange={(e) => {
                             setConfirm_Password(e.target.value);
                         }}
                         onKeyDown={(key) => {
@@ -193,7 +193,7 @@ export function SignUp(props) {
                         }}
                         style={{marginTop: 20}}
                     />
-                    <span className="error"><p id="password2error"></p></span>
+                    <span className="error"><p id="password2error"/></span>
                     <div
                         style={{
                             display: "flex",
@@ -220,7 +220,7 @@ export function SignUp(props) {
                     </div>
                     <br/>
                     <Button class="btn" color="primary" variant="contained" onClick={handleSignUp}>
-                        login
+                        SignUp
                     </Button>
 
                 </div>
