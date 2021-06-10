@@ -18,3 +18,4 @@ export const auth = firebase.auth();
 export const db = firebase.firestore();
 
 export const users = db.collection('users');
+export const items = db.collection('products');

@@ -16,7 +16,7 @@ export function SignIn(props) {
     useEffect(() => {
         return auth.onAuthStateChanged(u => {
             if (u) {
-                props.history.push("/app");
+                props.history.push("/store");
             }
         });
     }, [props.history]);
@@ -117,7 +117,7 @@ export function SignUp(props) {
     useEffect(() => {
         return auth.onAuthStateChanged(u => {
             if (u) {
-                props.history.push("/app");
+                props.history.push("/store");
             }
         });
     }, [props.history]);
