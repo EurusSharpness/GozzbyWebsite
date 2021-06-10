@@ -7,7 +7,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import {auth, users, items} from "./firebase_functions";
-import * as bottles from '../assets/Products/absolut.jpg'
 
 class Client {
     constructor(document, document_data) {
@@ -120,14 +119,12 @@ export function Store(props) {
         const handleItem = (key, value) => {
             return (
                 <p>{value.name}
-                    <img src={value.imagePath} key={value.id} alt={value.name}/>
                 </p>
             );
         };
         return (
             <div>
                 <p>to be or not to be</p>
-                <img src='../assets/Products/absolut.jpg' key='555' alt='555' width='790' height='790'/>
             </div>
         );
     }
