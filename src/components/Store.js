@@ -6,9 +6,9 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
-import {auth, users, items} from "./firebase_functions";
+import {auth, items} from "./firebase_functions";
 
-class Client {
+/*class Client {
     constructor(document, document_data) {
         this.doc = document;
         this.name = document_data.name;
@@ -49,9 +49,8 @@ class Client {
             </div>
         );
     };
-}
+}*/
 
-/*
 
 class Products {
     constructor(item, item_data) {
@@ -59,23 +58,15 @@ class Products {
         this.id = item;
         this.imagePath = item_data.imagePath;
     }
-
-    getProduct() {
-        return (
-            <div>
-                <img src={this.imagePath} key={this.id}/>
-            </div>
-        )
-    }
 }
-*/
 
 
 export function Store(props) {
     const [user, setUser] = useState(null);
     const [drawer_open, setDrawerOpen] = useState(false);
-    const [client, setClient] = useState(null);
-    const [products, setProduct] = useState(null);
+    // const [client, setClient] = useState(null);
+    const [products, setProduct] = useState([]);
+
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
     };
@@ -84,16 +75,16 @@ export function Store(props) {
         return auth.onAuthStateChanged(async u => {
             if (u) {
                 setUser(u);
-                await users.doc(u.email).get().then((document) => {
+                /*await users.doc(u.email).get().then((document) => {
                     console.log(document.data());
                     setClient(new Client(users.doc(u.email), document.data()));
                     console.log('client was loaded successfully from database');
-                }).catch(error => console.log('Something went wrong when getting client, ' + error));
+                }).catch(error => console.log('Something went wrong when getting client, ' + error));*/
 
                 await items.get().then((products) => {
-                    let result = new Map();
+                    let result = [];
                     products.docs.forEach((product) => {
-                        result.set(product.id, product.data());
+                        result.push(new Products(product.id, product.data()));
                     });
                     setProduct(result);
                 }).catch(error => console.log(error));
@@ -115,16 +106,17 @@ export function Store(props) {
     };
 
     const getProducts = () => {
-
-        const handleItem = (key, value) => {
+        const handleItem = (product) => {
             return (
-                <p>{value.name}
+                <p>{product.name}
+                    <img src={product.imagePath} key={product.id} alt={product.name}/>
                 </p>
             );
         };
         return (
             <div>
                 <p>to be or not to be</p>
+                {products.map((value => handleItem(value)))}
             </div>
         );
     }
@@ -154,28 +146,25 @@ export function Store(props) {
                         My App
                     </Typography>
                     <Typography color="inherit" style={{marginRight: 30}}>
-                        Hi! {client && client.name ? client.name : ""}
+                        {/*Hi! {client && client.name ? client.name : ""}*/}
                     </Typography>
                     <Button color="inherit" onClick={handleSignOut}>
                         Sign out
                     </Button>
                 </Toolbar>
-            </AppBar>
+            </AppBar>)}
             <Drawer open={drawer_open} onClose={handleCloseDrawer}>
                 I'm a drawer
             </Drawer>
-            <div>
-                <img src='products/absolut.jpg' alt="Girl in a jacket" width="500" height="600"/>
-            </div>
             {/*THIS BUTTON IS FOR TESTING, CAN BE DELETED OR MODIFIED.*/}
-            <Button color="inherit" onClick={() => {
+            {/*<Button color="inherit" onClick={() => {
                 client.addItem(25).then(r => console.log(r ? r : ' '));
             }}>
                 TEST ADD ITEM NUMBER 25 TO THE CURRENT USER
-            </Button>
+            </Button>*/}
             {/* Check if null*/}
-            {client ? client.getCartDataInListForm() : ''}
-            {products ? getProducts() : ''}
+            {/*{client ? client.getCartDataInListForm() : ''}*/}
+            {products ? getProducts() : ''})}
         </div>
     );
 }

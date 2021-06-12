@@ -8,10 +8,13 @@ import TextField from "@material-ui/core/TextField";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import './login.css';
+import Loading from "./Loading";
+
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoggingIn, setIsLoggingIn] = React.useState(false);
 
     useEffect(() => {
         return auth.onAuthStateChanged(u => {
@@ -21,90 +24,100 @@ export function SignIn(props) {
         });
     }, [props.history]);
 
-    const handleSignIn = () => {
-        auth
+    const handleSignIn = async () => {
+        setIsLoggingIn(true);
+        await auth
             .signInWithEmailAndPassword(email, password)
             .then(() => {
             })
             .catch(error => {
                 alert(error.message);
+                setIsLoggingIn(false);
             });
     };
 
     return (
+        <div>
+            {isLoggingIn ?
+                <div class='Container'>
+                    <Loading/>
+                </div> :
+                <div class="back">
 
-        <div class="back">
-            <AppBar class="appbar"  position="static" color="primary">
-                <Toolbar>
-                    <Typography color="inherit" variant="h6">
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <div class="split left" style={{display: "flex", justifyContent: "center"}}>
-                <div class="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
+                    <AppBar class="appbar" position="static" color="primary">
+                        <Toolbar>
+                            <Typography color="inherit" variant="h6">
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <div class="split left" style={{display: "flex", justifyContent: "center"}}>
+                        <div class="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
 
-                    <TextField
-                        class="inputs"
-                        fullWidth={true}
-                        placeholder="email"
-                        value={email}
-                        onChange={e => {
-                            setEmail(e.target.value);
-                        }}
-                    />
-                    <span className="error"><p id="Name_error"/></span>
-                    <TextField
-                        class="inputs"
-                        type={"password"}
-                        fullWidth={true}
-                        placeholder="password"
-                        value={password}
-                        onChange={e => {
-                            setPassword(e.target.value);
-                        }}
-                        onKeyDown={(key) => {
-                            if (key.key === 'Enter') handleSignIn();
-                        }}
-                        style={{marginTop: 20}}
-                    />
-                    <span className="error"><p id="Name_error"/></span>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginTop: "30px",
-                            alignItems: "center",
-                            color:"black"
-                        }}
-                    >
-                        <div >
-                            Don't have an account? <Link to="/signup">Sign up!</Link>
+                            <TextField
+                                class="inputs"
+                                fullWidth={true}
+                                placeholder="email"
+                                value={email}
+                                onChange={e => {
+                                    setEmail(e.target.value);
+                                }}
+                            />
+                            <span className="error"><p id="Name_error"/></span>
+                            <TextField
+                                class="inputs"
+                                type={"password"}
+                                fullWidth={true}
+                                placeholder="password"
+                                value={password}
+                                onChange={e => {
+                                    setPassword(e.target.value);
+                                }}
+                                onKeyDown={(key) => {
+                                    if (key.key === 'Enter') handleSignIn();
+                                }}
+                                style={{marginTop: 20}}
+                            />
+                            <span className="error"><p id="Name_error"/></span>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    marginTop: "30px",
+                                    alignItems: "center",
+                                    color: "black"
+                                }}
+                            >
+                                <div>
+                                    Don't have an account? <Link to="/signup">Sign up!</Link>
+                                </div>
+                            </div>
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginTop: "30px",
+                                alignItems: "center",
+                                color: "black"
+                            }}>
+                                <div>
+                                    Forgot your password? <Link to="/reset_password">Reset password!</Link>
+                                </div>
+                            </div>
+                            <br/>
+                            <Button class="btn" color="primary" variant="contained" onClick={handleSignIn}>
+                                login
+                            </Button>
+
                         </div>
                     </div>
-                    <div style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginTop: "30px",
-                        alignItems: "center",
-                        color:"black"
-                    }}>
-                        <div>
-                        Forgot your password? <Link to="/reset_password">Reset password!</Link>
+                    <div class="split right">
+                        <div class="centered">
+
                         </div>
                     </div>
-                    <br/>
-                    <Button class="btn" color="primary" variant="contained" onClick={handleSignIn}>
-                        login
-                    </Button>
-
                 </div>
-            </div>
-            <div class="split right">
-                <div class="centered">
-
-                </div>
-            </div>
+            }
         </div>
+
     );
 }
 
@@ -123,17 +136,16 @@ export function SignUp(props) {
     }, [props.history]);
 
     const handleSignUp = () => {
-        if(password !== confirm_password)
-        {
-            document.getElementById("password2error").innerText='Passwords do not match';
+        if (password !== confirm_password) {
+            document.getElementById("password2error").innerText = 'Passwords do not match';
             return;
         }
-        if(strongRegex.test(password)){
+        if (strongRegex.test(password)) {
             // PASSWORD IS STRONG!!
 
-        }else if(mediumRegex.test(password)){
+        } else if (mediumRegex.test(password)) {
             // Password is medium!
-        }else{
+        } else {
             // Password is too weak, show error... ayham do something :)
             return;
         }
@@ -155,7 +167,7 @@ export function SignUp(props) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div className="split left1" style={{ display: "flex", justifyContent: "center"}}>
+            <div className="split left1" style={{display: "flex", justifyContent: "center"}}>
                 <div className="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
 
                     <TextField
@@ -264,9 +276,16 @@ export function ResetPassword(props) {
             </AppBar>
             <div style={{display: "flex", justifyContent: "center"}}>
 
-                <Paper class="resetpass" style={{width: "400px", marginTop: 30, padding: "40px" , textAlign:"center", justifyContent: "center"}}>
+                <Paper class="resetpass" style={{
+                    width: "400px",
+                    marginTop: 30,
+                    padding: "40px",
+                    textAlign: "center",
+                    justifyContent: "center"
+                }}>
                     <br/><br/>
-                    <h4>when you fill in your email address , you will receive a instruction on how to reset your password.</h4>
+                    <h4>when you fill in your email address , you will receive a instruction on how to reset your
+                        password.</h4>
                     <TextField
                         fullWidth={true}
                         placeholder="email"
