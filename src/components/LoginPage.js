@@ -8,18 +8,15 @@ import TextField from "@material-ui/core/TextField";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import './login.css';
-import Loading from "./Loading";
-
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLoggingIn, setIsLoggingIn] = React.useState(false);
 
     useEffect(() => {
         return auth.onAuthStateChanged(u => {
             if (u) {
-                props.history.push("/store");
+                props.history.push("/app");
             }
         });
     }, [props.history]);
@@ -37,7 +34,7 @@ export function SignIn(props) {
     return (
 
         <div class="back">
-            <AppBar class="appbar"  position="static" color="primary">
+            <AppBar class="appbar" position="static" color="primary">
                 <Toolbar>
                     <Typography color="inherit" variant="h6">
                     </Typography>
@@ -77,10 +74,10 @@ export function SignIn(props) {
                             justifyContent: "space-between",
                             marginTop: "30px",
                             alignItems: "center",
-                            color:"black"
+                            color: "black"
                         }}
                     >
-                        <div >
+                        <div>
                             Don't have an account? <Link to="/signup">Sign up!</Link>
                         </div>
                     </div>
@@ -89,10 +86,10 @@ export function SignIn(props) {
                         justifyContent: "space-between",
                         marginTop: "30px",
                         alignItems: "center",
-                        color:"black"
+                        color: "black"
                     }}>
                         <div>
-                        Forgot your password? <Link to="/reset_password">Reset password!</Link>
+                            Forgot your password? <Link to="/reset_password">Reset password!</Link>
                         </div>
                     </div>
                     <br/>
@@ -124,22 +121,40 @@ export function SignUp(props) {
             }
         });
     }, [props.history]);
+    let flag = false;
+    const handlePasswordChange = () => {
+        const p = document.getElementById("password").value;
+        const cp = document.getElementById("cpassword").value;
 
+        if (strongRegex.test(p)) {
+            document.getElementById("password1error").style.color = "green";
+            document.getElementById("password1error").innerText = 'password is strong';
+            flag = true;
+
+        } else if (mediumRegex.test(p)) {
+            document.getElementById("password1error").style.color = "orange";
+            document.getElementById("password1error").innerText = 'password is midium';
+            flag = true;
+
+        } else {
+            document.getElementById("password1error").style.color = "red";
+            document.getElementById("password1error").innerText = 'password is too weak';
+            flag = false;
+
+        }
+        if (p !== cp) {
+            document.getElementById("password2error").innerText = "passwords do not match !"
+            flag = false;
+        } else {
+            document.getElementById("password2error").innerText = "passwords match !"
+            flag = false;
+        }
+
+    };
     const handleSignUp = () => {
-        if(password !== confirm_password)
-        {
-            document.getElementById("password2error").innerText='Passwords do not match';
+        if (!flag)
             return;
-        }
-        if(strongRegex.test(password)){
-            // PASSWORD IS STRONG!!
 
-        }else if(mediumRegex.test(password)){
-            // Password is medium!
-        }else{
-            // Password is too weak, show error... ayham do something :)
-            return;
-        }
         // if got here then all good.
         auth
             .createUserWithEmailAndPassword(email, password)
@@ -158,7 +173,7 @@ export function SignUp(props) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div className="split left1" style={{ display: "flex", justifyContent: "center"}}>
+            <div className="split left1" style={{display: "flex", justifyContent: "center"}}>
                 <div className="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
 
                     <TextField
@@ -171,6 +186,7 @@ export function SignUp(props) {
                         }}
                     />
                     <TextField
+                        id="password"
                         class="inputs"
                         type={"password"}
                         fullWidth={true}
@@ -178,11 +194,13 @@ export function SignUp(props) {
                         value={password}
                         onChange={e => {
                             setPassword(e.target.value);
+                            handlePasswordChange();
                         }}
                         style={{marginTop: 20}}
                     />
                     <span className="error"><p id="password1error"></p></span>
                     <TextField
+                        id="cpassword"
                         class="inputs"
                         type={"password"}
                         fullWidth={true}
@@ -190,6 +208,7 @@ export function SignUp(props) {
                         value={confirm_password}
                         onChange={e => {
                             setConfirm_Password(e.target.value);
+                            handlePasswordChange();
                         }}
                         onKeyDown={(key) => {
                             if (key.key === 'Enter') handleSignUp();
@@ -267,9 +286,16 @@ export function ResetPassword(props) {
             </AppBar>
             <div style={{display: "flex", justifyContent: "center"}}>
 
-                <Paper class="resetpass" style={{width: "400px", marginTop: 30, padding: "40px" , textAlign:"center", justifyContent: "center"}}>
+                <Paper class="resetpass" style={{
+                    width: "400px",
+                    marginTop: 30,
+                    padding: "40px",
+                    textAlign: "center",
+                    justifyContent: "center"
+                }}>
                     <br/><br/>
-                    <h4>when you fill in your email address , you will receive a instruction on how to reset your password.</h4>
+                    <h4>when you fill in your email address , you will receive a instruction on how to reset your
+                        password.</h4>
                     <TextField
                         fullWidth={true}
                         placeholder="email"
