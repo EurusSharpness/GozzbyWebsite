@@ -7,6 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import {auth, items} from "./firebase_functions";
+import Loading from "./Loading";
 
 /*class Client {
     constructor(document, document_data) {
@@ -57,6 +58,9 @@ class Products {
         this.name = item_data.name;
         this.id = item;
         this.imagePath = item_data.imagePath;
+        this.price = item_data.price;
+        this.quantity = item_data.quantity;
+        this.description = item_data.description;
     }
 }
 
@@ -66,7 +70,9 @@ export function Store(props) {
     const [drawer_open, setDrawerOpen] = useState(false);
     // const [client, setClient] = useState(null);
     const [products, setProduct] = useState([]);
-
+    const [isLoading, setIsLoading] = useState(true);
+    const [sortBy, setSortBy] = useState('');
+    // sortBy = byPrice
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
     };
@@ -75,6 +81,7 @@ export function Store(props) {
         return auth.onAuthStateChanged(async u => {
             if (u) {
                 setUser(u);
+                // USER STUFF NOT FOR NOW!
                 /*await users.doc(u.email).get().then((document) => {
                     console.log(document.data());
                     setClient(new Client(users.doc(u.email), document.data()));
@@ -87,6 +94,7 @@ export function Store(props) {
                         result.push(new Products(product.id, product.data()));
                     });
                     setProduct(result);
+                    setIsLoading(false);
                 }).catch(error => console.log(error));
             } else {
                 props.history.push("/");
@@ -106,6 +114,10 @@ export function Store(props) {
     };
 
     const getProducts = () => {
+
+        /*
+            For each item... if item.brand == 'Vodka' then Run Ayham function
+        */
         const handleItem = (product) => {
             return (
                 <p>{product.name}
@@ -113,6 +125,7 @@ export function Store(props) {
                 </p>
             );
         };
+
         return (
             <div>
                 <p>to be or not to be</p>
@@ -124,7 +137,8 @@ export function Store(props) {
     if (!user) {
         return <div/>;
     }
-
+    if (isLoading)
+        return <div class='Container'><Loading/></div>
     return (
         <div>
             <AppBar position="static">

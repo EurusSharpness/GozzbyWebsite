@@ -8,11 +8,11 @@ import TextField from "@material-ui/core/TextField";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import './login.css';
-
+import Loading from "./Loading";
 export function SignIn(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         return auth.onAuthStateChanged(u => {
             if (u) {
@@ -21,18 +21,20 @@ export function SignIn(props) {
         });
     }, [props.history]);
 
-    const handleSignIn = () => {
-        auth
+    const handleSignIn = async () => {
+        setIsLoading(true);
+        await auth
             .signInWithEmailAndPassword(email, password)
             .then(() => {
             })
             .catch(error => {
                 alert(error.message);
+                setIsLoading(false);
             });
     };
-
+    if(isLoading)
+        return <div class='Container'> <Loading/></div>
     return (
-
         <div class="back">
             <AppBar class="appbar" position="static" color="primary">
                 <Toolbar>
@@ -52,7 +54,7 @@ export function SignIn(props) {
                             setEmail(e.target.value);
                         }}
                     />
-                    <span className="error"><p id="Name_error"></p></span>
+                    <span className="error"><p id="Name_error"/></span>
                     <TextField
                         class="inputs"
                         type={"password"}
