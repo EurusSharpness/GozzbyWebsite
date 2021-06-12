@@ -138,7 +138,7 @@ export function Store(props) {
         return <div/>;
     }
     if (isLoading)
-        return <div class='Container'><Loading/></div>
+        return <div className={'Container'}><Loading/></div>
     return (
         <div>
             <AppBar position="static">

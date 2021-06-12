@@ -7,7 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import './login.css';
+
 import Loading from "./Loading";
 export function SignIn(props) {
     const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ export function SignIn(props) {
     useEffect(() => {
         return auth.onAuthStateChanged(u => {
             if (u) {
-                props.history.push("/app");
+                props.history.push("/store");
             }
         });
     }, [props.history]);
@@ -33,20 +33,20 @@ export function SignIn(props) {
             });
     };
     if(isLoading)
-        return <div class='Container'> <Loading/></div>
+        return <div className={'Container'}> <Loading/></div>
     return (
-        <div class="back">
-            <AppBar class="appbar" position="static" color="primary">
+        <div className={'back'}>
+            <AppBar className={`appbar`} position="static" color="primary">
                 <Toolbar>
                     <Typography color="inherit" variant="h6">
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div class="split left" style={{display: "flex", justifyContent: "center"}}>
-                <div class="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
+            <div className={`split left`} style={{display: "flex", justifyContent: "center"}}>
+                <div className="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
 
                     <TextField
-                        class="inputs"
+                        className={`inputs`}
                         fullWidth={true}
                         placeholder="email"
                         value={email}
@@ -54,9 +54,9 @@ export function SignIn(props) {
                             setEmail(e.target.value);
                         }}
                     />
-                    <span className="error"><p id="Name_error"/></span>
+                    <span className={"error"}><p id="Name_error"/></span>
                     <TextField
-                        class="inputs"
+                        className={"inputs"}
                         type={"password"}
                         fullWidth={true}
                         placeholder="password"
@@ -69,7 +69,7 @@ export function SignIn(props) {
                         }}
                         style={{marginTop: 20}}
                     />
-                    <span className="error"><p id="Name_error"></p></span>
+                    <span className={"error"}><p id="Name_error"/></span>
                     <div
                         style={{
                             display: "flex",
@@ -95,14 +95,14 @@ export function SignIn(props) {
                         </div>
                     </div>
                     <br/>
-                    <Button class="btn" color="primary" variant="contained" onClick={handleSignIn}>
+                    <Button className={"btn"} color="primary" variant="contained" onClick={handleSignIn}>
                         login
                     </Button>
 
                 </div>
             </div>
-            <div class="split right">
-                <div class="centered">
+            <div className={"split right"}>
+                <div className={"centered"}>
 
                 </div>
             </div>
@@ -144,21 +144,24 @@ export function SignUp(props) {
             flag = false;
 
         }
+        if(p.length === 0)
+            return;
         if (p !== cp) {
             document.getElementById("password2error").innerText = "passwords do not match !"
             flag = false;
         } else {
             document.getElementById("password2error").innerText = "passwords match !"
-            flag = false;
+            flag = true;
         }
-
+        console.log(flag);
     };
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
+        console.log(flag);
         if (!flag)
             return;
 
         // if got here then all good.
-        auth
+        await auth
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
             })
@@ -168,18 +171,18 @@ export function SignUp(props) {
     };
 
     return (
-        <div className="back">
-            <AppBar class="appbar" position="static" color="primary">
+        <div className={"back"}>
+            <AppBar className={"appbar"} position="static" color="primary">
                 <Toolbar>
                     <Typography color="inherit" variant="h6">
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div className="split left1" style={{display: "flex", justifyContent: "center"}}>
-                <div className="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
+            <div className={"split left1"} style={{display: "flex", justifyContent: "center"}}>
+                <div className={"centered"} style={{width: "400px", marginTop: 30, padding: "40px"}}>
 
                     <TextField
-                        class="inputs"
+                        className={"inputs"}
                         fullWidth={true}
                         placeholder="email"
                         value={email}
@@ -189,7 +192,7 @@ export function SignUp(props) {
                     />
                     <TextField
                         id="password"
-                        class="inputs"
+                        className={"inputs"}
                         type={"password"}
                         fullWidth={true}
                         placeholder="Password"
@@ -200,10 +203,10 @@ export function SignUp(props) {
                         }}
                         style={{marginTop: 20}}
                     />
-                    <span className="error"><p id="password1error"></p></span>
+                    <span className={"error"}><p id="password1error"></p></span>
                     <TextField
                         id="cpassword"
-                        class="inputs"
+                        className={"inputs"}
                         type={"password"}
                         fullWidth={true}
                         placeholder="Confirm password"
@@ -217,7 +220,7 @@ export function SignUp(props) {
                         }}
                         style={{marginTop: 20}}
                     />
-                    <span className="error"><p id="password2error"></p></span>
+                    <span className={"error"}><p id="password2error"></p></span>
                     <div
                         style={{
                             display: "flex",
@@ -243,14 +246,14 @@ export function SignUp(props) {
                         </div>
                     </div>
                     <br/>
-                    <Button class="btn" color="primary" variant="contained" onClick={handleSignUp}>
+                    <Button className={"btn"} color="primary" variant="contained" onClick={handleSignUp}>
                         login
                     </Button>
 
                 </div>
             </div>
-            <div className="split right">
-                <div className="centered">
+            <div className={"split right"}>
+                <div className={"centered"}>
 
                 </div>
             </div>
@@ -278,8 +281,8 @@ export function ResetPassword(props) {
 
     }
     return (
-        <div class="back">
-            <AppBar class="appbar" position="static" color="primary">
+        <div className={"back"}>
+            <AppBar className={"appbar"} position="static" color="primary">
                 <Toolbar>
                     <Typography color="inherit" variant="h6">
                         Reset Password
@@ -288,7 +291,7 @@ export function ResetPassword(props) {
             </AppBar>
             <div style={{display: "flex", justifyContent: "center"}}>
 
-                <Paper class="resetpass" style={{
+                <Paper className={'resetpass'} style={{
                     width: "400px",
                     marginTop: 30,
                     padding: "40px",
@@ -309,7 +312,7 @@ export function ResetPassword(props) {
                             if (key.key === 'Enter') handleResetPassword();
                         }}
                     />
-                    <Button class="btn" style={{
+                    <Button className={"btn"} style={{
                         display: "flex",
                         justifyContent: "space-between",
                         marginTop: "30px",
