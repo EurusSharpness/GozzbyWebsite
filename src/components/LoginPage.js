@@ -7,8 +7,9 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-
+import './login.css';
 import Loading from "./Loading";
+
 export function SignIn(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -21,9 +22,9 @@ export function SignIn(props) {
         });
     }, [props.history]);
 
-    const handleSignIn = async () => {
+    const handleSignIn = () => {
         setIsLoading(true);
-        await auth
+        auth
             .signInWithEmailAndPassword(email, password)
             .then(() => {
             })
@@ -32,8 +33,8 @@ export function SignIn(props) {
                 setIsLoading(false);
             });
     };
-    if(isLoading)
-        return <div className={'Container'}> <Loading/></div>
+    if (isLoading)
+        return <div className={'Container'}>Logging in!!<Loading/></div>
     return (
         <div className={'back'}>
             <AppBar className={`appbar`} position="static" color="primary">
@@ -43,7 +44,7 @@ export function SignIn(props) {
                 </Toolbar>
             </AppBar>
             <div className={`split left`} style={{display: "flex", justifyContent: "center"}}>
-                <div className="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
+                <div className={"centered"} style={{width: "400px", marginTop: 30, padding: "40px"}}>
 
                     <TextField
                         className={`inputs`}
@@ -114,12 +115,13 @@ export function SignUp(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirm_password, setConfirm_Password] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
     const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
     useEffect(() => {
         return auth.onAuthStateChanged(u => {
             if (u) {
-                props.history.push("/app");
+                props.history.push("/store");
             }
         });
     }, [props.history]);
@@ -144,7 +146,7 @@ export function SignUp(props) {
             flag = false;
 
         }
-        if(p.length === 0)
+        if (p.length === 0)
             return;
         if (p !== cp) {
             document.getElementById("password2error").innerText = "passwords do not match !"
@@ -155,20 +157,24 @@ export function SignUp(props) {
         }
         console.log(flag);
     };
-    const handleSignUp = async () => {
+    const handleSignUp = () => {
         console.log(flag);
+        handlePasswordChange();
         if (!flag)
             return;
-
+        setIsLoading(true);
         // if got here then all good.
-        await auth
+        auth
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
             })
             .catch(error => {
+                setIsLoading(false);
                 alert(error.message);
             });
     };
+    if(isLoading)
+        return <div className={'Container'}>Creating account!<Loading/></div>
 
     return (
         <div className={"back"}>
@@ -247,7 +253,7 @@ export function SignUp(props) {
                     </div>
                     <br/>
                     <Button className={"btn"} color="primary" variant="contained" onClick={handleSignUp}>
-                        login
+                        Sign Up
                     </Button>
 
                 </div>

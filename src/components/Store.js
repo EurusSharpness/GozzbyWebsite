@@ -71,7 +71,7 @@ export function Store(props) {
     // const [client, setClient] = useState(null);
     const [products, setProduct] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [sortBy, setSortBy] = useState('');
+    // const [sortBy, setSortBy] = useState('');
     // sortBy = byPrice
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
@@ -138,7 +138,7 @@ export function Store(props) {
         return <div/>;
     }
     if (isLoading)
-        return <div className={'Container'}><Loading/></div>
+        return <div className={'Container'}>Getting Store Data!<Loading/></div>
     return (
         <div>
             <AppBar position="static">
@@ -160,7 +160,7 @@ export function Store(props) {
                         My App
                     </Typography>
                     <Typography color="inherit" style={{marginRight: 30}}>
-                        {/*Hi! {client && client.name ? client.name : ""}*/}
+                        Hi! {user ? user.email.split('@')[0] : ''}
                     </Typography>
                     <Button color="inherit" onClick={handleSignOut}>
                         Sign out
