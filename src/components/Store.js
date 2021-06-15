@@ -6,9 +6,16 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
-import {auth, items} from "./firebase_functions";
+import {auth} from "./firebase_functions";
 import Loading from "./Loading";
-import {getProducts, Products, handleSignOut, SortByDescending, SortByAscending, NoFilter} from "./Store_functions";
+import {
+    handleSignIn,
+    handleSignOut,
+    getProducts,
+    SortByDescending,
+    SortByAscending,
+    NoFilter
+} from "./Store_functions";
 
 
 export function Store(props) {
@@ -17,9 +24,9 @@ export function Store(props) {
     // const [client, setClient] = useState(null);
     const [products, setProduct] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [sortBy, setSortBy] = useState(0); // 0 = No Sorting.
+    const [sortBy, setSortBy] = useState(SortByAscending); // 0 = No Sorting.
     const [filterBy, setFilterBy] = useState(NoFilter);
-    // sortBy = byPrice
+
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
     };
@@ -27,22 +34,10 @@ export function Store(props) {
     useEffect(() => {
         return auth.onAuthStateChanged(async u => {
             if (u) {
+                setIsLoading(true);
                 setUser(u);
-                // USER STUFF NOT FOR NOW!
-                /*await users.doc(u.email).get().then((document) => {
-                    console.log(document.data());
-                    setClient(new Client(users.doc(u.email), document.data()));
-                    console.log('client was loaded successfully from database');
-                }).catch(error => console.log('Something went wrong when getting client, ' + error));*/
-
-                await items.get().then((products) => {
-                    let result = [];
-                    products.docs.forEach((product) => {
-                        result.push(new Products(product.id, product.data()));
-                    });
-                    setProduct(result);
-                    setIsLoading(false);
-                }).catch(error => console.log(error));
+                await handleSignIn(setProduct);
+                setIsLoading(false);
             } else {
                 props.history.push("/");
             }

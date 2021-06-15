@@ -1,8 +1,42 @@
-import {auth} from "./firebase_functions";
+import {auth, items} from "./firebase_functions";
 import React from "react";
+
 export const SortByAscending = 1;
 export const SortByDescending = 2;
 export const NoFilter = 'none';
+
+
+
+export class Products {
+    /**
+     *
+     * @param {number} item_id
+     * @param {{
+     *     name: string, imagePath: string, price: number, quantity: number, brand: string, description: string
+     * }} item_data
+     */
+    constructor(item_id, item_data) {
+        this.name = item_data.name;
+        this.id = item_id;
+        this.imagePath = item_data.imagePath;
+        this.price = item_data.price;
+        this.quantity = item_data.quantity;
+        this.brand = item_data.brand;
+        this.description = item_data.description;
+    }
+}
+
+
+export async function handleSignIn(setProducts) {
+    await items.get().then((products) => {
+            let result = [];
+            products.docs.forEach((product) => {
+                result.push(new Products(product.id, product.data()));
+            });
+            setProducts(result);
+        }
+    ).catch(()=> console.log('something went wrong somewhere!'));
+}
 
 export function handleSignOut(props) {
     auth.signOut().then(() => {
@@ -12,19 +46,6 @@ export function handleSignOut(props) {
     });
 }
 
-
-
-export class Products {
-    constructor(item, item_data) {
-        this.name = item_data.name;
-        this.id = item;
-        this.imagePath = item_data.imagePath;
-        this.price = item_data.price;
-        this.quantity = item_data.quantity;
-        this.brand = item_data.brand;
-        this.description = item_data.description;
-    }
-}
 
 
 /**
@@ -65,11 +86,6 @@ export function getProducts(products, sortBy, filterBy) {
         </div>
     );
 }
-
-
-
-
-
 
 
 /*class Client {
