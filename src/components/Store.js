@@ -8,61 +8,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import {auth, items} from "./firebase_functions";
 import Loading from "./Loading";
-
-/*class Client {
-    constructor(document, document_data) {
-        this.doc = document;
-        this.name = document_data.name;
-        this.cart = document_data.cart;
-    }
-
-    async addItem(item_id) {
-        if (this.cart == null) {
-            console.log('Cannot add item, something wrong with data');
-            return;
-        }
-
-        // Add new item to the cart with quantity 1 or
-        // increase by 1 if already exist
-        if (!this.cart.hasOwnProperty(item_id))
-            this.cart[item_id] = 0;
-        this.cart[item_id]++;
-
-        // Might need to update visually as well!
-        await this.doc.update({cart: this.cart}).then(() => {
-            console.log('update successfully!');
-        }).catch((error) => {
-            console.log('error with update! ' + error);
-        });
-    };
-
-    getCartDataInListForm() {
-        // Ayham this is yours
-        const handleItem = (itemID) => {
-            return <li key={itemID}>id: {itemID}, quantity {this.cart[itemID]}</li>
-        }
-        return (
-            <div>
-                <p> User Cart</p>
-                <ul>
-                    {Object.keys(this.cart).map((item) => handleItem(item))}
-                </ul>
-            </div>
-        );
-    };
-}*/
-
-
-class Products {
-    constructor(item, item_data) {
-        this.name = item_data.name;
-        this.id = item;
-        this.imagePath = item_data.imagePath;
-        this.price = item_data.price;
-        this.quantity = item_data.quantity;
-        this.description = item_data.description;
-    }
-}
+import {getProducts, Products, handleSignOut, SortByDescending, SortByAscending, NoFilter} from "./Store_functions";
 
 
 export function Store(props) {
@@ -71,7 +17,8 @@ export function Store(props) {
     // const [client, setClient] = useState(null);
     const [products, setProduct] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    // const [sortBy, setSortBy] = useState('');
+    const [sortBy, setSortBy] = useState(0); // 0 = No Sorting.
+    const [filterBy, setFilterBy] = useState(NoFilter);
     // sortBy = byPrice
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
@@ -102,37 +49,6 @@ export function Store(props) {
         });
     }, [props.history]);
 
-    const handleSignOut = () => {
-        auth
-            .signOut()
-            .then(() => {
-                props.history.push("/");
-            })
-            .catch(error => {
-                alert(error.message);
-            });
-    };
-
-    const getProducts = () => {
-
-        /*
-            For each item... if item.brand == 'Vodka' then Run Ayham function
-        */
-        const handleItem = (product) => {
-            return (
-                <p>{product.name}
-                    <img src={product.imagePath} key={product.id} alt={product.name}/>
-                </p>
-            );
-        };
-
-        return (
-            <div>
-                <p>to be or not to be</p>
-                {products.map((value => handleItem(value)))}
-            </div>
-        );
-    }
 
     if (!user) {
         return <div/>;
@@ -162,23 +78,49 @@ export function Store(props) {
                     <Typography color="inherit" style={{marginRight: 30}}>
                         Hi! {user ? user.email.split('@')[0] : ''}
                     </Typography>
-                    <Button color="inherit" onClick={handleSignOut}>
+                    <Button color="inherit" onClick={() => handleSignOut(props)}>
                         Sign out
                     </Button>
                 </Toolbar>
-            </AppBar>)}
+            </AppBar>
             <Drawer open={drawer_open} onClose={handleCloseDrawer}>
                 I'm a drawer
             </Drawer>
-            {/*THIS BUTTON IS FOR TESTING, CAN BE DELETED OR MODIFIED.*/}
-            {/*<Button color="inherit" onClick={() => {
-                client.addItem(25).then(r => console.log(r ? r : ' '));
-            }}>
-                TEST ADD ITEM NUMBER 25 TO THE CURRENT USER
-            </Button>*/}
-            {/* Check if null*/}
-            {/*{client ? client.getCartDataInListForm() : ''}*/}
-            {products ? getProducts() : ''})}
+
+            {/* ----------- Test Filter and Sort functions --------------*/}
+            {AddSortAndFilterButtonsForTest(setSortBy, setFilterBy)}
+            {/*---------------------------- END TEST ----------------------*/}
+
+            {products ? getProducts(products, sortBy, filterBy) : ''}
+        </div>
+    );
+}
+
+
+function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
+    return (
+        <div>
+            <button onClick={() => setSortBy(SortByAscending)}>
+                Price low -> high
+            </button>
+            <button onClick={() => setSortBy(SortByDescending)}>
+                Price high -> low
+            </button>
+            <button onClick={() => setFilterBy('vodka')}>
+                Filter by vodka
+            </button>
+            <button onClick={() => setFilterBy('whiskey')}>
+                Filter by whiskey
+            </button>
+            <button onClick={() => setFilterBy('beer')}>
+                Filter by beer
+            </button>
+            <button onClick={() => setFilterBy('tequila')}>
+                Filter by tequila
+            </button>
+            <button onClick={() => setFilterBy(NoFilter)}>
+                Clear filter
+            </button>
         </div>
     );
 }
