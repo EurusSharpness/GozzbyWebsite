@@ -1,0 +1,49 @@
+.logo{
+    background-color: #528ecc;
+    height: 150px;
+    width: 150px;
+}
+.back{
+
+}
+.productinformation{
+    opacity: 0.5;
+}
+.productinformation:hover{
+    opacity: 1.0;
+    font-size: 15px;
+}
+.img{
+    padding: 5px;
+    width: 100%;
+}
+.container {
+    background-image: url("../assets/StorePics/background1.jpg");
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.box{
+    background-color: #528ecc;
+}
+
+.child {
+    background-color: darkgrey;
+    padding-right: 10px;
+    padding-bottom: 200px;
+    font-size: 10px;
+    left: 1500px;
+    width: 30%;
+    height: 600px;
+    border: 3px solid black;
+    text-align: center;
+    border-color: black;
+}
+.productcard{
+    background-image: url("../assets/LoginPagePics/blackbricks.jpg");
+    height: 350px;
+    width: 300px;
+    border-radius: 2%;
+}

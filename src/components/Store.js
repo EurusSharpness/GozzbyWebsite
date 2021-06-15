@@ -8,6 +8,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import {auth, items} from "./firebase_functions";
 import Loading from "./Loading";
+import "./Store.css";
 
 /*class Client {
     constructor(document, document_data) {
@@ -71,7 +72,7 @@ export function Store(props) {
     // const [client, setClient] = useState(null);
     const [products, setProduct] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [sortBy, setSortBy] = useState('');
+    //const [sortBy, setSortBy] = useState('');
     // sortBy = byPrice
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
@@ -120,16 +121,75 @@ export function Store(props) {
         */
         const handleItem = (product) => {
             return (
-                <p>{product.name}
-                    <img src={product.imagePath} key={product.id} alt={product.name}/>
+                <p className="productinformation">
+                    {product.name}
+                    <br/>
+                    {product.description}
                 </p>
             );
         };
 
         return (
-            <div>
-                <p>to be or not to be</p>
-                {products.map((value => handleItem(value)))}
+            <div className="container">
+                <br/><br/><br/>
+                <div className="child">
+                    <div className="box">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[0])}
+                    </div>
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[1])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[2])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[3])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[4])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[5])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[6])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[7])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[8])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[9])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[10])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[11])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[12])}
+                </div>
+                <div className="child">
+                    <img className="img" alt={"1.png"} src={"products/1.jpg"}/>
+                    {handleItem(products[13])}
+                </div>
             </div>
         );
     }

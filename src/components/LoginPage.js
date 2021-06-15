@@ -7,8 +7,9 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-
 import Loading from "./Loading";
+import "./login.css";
+
 export function SignIn(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -43,7 +44,7 @@ export function SignIn(props) {
                 </Toolbar>
             </AppBar>
             <div className={`split left`} style={{display: "flex", justifyContent: "center"}}>
-                <div className="centered" style={{width: "400px", marginTop: 30, padding: "40px"}}>
+                <div className={`centered`} style={{width: "400px", marginTop: 30, padding: "40px"}}>
 
                     <TextField
                         className={`inputs`}
