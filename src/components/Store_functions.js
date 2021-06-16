@@ -82,6 +82,7 @@ export function getProducts(products, sortBy, filterBy) {
 
     return (
         <div>
+
             {modified.map((value => handleItem(value)))}
         </div>
     );
