@@ -9,6 +9,7 @@ import Drawer from "@material-ui/core/Drawer";
 import {auth} from "./firebase_functions";
 import Loading from "./Loading";
 import "./Store.css";
+import {Select} from "@material-ui/core";
 import {
     handleSignIn,
     handleSignOut,
@@ -121,18 +122,18 @@ function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
     return (
         <div>
             filter by  :
-            <select onClick={()=>Sort(setSortBy,setFilterBy)} id="Filter">
+            <Select onClick={()=>Sort(setSortBy,setFilterBy)} id="Filter">
                 <option value="Filter by vodka">Filter by vodka</option>
                 <option value="Filter by whiskey">Filter by whiskey</option>
                 <option value="Filter by beer">Filter by beer</option>
                 <option value="Filter by tequila">Filter by tequila</option>
                 <option value="Clear filter">Clear filter</option>
-            </select>
+            </Select>
             Sort By :
-            <select onClick={()=>Sort(setSortBy,setFilterBy)} id="Sort">
+            <Select onClick={()=>Sort(setSortBy,setFilterBy)} id="Sort">
                 <option value="Price low -> high">Price low -> high</option>
                 <option value="Price high -> low">Price high -> low</option>
-            </select>
+            </Select>
 
         </div>
     );

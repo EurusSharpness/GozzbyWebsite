@@ -1,9 +1,11 @@
 import {auth, items} from "./firebase_functions";
 import React from "react";
+import {Button} from "reactstrap";
 
 export const SortByAscending = 1;
 export const SortByDescending = 2;
 export const NoFilter = 'none';
+
 
 
 
@@ -52,8 +54,15 @@ export function handleSignOut(props) {
  * @param {Products} product The product to handle
  */
 const handleItem = (product) => {
+    //<button> add to cart..price$
+    //left in stock
+    var S=product.imagePath;
     return (
-        <p>{product.name} {product.price} {product.brand}</p>
+        <div className="child" >
+            <img src={product.imagePath}/>
+            <p>{product.name} {product.price} {product.brand}</p>
+            <Button variant="primary">Primary</Button>{' '}
+        </div>
     );
 };
 
@@ -81,8 +90,7 @@ export function getProducts(products, sortBy, filterBy) {
     }
 
     return (
-        <div>
-
+        <div className="container">
             {modified.map((value => handleItem(value)))}
         </div>
     );

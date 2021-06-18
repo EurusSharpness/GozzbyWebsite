@@ -30,12 +30,11 @@
 }
 
 .child {
-    background-color: darkgrey;
     padding-right: 10px;
     padding-bottom: 200px;
     font-size: 10px;
     left: 1500px;
-    width: 30%;
+    width: 33%;
     height: 600px;
     border: 3px solid black;
     text-align: center;
