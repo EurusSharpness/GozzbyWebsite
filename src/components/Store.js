@@ -6,10 +6,10 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
-import {auth} from "./firebase_functions";
+import {FirebaseAuth} from "./firebase_functions";
 import Loading from "./Loading";
 import "./Store.css";
-import {Select} from "@material-ui/core";
+
 import {
     handleSignIn,
     handleSignOut,
@@ -19,6 +19,7 @@ import {
     NoFilter
 } from "./Store_functions";
 
+export let ClientUser = null;
 
 export function Store(props) {
     const [user, setUser] = useState(null);
@@ -34,10 +35,11 @@ export function Store(props) {
     };
 
     useEffect(() => {
-        return auth.onAuthStateChanged(async u => {
+        return FirebaseAuth.onAuthStateChanged(async u => {
             if (u) {
                 setIsLoading(true);
                 setUser(u);
+                ClientUser = u;
                 await handleSignIn(setProduct);
                 setIsLoading(false);
             } else {
@@ -72,7 +74,7 @@ export function Store(props) {
                     >
                         My App
                     </Typography>
-                    <Typography color="inherit" style={{marginRight: 30}}>
+                    <Typography color="inherit" style={{marginRight: 30}} onClick={()=>props.history.push('/client')}>
                         Hi! {user ? user.email.split('@')[0] : ''}
                     </Typography>
                     <Button color="inherit" onClick={() => handleSignOut(props)}>
@@ -86,7 +88,7 @@ export function Store(props) {
 
             {/* ----------- Test Filter and Sort functions --------------*/}
             {AddSortAndFilterButtonsForTest(setSortBy, setFilterBy)}
-            {/*---------------------------- END TEST ----------------------*/}
+            {/*--------------------------- END TEST ----------------------*/}
 
             {products ? getProducts(products, sortBy, filterBy) : ''}
         </div>
@@ -94,47 +96,28 @@ export function Store(props) {
 }
 
 function Sort(setSortBy, setFilterBy){
-    var SortSelectedVal=document.getElementById("Sort").value;
-    var FilterSelectedVal=document.getElementById("Filter").value;
-    if (SortSelectedVal==="Price low -> high"){
-        setSortBy(SortByAscending);
-    }
-    if (SortSelectedVal==="Price high -> low"){
-        setSortBy(SortByDescending);
-    }
-    if (FilterSelectedVal==="Filter by vodka"){
-        setFilterBy(`vodka`);
-    }
-    if (FilterSelectedVal==="Filter by whiskey"){
-        setFilterBy('whiskey')
-    }
-    if (FilterSelectedVal==="Filter by beer"){
-        setFilterBy('beer')
-    }
-    if (FilterSelectedVal==="Filter by tequila"){
-        setFilterBy('tequila')
-    }
-    if (FilterSelectedVal==="Clear filter"){
-        setFilterBy(NoFilter)
-    }
+    const SortSelectedVal=document.getElementById("Sort").value;
+    const FilterSelectedVal=document.getElementById("Filter").value;
+    // console.log(`Sort by: ${SortSelectedVal}   filter by ${FilterSelectedVal}`);
+    setFilterBy(FilterSelectedVal);
+    setSortBy(SortSelectedVal);
 }
 function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
     return (
         <div>
             filter by  :
-            <Select onClick={()=>Sort(setSortBy,setFilterBy)} id="Filter">
-                <option value="Filter by vodka">Filter by vodka</option>
-                <option value="Filter by whiskey">Filter by whiskey</option>
-                <option value="Filter by beer">Filter by beer</option>
-                <option value="Filter by tequila">Filter by tequila</option>
-                <option value="Clear filter">Clear filter</option>
-            </Select>
+            <select onClick={()=>Sort(setSortBy,setFilterBy)} key={0} id="Filter">
+                <option value={"vodka"}  key={1}>Filter by vodka</option>
+                <option value={"whiskey"}  key={2}>Filter by whiskey</option>
+                <option value={"beer"}  key={3}>Filter by beer</option>
+                <option value={"tequila"}  key={4}>Filter by tequila</option>
+                <option value={NoFilter} key={5}>Clear filter</option>
+            </select>
             Sort By :
-            <Select onClick={()=>Sort(setSortBy,setFilterBy)} id="Sort">
-                <option value="Price low -> high">Price low -> high</option>
-                <option value="Price high -> low">Price high -> low</option>
-            </Select>
-
+            <select onClick={()=>Sort(setSortBy,setFilterBy)} id="Sort" key={9}>
+                <option value={SortByAscending} key={1}>Price low -> high</option>
+                <option value={SortByDescending} key={2}>Price high -> low</option>
+            </select>
         </div>
     );
 }

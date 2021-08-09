@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {auth} from "./firebase_functions";
+import {FirebaseAuth} from "./firebase_functions";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -15,7 +15,7 @@ export function SignIn(props) {
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
-        return auth.onAuthStateChanged(u => {
+        return FirebaseAuth.onAuthStateChanged(u => {
             if (u) {
                 props.history.push("/store");
             }
@@ -24,7 +24,7 @@ export function SignIn(props) {
 
     const handleSignIn = async () => {
         setIsLoading(true);
-        await auth
+        await FirebaseAuth
             .signInWithEmailAndPassword(email, password)
             .then(() => {
             })
@@ -118,7 +118,7 @@ export function SignUp(props) {
     const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
     const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
     useEffect(() => {
-        return auth.onAuthStateChanged(u => {
+        return FirebaseAuth.onAuthStateChanged(u => {
             if (u) {
                 props.history.push("/app");
             }
@@ -162,7 +162,7 @@ export function SignUp(props) {
             return;
 
         // if got here then all good.
-        await auth
+        await FirebaseAuth
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
             })
@@ -265,7 +265,7 @@ export function SignUp(props) {
 export function ResetPassword(props) {
     const [email, setEmail] = useState("");
     useEffect(() => {
-        return auth.onAuthStateChanged(u => {
+        return FirebaseAuth.onAuthStateChanged(u => {
             if (u) {
                 props.history.push("/app");
             }
@@ -273,7 +273,7 @@ export function ResetPassword(props) {
     }, [props.history]);
     const handleResetPassword = () => {
         console.log(email);
-        auth.sendPasswordResetEmail(email).then(() => {
+        FirebaseAuth.sendPasswordResetEmail(email).then(() => {
             alert('Email send successfully!');
             props.history.push('/'); // Go back to Sign in page if the mail was successfully sent!
         }).catch((e) => {

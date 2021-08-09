@@ -1,4 +1,4 @@
-import {auth, items} from "./firebase_functions";
+import {FirebaseAuth, items} from "./firebase_functions";
 import React from "react";
 import {Button} from "reactstrap";
 
@@ -33,7 +33,7 @@ export async function handleSignIn(setProducts) {
     await items.get().then((products) => {
             let result = [];
             products.docs.forEach((product) => {
-                result.push(new Products(product.id, product.data()));
+                result.push(new Products(Number(product.id), product.data()));
             });
             setProducts(result);
         }
@@ -41,7 +41,7 @@ export async function handleSignIn(setProducts) {
 }
 
 export function handleSignOut(props) {
-    auth.signOut().then(() => {
+    FirebaseAuth.signOut().then(() => {
         props.history.push("/");
     }).catch(error => {
         alert(error.message);
@@ -52,14 +52,14 @@ export function handleSignOut(props) {
 
 /**
  * @param {Products} product The product to handle
+ * @param {Number} uniqueKey The product key.
  */
-const handleItem = (product) => {
+const handleItem = (product, uniqueKey) => {
     //<button> add to cart..price$
     //left in stock
-    var S=product.imagePath;
     return (
-        <div className="child" >
-            <img src={product.imagePath}/>
+        <div className="child" key={uniqueKey} >
+            <img src={product.imagePath} alt={'nice'}/>
             <p>{product.name} {product.price} {product.brand}</p>
             <Button variant="primary">Primary</Button>{' '}
         </div>
@@ -88,10 +88,10 @@ export function getProducts(products, sortBy, filterBy) {
     if (filterBy !== NoFilter) {
         modified = products.filter((value => value.brand === filterBy));
     }
-
+    let x = 0;
     return (
         <div className="container">
-            {modified.map((value => handleItem(value)))}
+            {modified.map((value => handleItem(value, x++)))}
         </div>
     );
 }
