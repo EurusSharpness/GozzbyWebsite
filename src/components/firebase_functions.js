@@ -17,7 +17,7 @@ const config = {
 firebase.initializeApp(config);
 
 export const FirebaseAuth = firebase.auth();
-
+export const FirebaseEmailAuthProvider = firebase.auth.EmailAuthProvider;
 const firestore = firebase.firestore();
 
 export const users = firestore.collection('users');

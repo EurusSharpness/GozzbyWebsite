@@ -165,6 +165,7 @@ export function SignUp(props) {
         await FirebaseAuth
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
+                console.log('Email created successfully');
             })
             .catch(error => {
                 alert(error.message);
@@ -324,6 +325,5 @@ export function ResetPassword(props) {
                 </Paper>
             </div>
         </div>
-
     )
 }
