@@ -1,12 +1,10 @@
-import {FirebaseAuth, items} from "./firebase_functions";
+import {FirebaseAuth, FirebaseEmailAuthProvider, items} from "./firebase_functions";
 import React from "react";
-import {Button} from "reactstrap";
+import {Button, Col, FormControl, InputGroup, Modal, Row} from "react-bootstrap";
 
 export const SortByAscending = 1;
 export const SortByDescending = 2;
 export const NoFilter = 'none';
-
-
 
 
 export class Products {
@@ -37,7 +35,7 @@ export async function handleSignIn(setProducts) {
             });
             setProducts(result);
         }
-    ).catch(()=> console.log('something went wrong somewhere!'));
+    ).catch(() => console.log('something went wrong somewhere!'));
 }
 
 export function handleSignOut(props) {
@@ -49,7 +47,6 @@ export function handleSignOut(props) {
 }
 
 
-
 /**
  * @param {Products} product The product to handle
  * @param {Number} uniqueKey The product key.
@@ -58,7 +55,7 @@ const handleItem = (product, uniqueKey) => {
     //<button> add to cart..price$
     //left in stock
     return (
-        <div className="child" key={uniqueKey} >
+        <div className="child" key={uniqueKey}>
             <img src={product.imagePath} alt={'nice'}/>
             <p>{product.name} {product.price} {product.brand}</p>
             <Button variant="primary">Primary</Button>{' '}
@@ -96,6 +93,118 @@ export function getProducts(products, sortBy, filterBy) {
     );
 }
 
+
+export function UserModal(props) {
+    return (
+        <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-tit    le-vcenter"
+            centered
+        >
+            <Modal.Header>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Welcome to your profile settings!
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Row>
+                    <Col>
+                        <InputGroup className="mb-3">
+                            <FormControl
+                                id={'NicknameValue'}
+                                placeholder="New Nickname"
+                                aria-label="New Nickname"
+                                aria-describedby="basic-addon2"
+                                type={'text'}
+                            />
+                        </InputGroup>
+                        <Button variant={"primary"} className={'shadow-none'} onClick={async () => {
+                            props.onHide();
+                            let name = document.getElementById('NicknameValue').value;
+                            if (name.length === 0) return;
+                            await props.clientdocument.update({name: name}).then(() => {
+                                console.log('Name successfully changed to ' + name + '!');
+                                props.setusername(name);
+                            }).catch((() => console.log('something went wrong with updating the name!')));
+                        }}>Save</Button>
+                    </Col>
+                    <Col>
+                        <InputGroup className="mb-3">
+                            <FormControl
+                                id={'CurrentPassword'}
+                                placeholder="Current password"
+                                aria-label="Current password"
+                                aria-describedby="basic-addon2"
+                                type={'password'}
+                            />
+
+                        </InputGroup>
+                        <InputGroup className="mb-3">
+                            <FormControl
+                                id={'Password'}
+                                placeholder="New password"
+                                aria-label="New Password"
+                                aria-describedby="basic-addon2"
+                                type={'password'}
+                            />
+
+                        </InputGroup>
+                        <InputGroup className="mb-3">
+                            <FormControl
+                                id={'ConfirmPassword'}
+                                placeholder="Confirm new password"
+                                aria-label="Confirm password"
+                                aria-describedby="basic-addon2"
+                                type={'password'}
+                            />
+                        </InputGroup>
+                        <p style={{color: "yellowgreen"}}>
+                            * Password must contain:
+                            1 upper case letter, 1 lower case, 1 number, password length must be at least 6.
+                        </p>
+                        <Button variant={"primary"} className={'shadow-none'} onClick={async () => {
+                            const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
+                            const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+                            let password = document.getElementById('Password').value;
+                            let cpassword = document.getElementById('ConfirmPassword').value;
+                            let oldPassword = document.getElementById('CurrentPassword').value;
+                            if (password.length === 0) return;
+                            if(password !== cpassword) {
+                                alert('passwords do not match!');
+                                return;
+                            }
+                            if(!strongRegex.test(password) && !mediumRegex.test(password)){
+                                alert('your password is not strong enough! follow the rules');
+                                return;
+                            }
+
+                            const provider = FirebaseEmailAuthProvider.credential(
+                                FirebaseAuth.currentUser.email,
+                                oldPassword
+                            )
+                            await FirebaseAuth.currentUser.reauthenticateWithCredential(provider).then(async () => {
+                                await props.currentuser.updatePassword(password).then(() => {
+                                    console.log('Password successfully changed to ' + password + '!');
+                                    props.onHide();
+                                }).catch((() => console.log('something went wrong with updating the name!')));
+                            }).catch(() => {
+                                console.log('Authentication failed');
+                                alert('password is not strong enough');
+                            });
+
+                        }}>Save</Button>
+                    </Col>
+                </Row>
+            </Modal.Body>
+            <Modal.Footer>
+
+                <Button variant={"outline-secondary"} className={'shadow-none'} style={{textShadow: false}}
+                        onClick={props.onHide}>Close</Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}
 
 /*class Client {
     constructor(document, document_data) {

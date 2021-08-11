@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
-import {FirebaseAuth} from "./firebase_functions";
+import {FirebaseAuth, users} from "./firebase_functions";
 import Loading from "./Loading";
 import "./Store.css";
 
@@ -14,21 +14,24 @@ import {
     handleSignIn,
     handleSignOut,
     getProducts,
+    UserModal,
     SortByDescending,
     SortByAscending,
     NoFilter
 } from "./Store_functions";
 
-export let ClientUser = null;
 
 export function Store(props) {
     const [user, setUser] = useState(null);
     const [drawer_open, setDrawerOpen] = useState(false);
-    // const [client, setClient] = useState(null);
     const [products, setProduct] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [sortBy, setSortBy] = useState(SortByAscending); // 0 = No Sorting.
     const [filterBy, setFilterBy] = useState(NoFilter);
+    const [UsermodalShow, setUserModalShow] = React.useState(false);
+    const [userdocument, setUserdocument] = React.useState(null);
+    const [username, setusername] = React.useState('');
+
 
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
@@ -39,8 +42,11 @@ export function Store(props) {
             if (u) {
                 setIsLoading(true);
                 setUser(u);
-                ClientUser = u;
                 await handleSignIn(setProduct);
+                users.doc(u.email).get().then((data)=>{
+                   setusername(data.data().name);
+                });
+                setUserdocument(users.doc(u.email));
                 setIsLoading(false);
             } else {
                 props.history.push("/");
@@ -74,12 +80,22 @@ export function Store(props) {
                     >
                         My App
                     </Typography>
-                    <Typography color="inherit" style={{marginRight: 30}} onClick={()=>props.history.push('/client')}>
-                        Hi! {user ? user.email.split('@')[0] : ''}
+                    <Typography color="inherit" style={{marginRight: 30}} onClick={()=>{
+                        // props.history.push('/client')
+                        setUserModalShow(true);
+                    }}>
+                        Hi! {username}
                     </Typography>
                     <Button color="inherit" onClick={() => handleSignOut(props)}>
                         Sign out
                     </Button>
+                    <UserModal
+                        show={UsermodalShow}
+                        onHide = {()=>setUserModalShow(false)}
+                        clientdocument = {userdocument}
+                        currentuser = {user}
+                        setusername = {setusername}
+                    />
                 </Toolbar>
             </AppBar>
             <Drawer open={drawer_open} onClose={handleCloseDrawer}>

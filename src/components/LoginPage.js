@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {FirebaseAuth} from "./firebase_functions";
+import {FirebaseAuth, users} from "./firebase_functions";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -120,7 +120,7 @@ export function SignUp(props) {
     useEffect(() => {
         return FirebaseAuth.onAuthStateChanged(u => {
             if (u) {
-                props.history.push("/app");
+                props.history.push("/store");
             }
         });
     }, [props.history]);
@@ -156,7 +156,14 @@ export function SignUp(props) {
         }
         console.log(flag);
     };
+
+
+    const createUserInDatabase = async (email) => {
+        await users.doc(email).set({cart: [], name: email.split('@')[0]});
+    }
+
     const handleSignUp = async () => {
+        handlePasswordChange();
         console.log(flag);
         if (!flag)
             return;
@@ -164,8 +171,9 @@ export function SignUp(props) {
         // if got here then all good.
         await FirebaseAuth
             .createUserWithEmailAndPassword(email, password)
-            .then(() => {
+            .then(async () => {
                 console.log('Email created successfully');
+                await createUserInDatabase(email);
             })
             .catch(error => {
                 alert(error.message);
@@ -205,7 +213,7 @@ export function SignUp(props) {
                         }}
                         style={{marginTop: 20}}
                     />
-                    <span className={"error"}><p id="password1error"></p></span>
+                    <span className={"error"}><p id="password1error"/></span>
                     <TextField
                         id="cpassword"
                         className={"inputs"}
@@ -222,7 +230,7 @@ export function SignUp(props) {
                         }}
                         style={{marginTop: 20}}
                     />
-                    <span className={"error"}><p id="password2error"></p></span>
+                    <span className={"error"}><p id="password2error"/></span>
                     <div
                         style={{
                             display: "flex",
@@ -268,7 +276,7 @@ export function ResetPassword(props) {
     useEffect(() => {
         return FirebaseAuth.onAuthStateChanged(u => {
             if (u) {
-                props.history.push("/app");
+                props.history.push("/store");
             }
         });
     }, [props.history]);
