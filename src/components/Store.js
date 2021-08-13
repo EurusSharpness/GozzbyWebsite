@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import AppBar from "@material-ui/core/AppBar";
+import 'bootstrap/dist/css/bootstrap.css';
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
-import {FirebaseAuth, users} from "./firebase_functions";
+import {FirebaseAuth, users, ClientClass} from "./firebase_functions";
 import Loading from "./Loading";
 import "./Store.css";
 
@@ -19,6 +20,7 @@ import {
     SortByAscending,
     NoFilter
 } from "./Store_functions";
+import {Dropdown} from "react-bootstrap";
 
 
 export function Store(props) {
@@ -30,8 +32,8 @@ export function Store(props) {
     const [filterBy, setFilterBy] = useState(NoFilter);
     const [UsermodalShow, setUserModalShow] = React.useState(false);
     const [userdocument, setUserdocument] = React.useState(null);
-    const [username, setusername] = React.useState('');
-
+    const [userName, setuserName] = React.useState('');
+    const [client_, setClientClass] = React.useState(null);
 
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
@@ -43,8 +45,12 @@ export function Store(props) {
                 setIsLoading(true);
                 setUser(u);
                 await handleSignIn(setProduct);
-                users.doc(u.email).get().then((data)=>{
-                   setusername(data.data().name);
+
+                await users.doc(u.email).get().then((data) => {
+                    setuserName(data.data().name);
+                    if (client_ === null) {
+                        setClientClass(new ClientClass(users.doc(u.email), data.data()));
+                    }
                 });
                 setUserdocument(users.doc(u.email));
                 setIsLoading(false);
@@ -73,6 +79,7 @@ export function Store(props) {
                     >
                         <MenuIcon/>
                     </IconButton>
+
                     <Typography
                         color="inherit"
                         variant="h6"
@@ -80,21 +87,28 @@ export function Store(props) {
                     >
                         My App
                     </Typography>
-                    <Typography color="inherit" style={{marginRight: 30}} onClick={()=>{
+
+
+                    <IconButton
+                        style={{marginLeft: 20, flexGrow: 1}}
+                        onClick={() => props.history.push('/client-cart')}
+                    >Go To Cart
+                    </IconButton>
+                    <Typography color="inherit" style={{marginRight: 30}} onClick={() => {
                         // props.history.push('/client')
                         setUserModalShow(true);
                     }}>
-                        Hi! {username}
+                        Hi! {userName}
                     </Typography>
                     <Button color="inherit" onClick={() => handleSignOut(props)}>
                         Sign out
                     </Button>
                     <UserModal
                         show={UsermodalShow}
-                        onHide = {()=>setUserModalShow(false)}
-                        clientdocument = {userdocument}
-                        currentuser = {user}
-                        setusername = {setusername}
+                        onHide={() => setUserModalShow(false)}
+                        clientdocument={userdocument}
+                        currentuser={user}
+                        onNameSet={(name) => setuserName(name)}
                     />
                 </Toolbar>
             </AppBar>
@@ -105,35 +119,41 @@ export function Store(props) {
             {/* ----------- Test Filter and Sort functions --------------*/}
             {AddSortAndFilterButtonsForTest(setSortBy, setFilterBy)}
             {/*--------------------------- END TEST ----------------------*/}
-
-            {products ? getProducts(products, sortBy, filterBy) : ''}
+            {products ? getProducts(products, sortBy, filterBy, client_) : ''}
         </div>
     );
 }
 
-function Sort(setSortBy, setFilterBy){
-    const SortSelectedVal=document.getElementById("Sort").value;
-    const FilterSelectedVal=document.getElementById("Filter").value;
-    // console.log(`Sort by: ${SortSelectedVal}   filter by ${FilterSelectedVal}`);
-    setFilterBy(FilterSelectedVal);
-    setSortBy(SortSelectedVal);
-}
+
 function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
     return (
-        <div>
-            filter by  :
-            <select onClick={()=>Sort(setSortBy,setFilterBy)} key={0} id="Filter">
-                <option value={"vodka"}  key={1}>Filter by vodka</option>
-                <option value={"whiskey"}  key={2}>Filter by whiskey</option>
-                <option value={"beer"}  key={3}>Filter by beer</option>
-                <option value={"tequila"}  key={4}>Filter by tequila</option>
-                <option value={NoFilter} key={5}>Clear filter</option>
-            </select>
-            Sort By :
-            <select onClick={()=>Sort(setSortBy,setFilterBy)} id="Sort" key={9}>
-                <option value={SortByAscending} key={1}>Price low -> high</option>
-                <option value={SortByDescending} key={2}>Price high -> low</option>
-            </select>
-        </div>
+        <>
+            <Dropdown>
+                <Dropdown.Toggle className={'shadow-none'} variant="outline-primary" id="dropdown-sorting"
+                                 style={{width: "auto", float: "left", marginLeft: '2%'}}>
+                    Sort By
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                    <Dropdown.Item onSelect={() => setSortBy(SortByAscending)}>Ascending</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => setSortBy(SortByDescending)}>descending</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>{''}
+
+            <Dropdown>
+                <Dropdown.Toggle className={'shadow-none'} variant="outline-primary" id="dropdown-filtering"
+                                 style={{width: "auto", float: "left", marginLeft: '2px'}}>
+                    Filter By
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                    <Dropdown.Item onSelect={() => setFilterBy('vodka')}>Vodka</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => setFilterBy('beer')}>Beer</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => setFilterBy('whiskey')}>Whiskey</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => setFilterBy('tequila')}>Tequila</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => setFilterBy(NoFilter)}>Remove Filter</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+        </>
     );
 }

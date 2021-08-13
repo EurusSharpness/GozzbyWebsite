@@ -6,6 +6,10 @@ export const SortByAscending = 1;
 export const SortByDescending = 2;
 export const NoFilter = 'none';
 
+/**
+ * @type {ClientClass}
+ */
+let Client = null;
 
 export class Products {
     /**
@@ -58,18 +62,22 @@ const handleItem = (product, uniqueKey) => {
         <div className="child" key={uniqueKey}>
             <img src={product.imagePath} alt={'nice'}/>
             <p>{product.name} {product.price} {product.brand}</p>
-            <Button variant="primary">Primary</Button>{' '}
+            <Button variant="primary" onClick={()=>Client.addItem(product.id)}>Primary</Button>{' '}
         </div>
     );
 };
+
 
 /**
  * @param {Array<Products>} products
  * @param {number} sortBy
  * @param {string} filterBy
  */
-export function getProducts(products, sortBy, filterBy) {
+export function getProducts(products, sortBy, filterBy, client_) {
     let modified = products.slice(); // Copy the array.
+    Client = client_;
+    console.log('Sorting by: ' + sortBy);
+    console.log('Filter by: ' +filterBy);
 
     // Sort the array according to the Sorting value...
     if (sortBy === SortByAscending) {
@@ -85,6 +93,7 @@ export function getProducts(products, sortBy, filterBy) {
     if (filterBy !== NoFilter) {
         modified = products.filter((value => value.brand === filterBy));
     }
+    console.log(modified);
     let x = 0;
     return (
         <div className="container">
@@ -125,7 +134,7 @@ export function UserModal(props) {
                             if (name.length === 0) return;
                             await props.clientdocument.update({name: name}).then(() => {
                                 console.log('Name successfully changed to ' + name + '!');
-                                props.setusername(name);
+                                props.onNameSet(name);
                             }).catch((() => console.log('something went wrong with updating the name!')));
                         }}>Save</Button>
                     </Col>
@@ -206,45 +215,3 @@ export function UserModal(props) {
     );
 }
 
-/*class Client {
-    constructor(document, document_data) {
-        this.doc = document;
-        this.name = document_data.name;
-        this.cart = document_data.cart;
-    }
-
-    async addItem(item_id) {
-        if (this.cart == null) {
-            console.log('Cannot add item, something wrong with data');
-            return;
-        }
-
-        // Add new item to the cart with quantity 1 or
-        // increase by 1 if already exist
-        if (!this.cart.hasOwnProperty(item_id))
-            this.cart[item_id] = 0;
-        this.cart[item_id]++;
-
-        // Might need to update visually as well!
-        await this.doc.update({cart: this.cart}).then(() => {
-            console.log('update successfully!');
-        }).catch((error) => {
-            console.log('error with update! ' + error);
-        });
-    };
-
-    getCartDataInListForm() {
-        // Ayham this is yours
-        const handleItem = (itemID) => {
-            return <li key={itemID}>id: {itemID}, quantity {this.cart[itemID]}</li>
-        }
-        return (
-            <div>
-                <p> User Cart</p>
-                <ul>
-                    {Object.keys(this.cart).map((item) => handleItem(item))}
-                </ul>
-            </div>
-        );
-    };
-}*/
