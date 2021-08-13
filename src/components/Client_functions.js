@@ -12,21 +12,28 @@ import {Input, Label} from "reactstrap";
 let Client = null;
 let fRender = null;
 let x = false;
+
+
+function forceRender() {
+    fRender(!x);
+    x = !x;
+}
+
 /**
  * @param {Products} product The product to handle
  */
 const handleItem = (product) => {
-    //<button> add to cart..price$
-    //left in stock
+
     return (
-        <ListGroup.Item variant={''} style={{width: "60%"}}>
+        <ListGroup.Item  itemID={'productsItem' + product.id} id={'ItemInList' + product.id} variant={''}
+                        style={{width: "100%"}}>
             <Row>
                 <Col className={'col-sm-6'} sn={"auto"}>
-                    <Image src={'products/1.png'} fluid={true}/>
+                    <Image key={'productImage'+product.id} src={'products/1.png'} fluid={true}/>
                 </Col>
                 <Col className={'col-sm-6'} sm={"auto"}>
                     <Row>
-                        <p style={{fontFamily: " Zapf-Chancery", fontSize: "200%"}}>{product.name}</p>
+                        <p key={'ffff'+product.id} style={{fontFamily: " Zapf-Chancery", fontSize: "200%"}}>{product.name}</p>
                     </Row>
                     <Row>
                         <p style={{fontFamily: " Zapf-Chancery", fontSize: "200%"}}>${product.price}</p>
@@ -34,7 +41,7 @@ const handleItem = (product) => {
                     <Row>
 
                         <InputGroup>
-                            <div style={{alignItems: "center", width: '100%'}}>
+                            <div key={'dododo'+product.id} style={{alignItems: "center", width: '100%'}}>
                                 {/*<p style={{fontFamily: " Zapf-Chancery", fontSize: "200%", width: 'auto', float: 'left'}}>Quantity: </p>*/}
                                 <Col className={'col-2'}>
                                     <Label for={'quantityNumber' + product.id} style={{
@@ -46,13 +53,29 @@ const handleItem = (product) => {
                                     }}>Quantity:</Label>
                                 </Col>
                                 <Col className={'col-10'}>
-                                    <Input id={'quantityNumber' + product.id} placeholder="Amount" min={0} max={100}
-                                           type="number" step="1"
+                                    <Input id={'quantityNumber' + product.id} placeholder="Amount: 1"
+                                           type="tel"
                                            style={
                                                {
                                                    fontFamily: " Zapf-Chancery",
                                                    fontSize: '100%'
                                                }}
+                                           onBlur={async () => {
+                                               let temp = document.getElementById('quantityNumber' + product.id).value;
+
+                                               if (temp.length === 0) return;
+                                               let val = Number(temp);
+                                               if (isNaN(val))
+                                                   val = 1;
+                                               if (val > 50)
+                                                   val = 50;
+                                               if (val < 1)
+                                                   val = 1;
+                                               document.getElementById('quantityNumber' + product.id).value = val;
+                                               await Client.changeItemQuantity(product.id, val);
+                                               forceRender();
+                                               // console.log(document.getElementById('quantityNumber'+product.id).value);
+                                           }}
 
                                     />
                                 </Col>
@@ -66,9 +89,10 @@ const handleItem = (product) => {
                                     style={{width: "auto", marginTop: '10px'}}
                                     onClick={async () => {
                                         await Client.deleteItem(product.id);
-                                        fRender(!x);
-                                        x = !x;
-                                    }}>Delete</Button></Col>
+                                        forceRender();
+                                    }}>Delete
+                            </Button>
+                        </Col>
                         <Col className={'col-sm-2'}/>
                     </Row>
                 </Col>
@@ -81,6 +105,7 @@ const handleItem = (product) => {
 /**
  * @param {Array<Products>} products
  * @param {ClientClass} client_
+ * @param forceRender function to re-render the page after update.
  */
 export function getProducts(products, client_, forceRender) {
 
@@ -93,7 +118,7 @@ export function getProducts(products, client_, forceRender) {
 
     return (
         <div style={{marginLeft: 0, alignContent: 'start', alignItems: 'start'}}>
-            <Card style={{width: 'auto'}}>
+            <Card style={{width: '70%'}}>
                 {result}
             </Card>
         </div>

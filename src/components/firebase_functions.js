@@ -65,7 +65,7 @@ export class ClientClass {
             return;
         }
 
-        this.cart[item_id] += quantity;
+        this.cart[item_id] = quantity;
         await this.doc.update({cart: this.cart});
     }
 
