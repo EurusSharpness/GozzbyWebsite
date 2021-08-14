@@ -34,7 +34,6 @@ export function Store(props) {
     const [userdocument, setUserdocument] = React.useState(null);
     const [userName, setuserName] = React.useState('');
     const [client_, setClientClass] = React.useState(null);
-
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
     };
@@ -58,7 +57,7 @@ export function Store(props) {
                 props.history.push("/");
             }
         });
-    }, [props.history]);
+    }, [client_, props.history]);
 
 
     if (!user) {
