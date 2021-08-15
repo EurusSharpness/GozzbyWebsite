@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import {DeleteModal} from "./Client_functions";
+import {ConfirmCheckoutModal, DeleteModal} from "./Client_functions";
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import {Products} from "./Store_functions";
 import {Input} from "reactstrap";
@@ -42,22 +42,30 @@ async function loadClient(u, setItemsData, setClientClass) {
 
 export function ClientCart(props) {
     const [isLoading, setIsLoading] = useState(true);
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [itemsData, setItemsData] = useState(null);
     const [client_, setClientClass] = React.useState(null);
     const [deleteModalState, setDeleteModalState] = React.useState(false);
-    const [currentItemID, setcurrentItemID] = React.useState(-1);
+    const [checkoutModalState, setCheckoutModalState] = React.useState(false);
+    const [currentItemID, setCurrentItemID] = React.useState(-1);
     const [currentItemQuantity,] = React.useState([]);
-
+    const [itemsPriceSum, setItemsPriceSum] = React.useState(0);
     useEffect(() => {
         return FirebaseAuth.onAuthStateChanged(async u => {
             await loadClient(u, setItemsData, setClientClass);
-            if(!client_) return;
-            if(isLoading)
-                for (let key in client_.cart)
+            if (!client_) return;
+            if (isLoading) {
+                let sum = 0;
+                for (let key in client_.cart) {
                     currentItemQuantity[key] = client_.cart[key];
+                    if(itemsData)
+                        sum += Number(Number(itemsData[key] ? itemsData[key].price : 0).toFixed()) * Number(currentItemQuantity[key]);
+                }
+                setItemsPriceSum(sum);
+            }
             setIsLoading(false);
         })
-    }, [client_, currentItemQuantity, isLoading, props.history]);
+    }, [client_, currentItemQuantity, isLoading, itemsData, props.history]);
 
 
     const getClientCart = () => {
@@ -66,8 +74,8 @@ export function ClientCart(props) {
          */
         const handleItem = (product) => {
             return (
-                <Col>
-                    <div style={{marginTop: '5%'}}>
+                <Col key={product.id+'ttt'}>
+                    <div key={product.id +'uniqueid'} style={{marginTop: '5%'}}>
                         <Card>
                             <Card.Img variant={"top"} src={'products/1.png'}/>
                             <Card.Title>
@@ -82,19 +90,20 @@ export function ClientCart(props) {
                                         <Input value={currentItemQuantity[product.id]} onChange={(e) => {
                                             currentItemQuantity[product.id] = e.target.value;
                                         }}
-                                        onBlur={async (e)=>{
-                                            let val = Number(e.target.value);
-                                            if(e.target.value.length === 0)
-                                                val = 1;
-                                            if(isNaN(val))
-                                                val = 1;
-                                            if(val > 50)
-                                                val = 50;
-                                            if(val < 1)
-                                                val = 1;
-                                            currentItemQuantity[product.id] = val;
-                                            await client_.changeItemQuantity(product.id, val);
-                                        }}>
+                                               onBlur={async (e) => {
+                                                   let val = Number(e.target.value);
+                                                   if (e.target.value.length === 0)
+                                                       val = 1;
+                                                   if (isNaN(val))
+                                                       val = 1;
+                                                   if (val > 50)
+                                                       val = 50;
+                                                   if (val < 1)
+                                                       val = 1;
+                                                   currentItemQuantity[product.id] = val;
+                                                   await client_.changeItemQuantity(product.id, val);
+                                                   calculateItemsSum();
+                                               }}>
                                         </Input>
                                     </Col>
                                 </Row>
@@ -104,7 +113,7 @@ export function ClientCart(props) {
                                                 className={'shadow-none'}
                                                 onClick={() => {
                                                     setDeleteModalState(true);
-                                                    setcurrentItemID(product.id);
+                                                    setCurrentItemID(product.id);
                                                 }}>Delete</Button>
                                     </Col>
                                 </Row>
@@ -128,12 +137,39 @@ export function ClientCart(props) {
 
     const handleItemDelete = async (itemID) => {
         await client_.deleteItem(itemID);
+        calculateItemsSum();
+    };
+
+    const calculateItemsSum = () => {
+        let sum = 0;
+        for(let key in client_.cart){
+            sum += Number(Number(itemsData[key].price).toFixed()) * Number(currentItemQuantity[key]);
+        }
+        console.log('Sum = ' + sum);
+        setItemsPriceSum(sum);
     }
+
+    const handleCheckOut = async () => {
+        setIsCheckingOut(true);
+        await client_.clearCart();
+        client_.cart = [];
+        calculateItemsSum();
+        setIsCheckingOut(false);
+    };
 
     if (isLoading) {
         return (
             <div className={'Container'}>
                 Loading Cart!!
+                <Loading/>
+            </div>
+        );
+    }
+
+    if (isCheckingOut) {
+        return (
+            <div className={'Container'}>
+                Checking out...
                 <Loading/>
             </div>
         );
@@ -151,6 +187,17 @@ export function ClientCart(props) {
                     }}
                     onDelete={handleItemDelete}
                     currentitemid={currentItemID}
+                />
+                <Row>
+                    Total item price: {itemsPriceSum}
+                    <Button variant={"primary"} className={'shadow-none'} onClick={()=>setCheckoutModalState(true)}>Check Out Items Price
+                        = {itemsPriceSum}</Button>
+                </Row>
+                <ConfirmCheckoutModal
+                    show={checkoutModalState}
+                    onHide={() => setCheckoutModalState(false)}
+                    doconfirm={handleCheckOut}
+                    itemsum={itemsPriceSum}
                 />
             </Container>
         </div>
