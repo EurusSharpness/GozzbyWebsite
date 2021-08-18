@@ -88,4 +88,11 @@ export class ClientClass {
         delete this.cart[item_id];
         await this.doc.update({cart: this.cart});
     }
+
+    async clearCart(){
+        if(this.cart === {})
+            return;
+        await this.doc.update({cart: {}});
+        this.cart = {};
+    }
 }
