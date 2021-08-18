@@ -1,7 +1,7 @@
 import {FirebaseAuth, FirebaseEmailAuthProvider, items} from "./firebase_functions";
 import React from "react";
-import {Button, Col, FormControl, InputGroup, Modal, Row} from "react-bootstrap";
-
+import {Button,  Col, FormControl, InputGroup, Modal, Row} from "react-bootstrap";
+import {Card, CardBody, CardSubtitle, CardText, CardTitle, Container} from "reactstrap";
 export const SortByAscending = 1;
 export const SortByDescending = 2;
 export const NoFilter = 'none';
@@ -9,7 +9,6 @@ export const NoFilter = 'none';
 /**
  * @type {ClientClass}
  */
-let Client = null;
 
 export class Products {
     /**
@@ -51,19 +50,41 @@ export function handleSignOut(props) {
 }
 
 
-/**
+/**+
  * @param {Products} product The product to handle
- * @param {Number} uniqueKey The product key.
  */
-const handleItem = (product, uniqueKey) => {
+const handleItem = (product) => {
     //<button> add to cart..price$
     //left in stock
+
     return (
-        <div className="child" key={uniqueKey}>
-            <img src={product.imagePath} alt={'nice'}/>
-            <p>{product.name} {product.price} {product.brand}</p>
-            <Button variant="primary" onClick={()=>Client.addItem(product.id)}>Primary</Button>{' '}
-        </div>
+
+        <Col  md={4} sm={6} className="productcards">
+
+            <Card  raised  bg="primary" style={{borderBottomLeftRadius:40, borderTopRightRadius:40 , maxHeight:"100%",  backgroundColor:"white"
+            , backgroundSize:"contain" , height: "auto",
+                width: "auto", textAlign:"center" }}>
+                <CardBody>
+                    <CardTitle tag="h5" style={{marginLeft: "auto",
+                        marginRight: "auto"}} > {product.name}
+                    </CardTitle>
+                    <CardSubtitle tag="h6" className="mb-md-3 text-muted">{product.brand}</CardSubtitle>
+                    <CardSubtitle tag="h6" className="mb-md-3 text-muted">{product.price}$</CardSubtitle>
+                </CardBody>
+                <img style={{borderRadius:100 ,width:250,height:320}} width="100%" src={product.imagePath} alt="Card cap" />
+                <CardBody>
+                    <CardText tag="h8"> {product.description}</CardText>
+                </CardBody>
+                <button
+                    style={{
+                    height: 40,
+                   width:100,
+                        align: "center"
+                }}> Add to cart
+                </button>
+            </Card>
+        </Col>
+
     );
 };
 
@@ -73,9 +94,8 @@ const handleItem = (product, uniqueKey) => {
  * @param {number} sortBy
  * @param {string} filterBy
  */
-export function getProducts(products, sortBy, filterBy, client_) {
+export function getProducts(products, sortBy, filterBy) {
     let modified = products.slice(); // Copy the array.
-    Client = client_;
     console.log('Sorting by: ' + sortBy);
     console.log('Filter by: ' +filterBy);
 
@@ -94,11 +114,10 @@ export function getProducts(products, sortBy, filterBy, client_) {
         modified = products.filter((value => value.brand === filterBy));
     }
     console.log(modified);
-    let x = 0;
     return (
-        <div className="container">
-            {modified.map((value => handleItem(value, x++)))}
-        </div>
+        <Container >
+            {modified.map((value => handleItem(value)))}
+        </Container>
     );
 }
 

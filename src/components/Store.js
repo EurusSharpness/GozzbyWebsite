@@ -10,6 +10,8 @@ import Drawer from "@material-ui/core/Drawer";
 import {FirebaseAuth, users, ClientClass} from "./firebase_functions";
 import Loading from "./Loading";
 import "./Store.css";
+import background from "../assets/StorePics/background1.jpg"
+
 
 import {
     handleSignIn,
@@ -23,6 +25,7 @@ import {
 import {Dropdown} from "react-bootstrap";
 
 
+
 export function Store(props) {
     const [user, setUser] = useState(null);
     const [drawer_open, setDrawerOpen] = useState(false);
@@ -34,10 +37,10 @@ export function Store(props) {
     const [userdocument, setUserdocument] = React.useState(null);
     const [userName, setuserName] = React.useState('');
     const [client_, setClientClass] = React.useState(null);
+
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
     };
-
     useEffect(() => {
         return FirebaseAuth.onAuthStateChanged(async u => {
             if (u) {
@@ -66,7 +69,8 @@ export function Store(props) {
     if (isLoading)
         return <div className={'Container'}>Getting Store Data!<Loading/></div>
     return (
-        <div>
+        //style={{ backgroundImage: `url(${background})` }}
+        <div style={{ backgroundImage: `url(${background})` }}>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton
@@ -118,6 +122,7 @@ export function Store(props) {
             {/* ----------- Test Filter and Sort functions --------------*/}
             {AddSortAndFilterButtonsForTest(setSortBy, setFilterBy)}
             {/*--------------------------- END TEST ----------------------*/}
+
             {products ? getProducts(products, sortBy, filterBy, client_) : ''}
         </div>
     );
@@ -127,9 +132,9 @@ export function Store(props) {
 function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
     return (
         <>
-            <Dropdown>
+            <Dropdown >
                 <Dropdown.Toggle className={'shadow-none'} variant="outline-primary" id="dropdown-sorting"
-                                 style={{width: "auto", float: "left", marginLeft: '2%'}}>
+                                 style={{width: "auto", float: "left", marginLeft: '50%'}}>
                     Sort By
                 </Dropdown.Toggle>
 

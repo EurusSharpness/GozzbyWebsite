@@ -1,3 +1,8 @@
+.productcards{
+    padding-right: 50px;
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
 .logo{
     background-color: #528ecc;
     height: 150px;
@@ -38,7 +43,6 @@
     height: 600px;
     border: 3px solid black;
     text-align: center;
-    border-color: black;
 }
 .productcard{
     background-image: url("../assets/LoginPagePics/blackbricks.jpg");
