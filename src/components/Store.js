@@ -105,13 +105,13 @@ export function Store(props) {
                         width:'200px'}}
                         onClick={() => props.history.push('/client-cart')}
                         >
-                        <AiTwotoneShopping size={50} width="100%"/>
+                        <AiTwotoneShopping class="fa fa-spinner fa-spin fa-3x fa-fw" size={50} width="100%"/>
                             Go to cart
                     </Button>
                     <Typography color="black" style={{marginRight: 30}} onClick={() => {
                         // props.history.push('/client')
                         setUserModalShow(true);
-                    }}><BsPerson size={50}></BsPerson>
+                    }}><BsPerson  size={50}></BsPerson>
                         Hi! {userName}
                     </Typography>
                     <Button color="inherit" onClick={() => handleSignOut(props)}>

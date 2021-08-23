@@ -70,8 +70,13 @@ const handleItem = (product) => {
     return (
 
         <div style={{paddingTop:"50px",paddingBottom:"50px"}} className="col-md-4 mb-4 d-flex align-items-stretch">
-            <MDBCard alignment="center">
+            <MDBCard  alignment="center">
                 <MDBCardImage src={product.imagePath} alt='...' position='top' />
+                <br/>
+
+                <div style={{backgroundColor:"lightgray"}}>
+                <MDBCardTitle >{product.price} $</MDBCardTitle>
+                </div>
                 <MDBCardBody>
                     <MDBCardTitle>{product.name}</MDBCardTitle>
                     <MDBCardText>
