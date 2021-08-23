@@ -1,3 +1,9 @@
+.collapse-content .fa.fa-heart:hover {
+    color: #f44336 !important;
+}
+.collapse-content .fa.fa-share-alt:hover {
+    color: #0d47a1 !important;
+}
 .productcards{
     padding-right: 50px;
     padding-bottom: 50px;
@@ -23,7 +29,6 @@
     width: 100%;
 }
 .container {
-    /*background-image: url("../assets/StorePics/background1.jpg");*/
     width: 100%;
     display: flex;
     flex-wrap: wrap;

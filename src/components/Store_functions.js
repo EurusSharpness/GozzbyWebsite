@@ -1,7 +1,16 @@
 import {FirebaseAuth, FirebaseEmailAuthProvider, items} from "./firebase_functions";
 import React from "react";
 import {Button,  Col, FormControl, InputGroup, Modal, Row} from "react-bootstrap";
-import {Card, CardBody, CardSubtitle, CardText, CardTitle, Container} from "reactstrap";
+import { Container} from "reactstrap";
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css'; import
+    'bootstrap-css-only/css/bootstrap.min.css'; import
+    'mdbreact/dist/css/mdb.css';
+import {MDBBtn, MDBCard, MDBCardBody, MDBCardFooter, MDBCardImage, MDBCardText, MDBCardTitle} from "mdb-react-ui-kit";
+
+
+
 export const SortByAscending = 1;
 export const SortByDescending = 2;
 export const NoFilter = 'none';
@@ -9,6 +18,7 @@ export const NoFilter = 'none';
 /**
  * @type {ClientClass}
  */
+let Client = null;
 
 export class Products {
     /**
@@ -59,45 +69,39 @@ const handleItem = (product) => {
 
     return (
 
-        <Col  md={4} sm={6} className="productcards">
+        <div style={{paddingTop:"50px",paddingBottom:"50px"}} className="col-md-4 mb-4 d-flex align-items-stretch">
+            <MDBCard alignment="center">
+                <MDBCardImage src={product.imagePath} alt='...' position='top' />
+                <MDBCardBody>
+                    <MDBCardTitle>{product.name}</MDBCardTitle>
+                    <MDBCardText>
+                        {product.description}
+                    </MDBCardText>
+                </MDBCardBody>
+                <MDBCardFooter>
+                    <small className='text-muted'> <MDBBtn  outline rounded className='mx-lg-n2'  color='dark'>
+                        Dark
+                    </MDBBtn>
+                    </small>
+                </MDBCardFooter>
+            </MDBCard>
 
-            <Card  raised  bg="primary" style={{borderBottomLeftRadius:40, borderTopRightRadius:40 , maxHeight:"100%",  backgroundColor:"white"
-            , backgroundSize:"contain" , height: "auto",
-                width: "auto", textAlign:"center" }}>
-                <CardBody>
-                    <CardTitle tag="h5" style={{marginLeft: "auto",
-                        marginRight: "auto"}} > {product.name}
-                    </CardTitle>
-                    <CardSubtitle tag="h6" className="mb-md-3 text-muted">{product.brand}</CardSubtitle>
-                    <CardSubtitle tag="h6" className="mb-md-3 text-muted">{product.price}$</CardSubtitle>
-                </CardBody>
-                <img style={{borderRadius:100 ,width:250,height:320}} width="100%" src={product.imagePath} alt="Card cap" />
-                <CardBody>
-                    <CardText tag="h8"> {product.description}</CardText>
-                </CardBody>
-                <button
-                    style={{
-                    height: 40,
-                   width:100,
-                        align: "center"
-                }}> Add to cart
-                </button>
-            </Card>
-        </Col>
+        </div>
 
     );
 };
-
+//onClick={async()=> await Client.addItem(product.id)}
 
 /**
  * @param {Array<Products>} products
  * @param {number} sortBy
  * @param {string} filterBy
  */
-export function getProducts(products, sortBy, filterBy) {
+export function getProducts(products, sortBy, filterBy, client_) {
+    Client = client_;
     let modified = products.slice(); // Copy the array.
     console.log('Sorting by: ' + sortBy);
-    console.log('Filter by: ' +filterBy);
+    console.log('Filter by: ' + filterBy);
 
     // Sort the array according to the Sorting value...
     if (sortBy === SortByAscending) {
@@ -115,7 +119,7 @@ export function getProducts(products, sortBy, filterBy) {
     }
     console.log(modified);
     return (
-        <Container >
+        <Container>
             {modified.map((value => handleItem(value)))}
         </Container>
     );
@@ -198,11 +202,11 @@ export function UserModal(props) {
                             let cpassword = document.getElementById('ConfirmPassword').value;
                             let oldPassword = document.getElementById('CurrentPassword').value;
                             if (password.length === 0) return;
-                            if(password !== cpassword) {
+                            if (password !== cpassword) {
                                 alert('passwords do not match!');
                                 return;
                             }
-                            if(!strongRegex.test(password) && !mediumRegex.test(password)){
+                            if (!strongRegex.test(password) && !mediumRegex.test(password)) {
                                 alert('your password is not strong enough! follow the rules');
                                 return;
                             }

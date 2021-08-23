@@ -75,9 +75,9 @@ export function ClientCart(props) {
         const handleItem = (product) => {
             return (
                 <Col key={product.id+'ttt'}>
-                    <div key={product.id +'uniqueid'} style={{marginTop: '5%'}}>
-                        <Card>
-                            <Card.Img variant={"top"} src={'products/1.png'}/>
+                    <div key={product.id +'uniqueid'} style={{marginTop: '5%', height: '-webkit-fill-content'}}>
+                        <Card >
+                            <Card.Img variant={"top"} src={product.imagePath} className={'flex-center'}/>
                             <Card.Title>
                                 {product.name}
                             </Card.Title>

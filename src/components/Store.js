@@ -10,9 +10,10 @@ import Drawer from "@material-ui/core/Drawer";
 import {FirebaseAuth, users, ClientClass} from "./firebase_functions";
 import Loading from "./Loading";
 import "./Store.css";
-import background from "../assets/StorePics/background1.jpg"
-
-
+import background from "../assets/StorePics/productback.jpg"
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {AiTwotoneShopping} from "react-icons/ai"
+import { BsPerson } from "react-icons/bs";
 import {
     handleSignIn,
     handleSignOut,
@@ -22,7 +23,8 @@ import {
     SortByAscending,
     NoFilter
 } from "./Store_functions";
-import {Dropdown} from "react-bootstrap";
+import {Container, Dropdown, Nav, Navbar, NavDropdown} from "react-bootstrap";
+
 
 
 
@@ -70,8 +72,10 @@ export function Store(props) {
         return <div className={'Container'}>Getting Store Data!<Loading/></div>
     return (
         //style={{ backgroundImage: `url(${background})` }}
-        <div style={{ backgroundImage: `url(${background})` }}>
-            <AppBar position="static">
+        <div  style={{ backgroundImage: `url(${background})` }}>
+
+            <AppBar position="static" color="red">
+
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -84,28 +88,36 @@ export function Store(props) {
                     </IconButton>
 
                     <Typography
-                        color="inherit"
+                        color="black"
                         variant="h6"
                         style={{marginLeft: 15, flexGrow: 1}}
                     >
-                        My App
+                        Gozzby Store
+
                     </Typography>
 
 
-                    <IconButton
-                        style={{marginLeft: 20, flexGrow: 1}}
+                    <Button
+                        style={{
+                            resize: 'horizontal',
+                            overflow: 'hidden',
+                            height: '100px',
+                        width:'200px'}}
                         onClick={() => props.history.push('/client-cart')}
-                    >Go To Cart
-                    </IconButton>
-                    <Typography color="inherit" style={{marginRight: 30}} onClick={() => {
+                        >
+                        <AiTwotoneShopping size={50} width="100%"/>
+                            Go to cart
+                    </Button>
+                    <Typography color="black" style={{marginRight: 30}} onClick={() => {
                         // props.history.push('/client')
                         setUserModalShow(true);
-                    }}>
+                    }}><BsPerson size={50}></BsPerson>
                         Hi! {userName}
                     </Typography>
                     <Button color="inherit" onClick={() => handleSignOut(props)}>
                         Sign out
                     </Button>
+
                     <UserModal
                         show={UsermodalShow}
                         onHide={() => setUserModalShow(false)}
@@ -120,9 +132,9 @@ export function Store(props) {
             </Drawer>
 
             {/* ----------- Test Filter and Sort functions --------------*/}
+
             {AddSortAndFilterButtonsForTest(setSortBy, setFilterBy)}
             {/*--------------------------- END TEST ----------------------*/}
-
             {products ? getProducts(products, sortBy, filterBy, client_) : ''}
         </div>
     );
@@ -131,33 +143,49 @@ export function Store(props) {
 
 function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
     return (
-        <>
-            <Dropdown >
-                <Dropdown.Toggle className={'shadow-none'} variant="outline-primary" id="dropdown-sorting"
-                                 style={{width: "auto", float: "left", marginLeft: '50%'}}>
-                    Sort By
-                </Dropdown.Toggle>
+        <div >
+            <Navbar  variant="light" bg="light" expand="lg">
+                <Container fluid>
+                    <Navbar.Brand>Gozzby brands</Navbar.Brand>
+                    <Button onClick={() => setFilterBy(NoFilter)} variant="secondary">All</Button>{' '}
+                    <Button onClick={() => setFilterBy('vodka')} variant="secondary">Vokda</Button>{' '}
+                    <Button onClick={() => setFilterBy('beer')} variant="secondary">Beers</Button>{' '}
+                    <Button onClick={() => setFilterBy('whiskey')} variant="secondary">Whiskey</Button>{' '}
+                    <Button onClick={() => setFilterBy('tequila')} variant="secondary">Tequila</Button>{' '}
 
-                <Dropdown.Menu>
-                    <Dropdown.Item onSelect={() => setSortBy(SortByAscending)}>Ascending</Dropdown.Item>
-                    <Dropdown.Item onSelect={() => setSortBy(SortByDescending)}>descending</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>{''}
+                    <Navbar.Toggle aria-controls="navbar-dark-example" />
+                    <Navbar.Collapse id="navbar-dark-example">
+                        <Nav>
 
-            <Dropdown>
-                <Dropdown.Toggle className={'shadow-none'} variant="outline-primary" id="dropdown-filtering"
-                                 style={{width: "auto", float: "left", marginLeft: '2px'}}>
-                    Filter By
-                </Dropdown.Toggle>
+                            <NavDropdown
+                                id="nav-dropdown-dark-example"
+                                title="SortBy"
+                                menuVariant="dark"
+                            >
+                                <Dropdown.Item onSelect={() => setSortBy(SortByAscending)}>Ascending</Dropdown.Item>
+                                <Dropdown.Item onSelect={() => setSortBy(SortByDescending)}>descending</Dropdown.Item>
+                            </NavDropdown>
+                        </Nav>
+                        <Nav>
 
-                <Dropdown.Menu>
-                    <Dropdown.Item onSelect={() => setFilterBy('vodka')}>Vodka</Dropdown.Item>
-                    <Dropdown.Item onSelect={() => setFilterBy('beer')}>Beer</Dropdown.Item>
-                    <Dropdown.Item onSelect={() => setFilterBy('whiskey')}>Whiskey</Dropdown.Item>
-                    <Dropdown.Item onSelect={() => setFilterBy('tequila')}>Tequila</Dropdown.Item>
-                    <Dropdown.Item onSelect={() => setFilterBy(NoFilter)}>Remove Filter</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-        </>
+                            <NavDropdown
+                                id="nav-dropdown-dark-example"
+                                title="Filter by"
+                                menuVariant="dark"
+                            >
+                                <Dropdown.Item onSelect={() => setFilterBy('vodka')}>Vodka</Dropdown.Item>
+                                <Dropdown.Item onSelect={() => setFilterBy('beer')}>Beer</Dropdown.Item>
+                                <Dropdown.Item onSelect={() => setFilterBy('whiskey')}>Whiskey</Dropdown.Item>
+                                <Dropdown.Item onSelect={() => setFilterBy('tequila')}>Tequila</Dropdown.Item>
+                                <Dropdown.Item onSelect={() => setFilterBy(NoFilter)}>Remove Filter</Dropdown.Item>
+                            </NavDropdown>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+
+            </Navbar>
+
+
+        </div>
     );
 }
