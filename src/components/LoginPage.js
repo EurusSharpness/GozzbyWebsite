@@ -160,7 +160,7 @@ export function SignUp(props) {
 
 
     const createUserInDatabase = async (email) => {
-        await users.doc(email).set({cart: [], name: email.split('@')[0]});
+        await users.doc(email).set({cart: {}, name: email.split('@')[0]});
     }
 
     const handleSignUp = async () => {
