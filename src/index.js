@@ -7,6 +7,8 @@ import {Store} from "./components/Store";
 import {SignUp, SignIn, ResetPassword} from "./components/LoginPage";
 import {BrowserRouter, Route} from "react-router-dom";
 import {ClientCart} from "./components/Client";
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
     <BrowserRouter>

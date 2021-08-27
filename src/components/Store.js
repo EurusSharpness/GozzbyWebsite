@@ -73,9 +73,7 @@ export function Store(props) {
     return (
         //style={{ backgroundImage: `url(${background})` }}
         <div  style={{ backgroundImage: `url(${background})` }}>
-
             <AppBar position="static" color="red">
-
                 <Toolbar>
                     <IconButton
                         edge="start"

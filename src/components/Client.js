@@ -9,7 +9,13 @@ import {ConfirmCheckoutModal, DeleteModal} from "./Client_functions";
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import {Products} from "./Store_functions";
 import {Input} from "reactstrap";
-import {InputLabel} from "@material-ui/core";
+import {AppBar, InputLabel} from "@material-ui/core";
+import {MDBCard, MDBCardImage, MDBCardTitle, MDBFooter, MDBListGroup, MDBListGroupItem} from "mdb-react-ui-kit";
+import background from "../assets/StorePics/productback.jpg";
+import cartbackground from "../assets/StorePics/Cartbackground.jpg"
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+
 
 /**
  * @param {firebase.User} u
@@ -74,54 +80,52 @@ export function ClientCart(props) {
          */
         const handleItem = (product) => {
             return (
-                <Col key={product.id+'ttt'}>
-                    <div key={product.id +'uniqueid'} style={{marginTop: '5%', height: '-webkit-fill-content'}}>
-                        <Card >
-                            <Card.Img variant={"top"} src={product.imagePath} className={'flex-center'}/>
-                            <Card.Title>
-                                {product.name}
-                            </Card.Title>
+                    <div style={{paddingTop:"50px"}}  className="col-md-4 mb-4 d-flex align-items-stretch">
+                        <MDBCard  alignment="center">
+                            <Row>
+                                <Col sm={4}>
+                                    <InputLabel style={{fontSize: '24px'}}>Quantity</InputLabel>
+                                </Col>
+                                <Col sm={6}>
+                                    <Input value={currentItemQuantity[product.id]} onChange={(e) => {
+                                        currentItemQuantity[product.id] = e.target.value;
+                                    }}
+                                           onBlur={async (e) => {
+                                               let val = Number(e.target.value);
+                                               if (e.target.value.length === 0)
+                                                   val = 1;
+                                               if (isNaN(val))
+                                                   val = 1;
+                                               if (val > 50)
+                                                   val = 50;
+                                               if (val < 1)
+                                                   val = 1;
+                                               currentItemQuantity[product.id] = val;
+                                               await client_.changeItemQuantity(product.id, val);
+                                               calculateItemsSum();
+                                           }}>
+                                    </Input>
+                                </Col>
+                            </Row>
+                            <MDBCardImage class="img-fluid" src={product.imagePath} alt='...' position='top'/>
                             <Card.Body>
-                                <Row>
-                                    <Col sm={4}>
-                                        <InputLabel style={{fontSize: '25px'}}>Quantity</InputLabel>
-                                    </Col>
-                                    <Col sm={6}>
-                                        <Input value={currentItemQuantity[product.id]} onChange={(e) => {
-                                            currentItemQuantity[product.id] = e.target.value;
-                                        }}
-                                               onBlur={async (e) => {
-                                                   let val = Number(e.target.value);
-                                                   if (e.target.value.length === 0)
-                                                       val = 1;
-                                                   if (isNaN(val))
-                                                       val = 1;
-                                                   if (val > 50)
-                                                       val = 50;
-                                                   if (val < 1)
-                                                       val = 1;
-                                                   currentItemQuantity[product.id] = val;
-                                                   await client_.changeItemQuantity(product.id, val);
-                                                   calculateItemsSum();
-                                               }}>
-                                        </Input>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col sm={2}>
-                                        <Button variant={"danger"} style={{marginLeft: "auto"}}
-                                                className={'shadow-none'}
-                                                onClick={() => {
-                                                    setDeleteModalState(true);
-                                                    setCurrentItemID(product.id);
-                                                }}>Delete</Button>
-                                    </Col>
-                                </Row>
-
                             </Card.Body>
-                        </Card>
+                            <MDBFooter>
+                                <MDBListGroup flush>
+                                    <MDBCardTitle>
+                                        {product.name}
+                                    </MDBCardTitle>
+                                    <MDBListGroupItem>{product.brand}</MDBListGroupItem>
+                                    <MDBListGroupItem>${product.price}</MDBListGroupItem>
+                                </MDBListGroup>
+                            <Button  variant="outlined" color="red"
+                                    onClick={() => {
+                                        setDeleteModalState(true);
+                                        setCurrentItemID(product.id);
+                                    }}>Delete</Button>
+                            </MDBFooter>
+                        </MDBCard>
                     </div>
-                </Col>
             );
         };
         let result = [];
@@ -129,9 +133,24 @@ export function ClientCart(props) {
             result.push(handleItem(itemsData[key]))
         }
         return (
-            <Row sm={2} lg={4}>
+            <div  style={{ backgroundImage: `url(${background})` }}>
+                <AppBar style={{backgroundSize:"contain", backgroundImage: `url(${cartbackground})` }} position="static" color="red">
+                    <Toolbar>
+                        <Typography
+                            color="black"
+                            variant="h6"
+                            style={{marginLeft: 15, flexGrow: 1}}
+                        >
+                            Gozzby Store
+                        </Typography>
+
+                    </Toolbar>
+                </AppBar>
+            <Container>
                 {result}
-            </Row>
+            </Container>
+
+            </div>
         );
     };
 

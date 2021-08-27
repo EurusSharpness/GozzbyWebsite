@@ -1,14 +1,15 @@
 import {FirebaseAuth, FirebaseEmailAuthProvider, items} from "./firebase_functions";
 import React from "react";
-import {Button,  Col, FormControl, InputGroup, Modal, Row} from "react-bootstrap";
-import { Container} from "reactstrap";
+import {Button, Col, FormControl, InputGroup, Modal, Row} from "react-bootstrap";
+import {Container} from "reactstrap";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css'; import
-    'bootstrap-css-only/css/bootstrap.min.css'; import
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import
+    'bootstrap-css-only/css/bootstrap.min.css';
+import
     'mdbreact/dist/css/mdb.css';
-import {MDBBtn, MDBCard, MDBCardBody, MDBCardFooter, MDBCardImage, MDBCardText, MDBCardTitle} from "mdb-react-ui-kit";
-
+import { MDBCard, MDBCardBody, MDBCardFooter, MDBCardImage, MDBCardText, MDBCardTitle} from "mdb-react-ui-kit";
 
 
 export const SortByAscending = 1;
@@ -69,14 +70,12 @@ const handleItem = (product) => {
 
     return (
 
-        <div style={{paddingTop:"50px",paddingBottom:"50px"}} className="col-md-4 mb-4 d-flex align-items-stretch">
-            <MDBCard  alignment="center">
-                <MDBCardImage src={product.imagePath} alt='...' position='top' />
+        <div style={{paddingTop: "50px", paddingBottom: "50px"}} className="col-md-4 mb-4 d-flex align-items-stretch">
+            <MDBCard alignment="center">
+                <MDBCardImage class="img-fluid" src={product.imagePath} alt='...' position='top'/>
                 <br/>
 
-                <div style={{backgroundColor:"lightgray"}}>
-                <MDBCardTitle >{product.price} $</MDBCardTitle>
-                </div>
+
                 <MDBCardBody>
                     <MDBCardTitle>{product.name}</MDBCardTitle>
                     <MDBCardText>
@@ -84,10 +83,12 @@ const handleItem = (product) => {
                     </MDBCardText>
                 </MDBCardBody>
                 <MDBCardFooter>
-                    <small className='text-muted'> <MDBBtn  outline rounded className='mx-lg-n2'  color='dark'>
-                        Dark
-                    </MDBBtn>
-                    </small>
+                    <div style={{backgroundColor: "lightgray"}}>
+                        <MDBCardTitle>$ {product.price}</MDBCardTitle>
+                    </div>
+                    <Button onClick={() => Client.addItem(product.id)} style={{width: "100%"}} variant="outlined">Add
+                        to cart</Button>{' '}
+
                 </MDBCardFooter>
             </MDBCard>
 
@@ -95,6 +96,7 @@ const handleItem = (product) => {
 
     );
 };
+
 //onClick={async()=> await Client.addItem(product.id)}
 
 /**
