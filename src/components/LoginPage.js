@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Col, Row} from "react-bootstrap";
 import {Input} from "reactstrap";
+import {MDBBtn, MDBCard, MDBCol, MDBContainer, MDBInput, MDBRow} from "mdb-react-ui-kit";
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
@@ -40,103 +41,102 @@ export function SignIn(props) {
         return <div className={'Container'}><Loading/></div>
     return (
         <div style={{padding: "50px", height: "1500px", backgroundImage: `url(${loginbackground})`}}>
-            <Row >
-                <Col md="8" xs="8" style={{paddingRight: "0px"}}>
-                    <div style={{
-                        borderBottomLeftRadius: "17%",
-                        backgroundImage:`url(${lefthalf})`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "cover",
-                        alignItems: "center",
-                        marginTop: 30,
-                        height: "100%",
-                        width:"100%"
-                    }}>
-                        <h4>log in</h4>
-                        <br/>
-                        {/*Email input*/}
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                             className="form-outline mb-4">
-                            <input style={{
-                                width: "350px"
+            <MDBContainer style={{width: "100%",
+                textAlign: "center",}}>
+                        <MDBCard
+                            className='card-image'
+                            style={{
+                                display: "inline-block",
+                                margin: "0 auto",
+                                padding: "3px",
+                                backgroundColor: "#8ebf42",
+                                backgroundImage:
+                                    'url(https://mdbcdn.b-cdn.net/img/Photos/Others/pricing-table7.jpg)',
+                                width: '28rem'
                             }}
-                                   value={email}
-                                   onChange={e => {
-                                       setEmail(e.target.value);
-                                   }} type="email" id="form2Example1" className="form-control"
-                                   placeholder="Email address"/>
-                            <span className={"error"}><p id="Name_error"/></span>
-                        </div>
-                        {/*********/}
+                        >
+                            <div className='text-white rgba-stylish-strong py-5 px-5 z-depth-4'>
+                                <div className='text-center'>
+                                    <strong>Gozzby store</strong>
+                                    <h3 className='white-text mb-5 mt-4 font-weight-bold'>
 
-                        {/*password input*/}
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }} className="form-outline mb-4">
-                            <input style={{width:"350px"}} onChange={e => {
-                                setPassword(e.target.value);
-                            }}
-                                   onKeyDown={(key) => {
-                                       if (key.key === 'Enter') handleSignIn();
-                                   }} value={password} type="password" id="form2Example2" className="form-control"
-                                   placeholder="Password"/>
-                        </div>
-                        {/******/}
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginTop: "30px",
-                            alignItems: "center",
-                            color: "black"
-                        }} className="row mb-4">
-                            <div style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center"
-                            }}>
-                                Don't have an account? <Link to="/signup">Sign up!</Link>
+                                        <strong>SIGN</strong>
+                                        <a href='#!' className='green-text font-weight-bold'>
+                                            <strong> IN</strong>
+                                        </a>
+                                    </h3>
+                                </div>
+                                <MDBInput
+                                    value={email}
+                                    onChange={e => {
+                                        setEmail(e.target.value);
+                                    }}
+                                    type="email"
+                                    id="form2Example1"
+                                    className="form-control"
+                                    placeholder="Email address"
+                                    label='Your email'
+                                    group
+                                    type='text'
+                                    validate
+                                    labelClass='white-text'
+                                />
+                                <MDBInput
+                                    onChange={e => {
+                                        setPassword(e.target.value);
+                                    }}
+                                    onKeyDown={(key) => {
+                                        if (key.key === 'Enter') handleSignIn();
+                                    }}
+                                    value={password}
+                                    type="password"
+                                    id="form2Example2"
+                                    className="form-control"
+                                    placeholder="Password"
+                                    label='Your password'
+                                    group
+                                    type='password'
+                                    validate
+                                    labelClass='white-text'
+                                />
+                                <br/><br/>
+                                <div style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}>
+                                    Don't have an account? <Link to="/signup">Sign up!</Link>
+                                </div>
+                                <div style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}>
+                                    Forgot your password? <Link to="/reset_password">Reset password!</Link>
+                                </div>
+                                <br/><br/><br/>
+                                <MDBRow className='d-flex align-items-center mb-4'>
+                                    <div className='text-center mb-3 col-md-12'>
+                                        <MDBBtn
+                                            onClick={handleSignIn}
+                                            type="submit"
+                                            className="btn btn-primary btn-block mb-4"
+                                            color='success'
+                                            rounded
+                                            type='button'
+                                            className='btn-block z-depth-1'
+                                        >
+                                            Sign in
+                                        </MDBBtn>
+                                    </div>
+                                </MDBRow>
                             </div>
-                            <div style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center"
-                            }}>
-                                Forgot your password? <Link to="/reset_password">Reset password!</Link>
-                            </div>
-                            <br/><br/>
-                        </div>
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }}>
-                            <button style={{width: "280px"}} onClick={handleSignIn} type="submit"
-                                    className="btn btn-primary btn-block mb-4">Sign
-                                in
-                            </button>
-                        </div>
-                    </div>
-                </Col>
-                <Col md="4" sm="4" style={{paddingLeft: "0px"}}>
-                    <div style={{
-                        borderTopRightRadius: "17%",
-                        backgroundImage: `url(${righthalf})`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "cover",
-                        marginTop: 30,
-                        height: "100%",
-                        width:"100%"
-                    }}></div>
-                </Col>
-            </Row>
+                        </MDBCard>
 
-        </div>
+            </MDBContainer>
+
+                {/****************/}
+            </div>
 
     );
 }
