@@ -6,15 +6,25 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {ConfirmCheckoutModal, DeleteModal} from "./Client_functions";
-import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, ListGroup, Row} from "react-bootstrap";
 import {Products} from "./Store_functions";
 import {Input} from "reactstrap";
 import {AppBar, InputLabel} from "@material-ui/core";
-import {MDBCard, MDBCardImage, MDBCardTitle, MDBFooter, MDBListGroup, MDBListGroupItem} from "mdb-react-ui-kit";
+import {
+    MDBCard,
+    MDBCardImage,
+    MDBCardTitle,
+    MDBCol,
+    MDBFooter,
+    MDBListGroup,
+    MDBListGroupItem,
+    MDBRow
+} from "mdb-react-ui-kit";
 import background from "../assets/StorePics/productback.jpg";
 import cartbackground from "../assets/StorePics/Cartbackground.jpg"
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import {MDBContainer} from "mdbreact";
 
 
 /**
@@ -64,7 +74,7 @@ export function ClientCart(props) {
                 let sum = 0;
                 for (let key in client_.cart) {
                     currentItemQuantity[key] = client_.cart[key];
-                    if(itemsData)
+                    if (itemsData)
                         sum += Number(Number(itemsData[key] ? itemsData[key].price : 0).toFixed()) * Number(currentItemQuantity[key]);
                 }
                 setItemsPriceSum(sum);
@@ -80,52 +90,57 @@ export function ClientCart(props) {
          */
         const handleItem = (product) => {
             return (
-                    <div style={{paddingTop:"50px"}}  className="col-md-4 mb-4 d-flex align-items-stretch">
-                        <MDBCard  alignment="center">
-                            <Row>
-                                <Col sm={4}>
-                                    <InputLabel style={{fontSize: '24px'}}>Quantity</InputLabel>
-                                </Col>
-                                <Col sm={6}>
-                                    <Input value={currentItemQuantity[product.id]} onChange={(e) => {
-                                        currentItemQuantity[product.id] = e.target.value;
-                                    }}
-                                           onBlur={async (e) => {
-                                               let val = Number(e.target.value);
-                                               if (e.target.value.length === 0)
-                                                   val = 1;
-                                               if (isNaN(val))
-                                                   val = 1;
-                                               if (val > 50)
-                                                   val = 50;
-                                               if (val < 1)
-                                                   val = 1;
-                                               currentItemQuantity[product.id] = val;
-                                               await client_.changeItemQuantity(product.id, val);
-                                               calculateItemsSum();
-                                           }}>
-                                    </Input>
-                                </Col>
-                            </Row>
-                            <MDBCardImage class="img-fluid" src={product.imagePath} alt='...' position='top'/>
-                            <Card.Body>
-                            </Card.Body>
-                            <MDBFooter>
-                                <MDBListGroup flush>
-                                    <MDBCardTitle>
-                                        {product.name}
-                                    </MDBCardTitle>
-                                    <MDBListGroupItem>{product.brand}</MDBListGroupItem>
-                                    <MDBListGroupItem>${product.price}</MDBListGroupItem>
-                                </MDBListGroup>
-                            <Button  variant="outlined" color="red"
-                                    onClick={() => {
-                                        setDeleteModalState(true);
-                                        setCurrentItemID(product.id);
-                                    }}>Delete</Button>
-                            </MDBFooter>
-                        </MDBCard>
-                    </div>
+
+                <MDBContainer>
+
+                    <Card style={{display:"flex",alignItems:"center",width:"100%"}} className={"text-center"}>
+                        <Card.Header as="h5">${product.price}</Card.Header>
+                        <div style={{ display: "inline-block",
+                            verticalAlign: "middle",width:"70px"}}>
+                            <Card.Img style={{backgroundImage: `url(${product.imagePath})`}} src={product.imagePath}></Card.Img>
+                            <br/>
+                        </div>
+                        <div>
+                            <Card.Title>{product.name}</Card.Title>
+                            <Card.Text>
+                                {product.brand}
+                            </Card.Text>
+                        </div>
+
+
+                        <Card.Body style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}>
+
+
+
+                            <InputLabel style={{fontSize: '19px'}}>Quantity</InputLabel>
+                            <Input style={{width:"25%"}} value={currentItemQuantity[product.id]} onChange={(e) => {
+                                currentItemQuantity[product.id] = e.target.value;
+                            }}
+                                   onBlur={async (e) => {
+                                       let val = Number(e.target.value);
+                                       if (e.target.value.length === 0)
+                                           val = 1;
+                                       if (isNaN(val))
+                                           val = 1;
+                                       if (val > 50)
+                                           val = 50;
+                                       if (val < 1)
+                                           val = 1;
+                                       currentItemQuantity[product.id] = val;
+                                       await client_.changeItemQuantity(product.id, val);
+                                       calculateItemsSum();
+                                   }}>
+                            </Input>
+                            <Button  variant="outline-danger">DELETE</Button>
+                        </Card.Body>
+                    </Card>
+
+                </MDBContainer>
+
             );
         };
         let result = [];
@@ -133,8 +148,9 @@ export function ClientCart(props) {
             result.push(handleItem(itemsData[key]))
         }
         return (
-            <div  style={{ backgroundImage: `url(${background})` }}>
-                <AppBar style={{backgroundSize:"contain", backgroundImage: `url(${cartbackground})` }} position="static" color="red">
+            <div style={{backgroundImage: `url(${background})`}}>
+                <AppBar style={{backgroundSize: "contain", backgroundImage: `url(${cartbackground})`}} position="static"
+                        color="red">
                     <Toolbar>
                         <Typography
                             color="black"
@@ -146,9 +162,9 @@ export function ClientCart(props) {
 
                     </Toolbar>
                 </AppBar>
-            <Container>
-                {result}
-            </Container>
+                <Container>
+                    {result}
+                </Container>
 
             </div>
         );
@@ -161,7 +177,7 @@ export function ClientCart(props) {
 
     const calculateItemsSum = () => {
         let sum = 0;
-        for(let key in client_.cart){
+        for (let key in client_.cart) {
             sum += Number(Number(itemsData[key].price).toFixed()) * Number(currentItemQuantity[key]);
         }
         console.log('Sum = ' + sum);
@@ -209,7 +225,8 @@ export function ClientCart(props) {
                 />
                 <Row>
                     Total item price: {itemsPriceSum}
-                    <Button variant={"primary"} className={'shadow-none'} onClick={()=>setCheckoutModalState(true)}>Check Out Items Price
+                    <Button variant={"primary"} className={'shadow-none'} onClick={() => setCheckoutModalState(true)}>Check
+                        Out Items Price
                         = {itemsPriceSum}</Button>
                 </Row>
                 <ConfirmCheckoutModal

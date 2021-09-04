@@ -14,6 +14,7 @@ import background from "../assets/StorePics/productback.jpg"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {AiTwotoneShopping} from "react-icons/ai"
 import { BsPerson } from "react-icons/bs";
+
 import {
     handleSignIn,
     handleSignOut,
@@ -103,7 +104,7 @@ export function Store(props) {
                         width:'200px'}}
                         onClick={() => props.history.push('/client-cart')}
                         >
-                        <AiTwotoneShopping class="fa fa-spinner fa-spin fa-3x fa-fw" size={50} width="100%"/>
+                        <AiTwotoneShopping size={50} width="100%"/>
                             Go to cart
                     </Button>
                     <Typography color="black" style={{marginRight: 30}} onClick={() => {
