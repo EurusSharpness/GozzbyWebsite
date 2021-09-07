@@ -300,7 +300,7 @@ export function SignUp(props) {
                                     color='success'
 
                                 >
-                                    Sign in
+                                    Sign up
                                 </MDBBtn>
                             </div>
                         </MDBRow>

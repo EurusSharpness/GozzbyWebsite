@@ -4,27 +4,17 @@ import {FirebaseAuth, users, items, ClientClass} from "./firebase_functions"
 import {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import {ConfirmCheckoutModal, DeleteModal} from "./Client_functions";
-import {Button, Card, Col, Container, ListGroup, Row} from "react-bootstrap";
+import {Button, Card, Container, Row} from "react-bootstrap";
 import {Products} from "./Store_functions";
-import {Input} from "reactstrap";
+import {Col, Input} from "reactstrap";
 import {AppBar, InputLabel} from "@material-ui/core";
-import {
-    MDBCard,
-    MDBCardImage,
-    MDBCardTitle,
-    MDBCol,
-    MDBFooter,
-    MDBListGroup,
-    MDBListGroupItem,
-    MDBRow
-} from "mdb-react-ui-kit";
 import background from "../assets/StorePics/productback.jpg";
 import cartbackground from "../assets/StorePics/Cartbackground.jpg"
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import {MDBContainer} from "mdbreact";
+import {MDBContainer, MDBMedia} from "mdbreact";
+import { Table } from 'antd';
 
 
 /**
@@ -88,12 +78,14 @@ export function ClientCart(props) {
         /**
          * @param {Products} product
          */
+
         const handleItem = (product) => {
             return (
 
-                <MDBContainer>
+               <MDBContainer>
+                    <Card style={{
+                        height:"auto",backgroundColor:"#ffffff",display:"flex",alignItems:"center",width:"100%"}} className={"text-center"}>
 
-                    <Card style={{display:"flex",alignItems:"center",width:"100%"}} className={"text-center"}>
                         <Card.Header as="h5">${product.price}</Card.Header>
                         <div style={{ display: "inline-block",
                             verticalAlign: "middle",width:"70px"}}>
@@ -139,7 +131,7 @@ export function ClientCart(props) {
                         </Card.Body>
                     </Card>
 
-                </MDBContainer>
+               </MDBContainer>
 
             );
         };
@@ -162,7 +154,13 @@ export function ClientCart(props) {
 
                     </Toolbar>
                 </AppBar>
-                <Container>
+                <Container style={{margin: "0",
+                    padding: '0',
+                    background: "linear-gradient(to bottom right, #E3F0FF, #FAFCFF)",
+                    height: "100vh",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"}}>
                     {result}
                 </Container>
 
@@ -195,7 +193,6 @@ export function ClientCart(props) {
     if (isLoading) {
         return (
             <div className={'Container'}>
-                Loading Cart!!
                 <Loading/>
             </div>
         );

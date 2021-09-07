@@ -70,7 +70,7 @@ export function Store(props) {
         return <div/>;
     }
     if (isLoading)
-        return <div className={'Container'}>Getting Store Data!<Loading/></div>
+        return <div className={'Container'}><Loading/></div>
     return (
         //style={{ backgroundImage: `url(${background})` }}
         <div  style={{ backgroundImage: `url(${background})` }}>
