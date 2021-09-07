@@ -14,7 +14,8 @@ import cartbackground from "../assets/StorePics/Cartbackground.jpg"
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import {MDBContainer, MDBMedia} from "mdbreact";
-import { Table } from 'antd';
+import {Table} from 'antd';
+import "./Client.css";
 
 
 /**
@@ -81,57 +82,30 @@ export function ClientCart(props) {
 
         const handleItem = (product) => {
             return (
+                <div className="Cart-Items">
+                    <div className="image-box">
+                        <img src={product.imagePath} style={{height: "120px"}}/>
+                    </div>
+                    <div class="about">
+                        <h1 class="title">Apple Juice</h1>
+                        <h3 class="subtitle">250ml</h3>
+                        <img src="images/veg.png" style={{height: "30px"}}/>
+                    </div>
+                    <div class="counter"></div>
+                    <div class="prices"></div>
+                    <div class="counter">
+                        <div class="btn">+</div>
+                        <div class="count">2</div>
+                        <div class="btn">-</div>
+                    </div>
+                    <div class="prices">
+                        <div class="amount">$2.99</div>
+                        <div class="save"><u>Save for later</u></div>
+                        <div class="remove"><u>Remove</u></div>
+                    </div>
+                    <br/><br/><br/><br/><br/><br/>
+                </div>
 
-               <MDBContainer>
-                    <Card style={{
-                        height:"auto",backgroundColor:"#ffffff",display:"flex",alignItems:"center",width:"100%"}} className={"text-center"}>
-
-                        <Card.Header as="h5">${product.price}</Card.Header>
-                        <div style={{ display: "inline-block",
-                            verticalAlign: "middle",width:"70px"}}>
-                            <Card.Img style={{backgroundImage: `url(${product.imagePath})`}} src={product.imagePath}></Card.Img>
-                            <br/>
-                        </div>
-                        <div>
-                            <Card.Title>{product.name}</Card.Title>
-                            <Card.Text>
-                                {product.brand}
-                            </Card.Text>
-                        </div>
-
-
-                        <Card.Body style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }}>
-
-
-
-                            <InputLabel style={{fontSize: '19px'}}>Quantity</InputLabel>
-                            <Input style={{width:"25%"}} value={currentItemQuantity[product.id]} onChange={(e) => {
-                                currentItemQuantity[product.id] = e.target.value;
-                            }}
-                                   onBlur={async (e) => {
-                                       let val = Number(e.target.value);
-                                       if (e.target.value.length === 0)
-                                           val = 1;
-                                       if (isNaN(val))
-                                           val = 1;
-                                       if (val > 50)
-                                           val = 50;
-                                       if (val < 1)
-                                           val = 1;
-                                       currentItemQuantity[product.id] = val;
-                                       await client_.changeItemQuantity(product.id, val);
-                                       calculateItemsSum();
-                                   }}>
-                            </Input>
-                            <Button  variant="outline-danger">DELETE</Button>
-                        </Card.Body>
-                    </Card>
-
-               </MDBContainer>
 
             );
         };
@@ -154,58 +128,86 @@ export function ClientCart(props) {
 
                     </Toolbar>
                 </AppBar>
-                <Container style={{margin: "0",
+
+                <Container style={{
+
                     padding: '0',
-                    background: "linear-gradient(to bottom right, #E3F0FF, #FAFCFF)",
                     height: "100vh",
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center"}}>
-                    {result}
+                    alignItems: "center"
+
+                }}>
+                    <div className="Cart-Container">
+                        <div className="Header">
+                            <h3 className="Heading">Shopping Cart</h3>
+                            <h5 className="Action">Remove all</h5>
+                        </div>
+                        {result}
+                        <hr/>
+                            <div class="checkout">
+                                <div class="total">
+                                    <div>
+                                        <div class="Subtotal">Sub-Total</div>
+                                        <div class="items">2 items</div>
+                                    </div>
+                                    <div class="total-amount">$6.18</div>
+                                </div>
+                                <button class="button">Checkout</button>
+                            </div>
+                    </div>
+
                 </Container>
 
             </div>
-        );
+    );
     };
 
-    const handleItemDelete = async (itemID) => {
-        await client_.deleteItem(itemID);
-        calculateItemsSum();
-    };
-
-    const calculateItemsSum = () => {
-        let sum = 0;
-        for (let key in client_.cart) {
-            sum += Number(Number(itemsData[key].price).toFixed()) * Number(currentItemQuantity[key]);
+    const handleItemDelete = async (itemID) =>
+        {
+            await client_.deleteItem(itemID);
+            calculateItemsSum();
         }
-        console.log('Sum = ' + sum);
-        setItemsPriceSum(sum);
-    }
+    ;
 
-    const handleCheckOut = async () => {
-        setIsCheckingOut(true);
-        await client_.clearCart();
-        client_.cart = [];
-        calculateItemsSum();
-        setIsCheckingOut(false);
-    };
+    const calculateItemsSum = () =>
+        {
+            let sum = 0;
+            for (let key in client_.cart) {
+                sum += Number(Number(itemsData[key].price).toFixed()) * Number(currentItemQuantity[key]);
+            }
+            console.log('Sum = ' + sum);
+            setItemsPriceSum(sum);
+        }
 
-    if (isLoading) {
-        return (
-            <div className={'Container'}>
-                <Loading/>
-            </div>
-        );
-    }
+    const handleCheckOut = async () =>
+        {
+            setIsCheckingOut(true);
+            await client_.clearCart();
+            client_.cart = [];
+            calculateItemsSum();
+            setIsCheckingOut(false);
+        }
+    ;
 
-    if (isCheckingOut) {
-        return (
-            <div className={'Container'}>
-                Checking out...
-                <Loading/>
-            </div>
-        );
-    }
+    if (isLoading)
+        {
+            return (
+                <div className={'Container'}>
+                    <Loading/>
+                </div>
+            );
+        }
+
+    if (isCheckingOut)
+        {
+            return (
+                <div className={'Container'}>
+                    Checking out...
+                    <Loading/>
+                </div>
+            );
+        }
 
     return (
         <div style={{display: "flex", paddingTop: '5%'}}>
@@ -236,4 +238,4 @@ export function ClientCart(props) {
         </div>
     );
 
-}
+    }
