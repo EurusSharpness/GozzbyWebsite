@@ -82,30 +82,33 @@ export function ClientCart(props) {
 
         const handleItem = (product) => {
             return (
-                <div className="Cart-Items">
-                    <div className="image-box">
-                        <img src={product.imagePath} style={{height: "120px"}}/>
-                    </div>
-                    <div class="about">
-                        <h1 class="title">Apple Juice</h1>
-                        <h3 class="subtitle">250ml</h3>
-                        <img src="images/veg.png" style={{height: "30px"}}/>
-                    </div>
-                    <div class="counter"></div>
-                    <div class="prices"></div>
-                    <div class="counter">
+                <div>
+                <Row className="Cart-Items">
+                    <Col  className="image-box">
+                        <img  src={product.imagePath} style={{height: "120px"}}/>
+                    </Col>
+                    <Col></Col>
+                    <Col  class="about">
+                        <h6 style={{fontSize:"12px"}} class="title">{product.name}</h6>
+                        <br/>
+                        <h3 style={{fontSize:"12px"}} class="subtitle">{product.brand}</h3>
+                    </Col>
+                    <Col class="counter"></Col>
+                    <Col class="prices"></Col>
+                    <Col  class="counter">
                         <div class="btn">+</div>
                         <div class="count">2</div>
                         <div class="btn">-</div>
-                    </div>
-                    <div class="prices">
-                        <div class="amount">$2.99</div>
-                        <div class="save"><u>Save for later</u></div>
+                    </Col>
+                    <Col  class="prices">
+                        <div style={{fontSize:"16px"}} class="amount">${product.price}</div>
                         <div class="remove"><u>Remove</u></div>
-                    </div>
+                    </Col>
                     <br/><br/><br/><br/><br/><br/>
-                </div>
 
+                </Row>
+                <hr/>
+                </div>
 
             );
         };
@@ -114,7 +117,7 @@ export function ClientCart(props) {
             result.push(handleItem(itemsData[key]))
         }
         return (
-            <div style={{backgroundImage: `url(${background})`}}>
+            <div style={{height:"2500px",backgroundImage: `url(${background})`}}>
                 <AppBar style={{backgroundSize: "contain", backgroundImage: `url(${cartbackground})`}} position="static"
                         color="red">
                     <Toolbar>
@@ -131,7 +134,7 @@ export function ClientCart(props) {
 
                 <Container style={{
 
-                    padding: '0',
+                    paddingTop: '100px',
                     height: "100vh",
                     display: "flex",
                     justifyContent: "center",
@@ -144,44 +147,40 @@ export function ClientCart(props) {
                             <h5 className="Action">Remove all</h5>
                         </div>
                         {result}
-                        <hr/>
-                            <div class="checkout">
-                                <div class="total">
-                                    <div>
-                                        <div class="Subtotal">Sub-Total</div>
-                                        <div class="items">2 items</div>
-                                    </div>
-                                    <div class="total-amount">$6.18</div>
+                        <div class="checkout">
+                            <div class="total">
+                                <div>
+                                    <div class="Subtotal">Sub-Total</div>
+                                    <div class="items">2 items</div>
                                 </div>
-                                <button class="button">Checkout</button>
+                                <div class="total-amount">$6.18</div>
                             </div>
+                            <button class="button">Checkout</button>
+                        </div>
                     </div>
 
                 </Container>
 
             </div>
-    );
+        );
     };
 
-    const handleItemDelete = async (itemID) =>
-        {
+    const handleItemDelete = async (itemID) => {
             await client_.deleteItem(itemID);
             calculateItemsSum();
         }
     ;
 
-    const calculateItemsSum = () =>
-        {
-            let sum = 0;
-            for (let key in client_.cart) {
-                sum += Number(Number(itemsData[key].price).toFixed()) * Number(currentItemQuantity[key]);
-            }
-            console.log('Sum = ' + sum);
-            setItemsPriceSum(sum);
+    const calculateItemsSum = () => {
+        let sum = 0;
+        for (let key in client_.cart) {
+            sum += Number(Number(itemsData[key].price).toFixed()) * Number(currentItemQuantity[key]);
         }
+        console.log('Sum = ' + sum);
+        setItemsPriceSum(sum);
+    }
 
-    const handleCheckOut = async () =>
-        {
+    const handleCheckOut = async () => {
             setIsCheckingOut(true);
             await client_.clearCart();
             client_.cart = [];
@@ -190,24 +189,22 @@ export function ClientCart(props) {
         }
     ;
 
-    if (isLoading)
-        {
-            return (
-                <div className={'Container'}>
-                    <Loading/>
-                </div>
-            );
-        }
+    if (isLoading) {
+        return (
+            <div className={'Container'}>
+                <Loading/>
+            </div>
+        );
+    }
 
-    if (isCheckingOut)
-        {
-            return (
-                <div className={'Container'}>
-                    Checking out...
-                    <Loading/>
-                </div>
-            );
-        }
+    if (isCheckingOut) {
+        return (
+            <div className={'Container'}>
+                Checking out...
+                <Loading/>
+            </div>
+        );
+    }
 
     return (
         <div style={{display: "flex", paddingTop: '5%'}}>
@@ -238,4 +235,4 @@ export function ClientCart(props) {
         </div>
     );
 
-    }
+}
