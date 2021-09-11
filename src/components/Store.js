@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from "react";
-import AppBar from "@material-ui/core/AppBar";
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -11,7 +14,6 @@ import {FirebaseAuth, users, ClientClass} from "./firebase_functions";
 import Loading from "./Loading";
 import "./Store.css";
 import background from "../assets/StorePics/productback.jpg"
-import 'bootstrap/dist/css/bootstrap.min.css';
 import {AiTwotoneShopping} from "react-icons/ai"
 import { BsPerson } from "react-icons/bs";
 

@@ -4,8 +4,11 @@ import {FirebaseAuth, users, items, ClientClass} from "./firebase_functions"
 import {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap';
+import 'bootstrap/dist/js/bootstrap.min.js';
+
 import {ConfirmCheckoutModal, DeleteModal} from "./Client_functions";
-import {Button,  Col, Container, Row} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
 import {Products} from "./Store_functions";
 import {Input} from "reactstrap";
 import {AppBar} from "@material-ui/core";
@@ -53,7 +56,7 @@ export function ClientCart(props) {
     const [client_, setClientClass] = React.useState(null);
     const [deleteModalState, setDeleteModalState] = React.useState(false);
     const [checkoutModalState, setCheckoutModalState] = React.useState(false);
-    const [currentItemID] = React.useState(-1);
+    const [currentItemID, setCurrentItemID] = React.useState(-1);
     const [currentItemQuantity,] = React.useState([]);
     const [itemsPriceSum, setItemsPriceSum] = React.useState(0);
     useEffect(() => {
@@ -80,53 +83,38 @@ export function ClientCart(props) {
          */
 
         const handleItem = (product) => {
+            if (product === undefined) return;
             return (
-                <div>
-                    <Row className="Cart-Items">
-                        <Col md={1} sm={1}  style={{marginRight: "100px"}} className="image-box">
-                            <img src={product.imagePath} style={{height: "120px"}} alt=" "/>
-                        </Col>
-                        <Col md={1} sm={1} style={{marginRight: "30px"}} class="about">
-                            <h6 style={{fontSize: "12px"}} class="title">{product.name}</h6>
-                            <br/>
-                            <h3 style={{fontSize: "12px"}} class="subtitle">{product.brand}</h3>
-                        </Col>
-                        <Col style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }} md={6} sm={4}>
-                            QTY
+                <div
+                    className="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
+                    <div className="mr-1"><img className="rounded" src={product.imagePath}
+                                               width="70"/></div>
+                    <div className="d-flex flex-column align-items-center product-details"><span
+                        className="font-weight-bold">{product.name}</span>
+                        <div className="d-flex flex-row product-desc">
+                            <div className="size mr-1"><span className="text-grey">Brand:</span><span
+                                className="font-weight-bold">&nbsp;{product.brand}</span></div>
+                        </div>
+                    </div>
+                    <div className="d-flex flex-row align-items-center qty"><i className="fa fa-minus text-danger"
+                                                                               onClick={() => {
+                                                                                   handleItemDecrease(product.id)
+                                                                               }}/>
+                        <h5 className="text-grey mt-1 mr-1 ml-1">{client_.cart[product.id]}</h5><i
+                            className="fa fa-plus text-success" onClick={() => {
+                            handleItemIncrease(product.id)
+                        }}/>
+                    </div>
+                    <div>
+                        <h5 className="text-grey">${product.price}</h5>
+                    </div>
+                    <div className="d-flex align-items-center"><i className="fa fa-trash mb-1 text-danger"
+                                                                  onClick={() => {
+                                                                      setCurrentItemID(product.id);
+                                                                      setDeleteModalState(true);
 
-                            <Input style={{width: "80px"}} value={currentItemQuantity[product.id]} onChange={(e) => {
-                                currentItemQuantity[product.id] = e.target.value;
-                            }}
-                                   onBlur={async (e) => {
-                                       let val = Number(e.target.value);
-                                       if (e.target.value.length === 0)
-                                           val = 1;
-                                       if (isNaN(val))
-                                           val = 1;
-                                       if (val > 50)
-                                           val = 50;
-                                       if (val < 1)
-                                           val = 1;
-                                       currentItemQuantity[product.id] = val;
-                                       await client_.changeItemQuantity(product.id, val);
-                                       calculateItemsSum();
-                                   }}>
-                            </Input>
-                        </Col>
-                        <Col style={{marginRight: "0px"}} md={2} sm={1} class="prices">
-                            <div style={{fontSize: "16px"}} class="amount">${product.price}</div>
-                            <div class="remove"><u>Remove</u></div>
-                        </Col>
-                        <br/><br/><br/><br/><br/><br/>
-
-                    </Row>
-                    <hr/>
+                                                                  }}/></div>
                 </div>
-
             );
         };
         let result = [];
@@ -134,60 +122,31 @@ export function ClientCart(props) {
             result.push(handleItem(itemsData[key]))
         }
         return (
-            <div style={{height: "2500px", backgroundImage: `url(${background})`}}>
-                <AppBar style={{backgroundSize: "contain", backgroundImage: `url(${cartbackground})`}} position="static"
-                        color="red">
-                    <Toolbar>
-                        <AiTwotoneShopping size={50} width="100%"/>
-                        <Typography
-                            color="black"
-                            variant="h6"
-                            style={{marginLeft: 15, flexGrow: 1}}
-                        >
-                            ORDER SUMMARY
-                        </Typography>
-
-                    </Toolbar>
-                </AppBar>
-
-                <Container style={{
-
-                    paddingTop: '100px',
-                    height: "100vh",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center"
-
-                }}>
-
-                    <div className="Cart-Container">
-                        <div className="Header">
-
+            <Container className="mt-5 mb-5">
+                <Row className="d-flex justify-content-center" style={{width: '100%'}}>
+                    <Col md={8}>
+                        <div className="p-2">
+                            <h4>Shopping cart</h4>
                         </div>
                         {result}
-                        <div class="checkout">
-                            <div class="total">
-                                <div>
-                                    <div class="Subtotal">Sub-Total</div>
-                                    <div class="items">2 items</div>
-                                </div>
-                                <div class="total-amount">$6.18</div>
-                            </div>
-                            <button class="button">Checkout</button>
-                        </div>
-                    </div>
-
-                </Container>
-
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         );
     };
 
+    const handleItemIncrease = async (itemID) => {
+        await client_.changeItemQuantity(itemID, client_.cart[itemID] + 1);
+    };
+
+    const handleItemDecrease = async (itemID) => {
+        await client_.changeItemQuantity(itemID, client_.cart[itemID] - 1);
+    };
+
     const handleItemDelete = async (itemID) => {
-            await client_.deleteItem(itemID);
-            calculateItemsSum();
-        }
-    ;
+        await client_.deleteItem(itemID);
+        calculateItemsSum();
+    };
 
     const calculateItemsSum = () => {
         let sum = 0;
@@ -228,7 +187,6 @@ export function ClientCart(props) {
         <div style={{display: "flex", paddingTop: '5%'}}>
             <Container fluid={true} className={''}>
                 {getClientCart()}
-                {/*  Modal Modal Modal for the delete button */}
                 <DeleteModal
                     show={deleteModalState}
                     onHide={() => {
