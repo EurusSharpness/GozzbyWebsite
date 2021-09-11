@@ -17,6 +17,7 @@ import {
     MDBModalFooter,
     MDBRow
 } from "mdb-react-ui-kit";
+import {Col, Row} from "reactstrap";
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
@@ -85,6 +86,7 @@ export function SignIn(props) {
                             label='Your email'
                             validate
                             labelClass='white-text'
+
                         />
                         <MDBInput
                             onChange={e => {
@@ -103,28 +105,40 @@ export function SignIn(props) {
                             labelClass='white-text'
                         />
                         <br/><br/>
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }}>
-                            Don't have an account? <Link to="/signup">Sign up!</Link>
-                        </div>
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }}>
-                            Forgot your password? <Link to="/reset_password">Reset password!</Link>
-                        </div>
-                        <br/><br/><br/>
+                        <Row>
+                            <Col md={12} sm={12} style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}>
+                                Don't have an account? <Link to="/signup">Sign up!</Link>
+                            </Col>
+                        </Row>
+                        <br/>
+                        <Row>
+                            <Col md={12} sm={12} style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}>
+                                Forgot your password? <Link to="/reset_password">Reset password!</Link>
+                            </Col>
+                        </Row>
+                        <br/><br/>
+
                         <MDBRow className='d-flex align-items-center mb-4'>
-                            <div className='text-center mb-3 col-md-12'>
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }} className='text-center mb-3 col-md-12'>
                                 <MDBBtn
                                     onClick={handleSignIn}
                                     type="submit"
-                                    className="btn btn-primary btn-block mb-4"
+                                    className="btn-block z-depth-1"
                                     color='success'
+                                    rounded
+                                    style={{width:"150px",fontSize: "18px"}}
                                 >
                                     Sign in
                                 </MDBBtn>
@@ -376,11 +390,13 @@ export function ResetPassword(props) {
                                 </MDBBtn>
                             </div>
                         </form>
-                        <MDBModalFooter style= {{display: "flex",
+                        <MDBModalFooter style={{
+                            display: "flex",
                             justifyContent: "center",
-                            alignItems: "center"}}>
+                            alignItems: "center"
+                        }}>
                             <div
-                                 className="font-weight-light">
+                                className="font-weight-light">
                                 Not a member? <Link to="/signup">Sign up!</Link>
                             </div>
                         </MDBModalFooter>

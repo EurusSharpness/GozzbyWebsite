@@ -5,17 +5,16 @@ import {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {ConfirmCheckoutModal, DeleteModal} from "./Client_functions";
-import {Button, Card, Container, Row} from "react-bootstrap";
+import {Button,  Col, Container, Row} from "react-bootstrap";
 import {Products} from "./Store_functions";
-import {Col, Input} from "reactstrap";
-import {AppBar, InputLabel} from "@material-ui/core";
+import {Input} from "reactstrap";
+import {AppBar} from "@material-ui/core";
 import background from "../assets/StorePics/productback.jpg";
 import cartbackground from "../assets/StorePics/Cartbackground.jpg"
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import {MDBContainer, MDBMedia} from "mdbreact";
-import {Table} from 'antd';
 import "./Client.css";
+import {AiTwotoneShopping} from "react-icons/ai";
 
 
 /**
@@ -54,7 +53,7 @@ export function ClientCart(props) {
     const [client_, setClientClass] = React.useState(null);
     const [deleteModalState, setDeleteModalState] = React.useState(false);
     const [checkoutModalState, setCheckoutModalState] = React.useState(false);
-    const [currentItemID, setCurrentItemID] = React.useState(-1);
+    const [currentItemID] = React.useState(-1);
     const [currentItemQuantity,] = React.useState([]);
     const [itemsPriceSum, setItemsPriceSum] = React.useState(0);
     useEffect(() => {
@@ -83,31 +82,49 @@ export function ClientCart(props) {
         const handleItem = (product) => {
             return (
                 <div>
-                <Row className="Cart-Items">
-                    <Col  className="image-box">
-                        <img  src={product.imagePath} style={{height: "120px"}}/>
-                    </Col>
-                    <Col></Col>
-                    <Col  class="about">
-                        <h6 style={{fontSize:"12px"}} class="title">{product.name}</h6>
-                        <br/>
-                        <h3 style={{fontSize:"12px"}} class="subtitle">{product.brand}</h3>
-                    </Col>
-                    <Col class="counter"></Col>
-                    <Col class="prices"></Col>
-                    <Col  class="counter">
-                        <div class="btn">+</div>
-                        <div class="count">2</div>
-                        <div class="btn">-</div>
-                    </Col>
-                    <Col  class="prices">
-                        <div style={{fontSize:"16px"}} class="amount">${product.price}</div>
-                        <div class="remove"><u>Remove</u></div>
-                    </Col>
-                    <br/><br/><br/><br/><br/><br/>
+                    <Row className="Cart-Items">
+                        <Col md={1} sm={1}  style={{marginRight: "100px"}} className="image-box">
+                            <img src={product.imagePath} style={{height: "120px"}} alt=" "/>
+                        </Col>
+                        <Col md={1} sm={1} style={{marginRight: "30px"}} class="about">
+                            <h6 style={{fontSize: "12px"}} class="title">{product.name}</h6>
+                            <br/>
+                            <h3 style={{fontSize: "12px"}} class="subtitle">{product.brand}</h3>
+                        </Col>
+                        <Col style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }} md={6} sm={4}>
+                            QTY
 
-                </Row>
-                <hr/>
+                            <Input style={{width: "80px"}} value={currentItemQuantity[product.id]} onChange={(e) => {
+                                currentItemQuantity[product.id] = e.target.value;
+                            }}
+                                   onBlur={async (e) => {
+                                       let val = Number(e.target.value);
+                                       if (e.target.value.length === 0)
+                                           val = 1;
+                                       if (isNaN(val))
+                                           val = 1;
+                                       if (val > 50)
+                                           val = 50;
+                                       if (val < 1)
+                                           val = 1;
+                                       currentItemQuantity[product.id] = val;
+                                       await client_.changeItemQuantity(product.id, val);
+                                       calculateItemsSum();
+                                   }}>
+                            </Input>
+                        </Col>
+                        <Col style={{marginRight: "0px"}} md={2} sm={1} class="prices">
+                            <div style={{fontSize: "16px"}} class="amount">${product.price}</div>
+                            <div class="remove"><u>Remove</u></div>
+                        </Col>
+                        <br/><br/><br/><br/><br/><br/>
+
+                    </Row>
+                    <hr/>
                 </div>
 
             );
@@ -117,16 +134,17 @@ export function ClientCart(props) {
             result.push(handleItem(itemsData[key]))
         }
         return (
-            <div style={{height:"2500px",backgroundImage: `url(${background})`}}>
+            <div style={{height: "2500px", backgroundImage: `url(${background})`}}>
                 <AppBar style={{backgroundSize: "contain", backgroundImage: `url(${cartbackground})`}} position="static"
                         color="red">
                     <Toolbar>
+                        <AiTwotoneShopping size={50} width="100%"/>
                         <Typography
                             color="black"
                             variant="h6"
                             style={{marginLeft: 15, flexGrow: 1}}
                         >
-                            Gozzby Store
+                            ORDER SUMMARY
                         </Typography>
 
                     </Toolbar>
@@ -141,10 +159,10 @@ export function ClientCart(props) {
                     alignItems: "center"
 
                 }}>
+
                     <div className="Cart-Container">
                         <div className="Header">
-                            <h3 className="Heading">Shopping Cart</h3>
-                            <h5 className="Action">Remove all</h5>
+
                         </div>
                         {result}
                         <div class="checkout">

@@ -25,6 +25,7 @@ import {
     NoFilter
 } from "./Store_functions";
 import {Container, Dropdown, Nav, Navbar, NavDropdown} from "react-bootstrap";
+import {Col, Row} from "reactstrap";
 
 
 
@@ -76,15 +77,7 @@ export function Store(props) {
         <div  style={{ backgroundImage: `url(${background})` }}>
             <AppBar position="static" color="red">
                 <Toolbar>
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        onClick={() => {
-                            setDrawerOpen(true);
-                        }}
-                    >
-                        <MenuIcon/>
-                    </IconButton>
+
 
                     <Typography
                         color="black"
@@ -111,7 +104,7 @@ export function Store(props) {
                         // props.history.push('/client')
                         setUserModalShow(true);
                     }}><BsPerson  size={50}></BsPerson>
-                        Hi! {userName}
+                        Hi!{userName}
                     </Typography>
                     <Button color="inherit" onClick={() => handleSignOut(props)}>
                         Sign out
@@ -145,14 +138,26 @@ function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
         <div >
             <Navbar  variant="light" bg="light" expand="lg">
                 <Container fluid>
+                    <Row>
+                        <Col>
                     <Navbar.Brand>Gozzby brands</Navbar.Brand>
+                        </Col>
+                        <Col>
                     <Button onClick={() => setFilterBy(NoFilter)} variant="secondary">All</Button>{' '}
+                        </Col>
+                        <Col>
                     <Button onClick={() => setFilterBy('vodka')} variant="secondary">Vokda</Button>{' '}
+                        </Col>
+                        <Col>
                     <Button onClick={() => setFilterBy('beer')} variant="secondary">Beers</Button>{' '}
+                        </Col>
+                        <Col>
                     <Button onClick={() => setFilterBy('whiskey')} variant="secondary">Whiskey</Button>{' '}
+                        </Col>
+                        <Col >
                     <Button onClick={() => setFilterBy('tequila')} variant="secondary">Tequila</Button>{' '}
-
-                    <Navbar.Toggle aria-controls="navbar-dark-example" />
+                        </Col>
+                        <Col>
                     <Navbar.Collapse id="navbar-dark-example">
                         <Nav>
 
@@ -165,21 +170,10 @@ function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
                                 <Dropdown.Item onSelect={() => setSortBy(SortByDescending)}>descending</Dropdown.Item>
                             </NavDropdown>
                         </Nav>
-                        <Nav>
 
-                            <NavDropdown
-                                id="nav-dropdown-dark-example"
-                                title="Filter by"
-                                menuVariant="dark"
-                            >
-                                <Dropdown.Item onSelect={() => setFilterBy('vodka')}>Vodka</Dropdown.Item>
-                                <Dropdown.Item onSelect={() => setFilterBy('beer')}>Beer</Dropdown.Item>
-                                <Dropdown.Item onSelect={() => setFilterBy('whiskey')}>Whiskey</Dropdown.Item>
-                                <Dropdown.Item onSelect={() => setFilterBy('tequila')}>Tequila</Dropdown.Item>
-                                <Dropdown.Item onSelect={() => setFilterBy(NoFilter)}>Remove Filter</Dropdown.Item>
-                            </NavDropdown>
-                        </Nav>
                     </Navbar.Collapse>
+                        </Col>
+                    </Row>
                 </Container>
 
             </Navbar>
