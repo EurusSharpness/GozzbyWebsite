@@ -7,8 +7,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import {FirebaseAuth, users, ClientClass} from "./firebase_functions";
 import Loading from "./Loading";
@@ -55,6 +53,8 @@ export function Store(props) {
                 await handleSignIn(setProduct);
 
                 await users.doc(u.email).get().then((data) => {
+                    const pop = data.data();
+                    console.log(pop);
                     setuserName(data.data().name);
                     if (client_ === null) {
                         setClientClass(new ClientClass(users.doc(u.email), data.data()));
@@ -70,7 +70,7 @@ export function Store(props) {
 
 
     if (!user) {
-        return <div/>;
+        return <div>no user</div>;
     }
     if (isLoading)
         return <div className={'Container'}><Loading/></div>
@@ -105,7 +105,7 @@ export function Store(props) {
                     <Typography color="black" style={{marginRight: 30}} onClick={() => {
                         // props.history.push('/client')
                         setUserModalShow(true);
-                    }}><BsPerson  size={50}></BsPerson>
+                    }}><BsPerson  size={50}>a</BsPerson>
                         Hi!{userName}
                     </Typography>
                     <Button color="inherit" onClick={() => handleSignOut(props)}>

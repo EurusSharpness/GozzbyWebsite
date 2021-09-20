@@ -6,19 +6,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/js/bootstrap.min.js';
-
 import {ConfirmCheckoutModal, DeleteModal} from "./Client_functions";
-import {Button, Col, Container, Row} from "react-bootstrap";
-import {Products} from "./Store_functions";
-import {Input} from "reactstrap";
-import {AppBar} from "@material-ui/core";
+import {Button, Col, Container, Navbar, Row} from "react-bootstrap";
+import { Products} from "./Store_functions";
 import background from "../assets/StorePics/productback.jpg";
-import cartbackground from "../assets/StorePics/Cartbackground.jpg"
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import "./Client.css";
-import {AiTwotoneShopping} from "react-icons/ai";
-
+import MaterialTable from 'material-table';
 
 /**
  * @param {firebase.User} u
@@ -78,60 +71,57 @@ export function ClientCart(props) {
 
 
     const getClientCart = () => {
-        /**
-         * @param {Products} product
-         */
 
-        const handleItem = (product) => {
-            if (product === undefined) return;
-            return (
-                <div
-                    className="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
-                    <div className="mr-1"><img className="rounded" src={product.imagePath}
-                                               width="70"/></div>
-                    <div className="d-flex flex-column align-items-center product-details"><span
-                        className="font-weight-bold">{product.name}</span>
-                        <div className="d-flex flex-row product-desc">
-                            <div className="size mr-1"><span className="text-grey">Brand:</span><span
-                                className="font-weight-bold">&nbsp;{product.brand}</span></div>
-                        </div>
-                    </div>
-                    <div className="d-flex flex-row align-items-center qty"><i className="fa fa-minus text-danger"
-                                                                               onClick={() => {
-                                                                                   handleItemDecrease(product.id)
-                                                                               }}/>
-                        <h5 className="text-grey mt-1 mr-1 ml-1">{client_.cart[product.id]}</h5><i
-                            className="fa fa-plus text-success" onClick={() => {
-                            handleItemIncrease(product.id)
-                        }}/>
-                    </div>
-                    <div>
-                        <h5 className="text-grey">${product.price}</h5>
-                    </div>
-                    <div className="d-flex align-items-center"><i className="fa fa-trash mb-1 text-danger"
-                                                                  onClick={() => {
-                                                                      setCurrentItemID(product.id);
-                                                                      setDeleteModalState(true);
+        const columns = [
+            {
+                title: "Name",
+                field: "name",
+            },
+            {
+                title: "Brand",
+                field: "brand",
+            },
+            {
+                title: 'Image',
+                field: 'img',
+                render: item => <img src={item.imagePath} alt="" border="3" height="100" width="100" />
+            },
+            {
+                title: "Price",
+                field: "price",
+                render: item => <h2>${item.price}</h2>
+            },
+            {
+                title: "Quantity",
+                field: "quantity",
+                render: item => <h2>{client_.cart[item.id]}</h2> // Add plus and minus buttons
+            },
+            {
+                title: "",
+                render: item => <Button onClick={()=>{setDeleteModalState(true)}}>Delete</Button>
+            }
 
-                                                                  }}/></div>
-                </div>
-            );
-        };
+
+        ];
         let result = [];
-        for (let key in client_.cart) {
-            result.push(handleItem(itemsData[key]))
+        for(const key in client_.cart){
+            result.push(itemsData[key]);
         }
+
+
         return (
-            <Container className="mt-5 mb-5">
-                <Row className="d-flex justify-content-center" style={{width: '100%'}}>
-                    <Col md={8}>
-                        <div className="p-2">
-                            <h4>Shopping cart</h4>
-                        </div>
-                        {result}
-                    </Col>
-                </Row>
-            </Container>
+            <div>
+                <Navbar variant="light" bg="light" expand="lg">
+                    <Container fluid>
+                        <Row>
+                            <Col> <Navbar.Brand>Shoping cart</Navbar.Brand></Col>
+
+                        </Row>
+                    </Container>
+
+                </Navbar>
+                <MaterialTable title="Employee Details" data={result} columns={columns} />
+            </div>
         );
     };
 
@@ -198,7 +188,7 @@ export function ClientCart(props) {
                 <Row>
                     Total item price: {itemsPriceSum}
                     <Button variant={"primary"} className={'shadow-none'} onClick={() => setCheckoutModalState(true)}>Check
-                        Out Items Price
+                        Out Items
                         = {itemsPriceSum}</Button>
                 </Row>
                 <ConfirmCheckoutModal
