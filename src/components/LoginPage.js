@@ -129,11 +129,7 @@ export function SignIn(props) {
                         <br/><br/>
 
                         <MDBRow className='d-flex align-items-center mb-4'>
-                            <div style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }} className='text-center mb-3 col-md-12'>
+
                                 <MDBBtn
                                     onClick={handleSignIn}
                                     type="submit"
@@ -144,7 +140,7 @@ export function SignIn(props) {
                                 >
                                     Sign in
                                 </MDBBtn>
-                            </div>
+
                         </MDBRow>
                     </div>
                 </MDBCard>
@@ -308,7 +304,7 @@ export function SignUp(props) {
 
                         <br/><br/><br/>
                         <MDBRow className='d-flex align-items-center mb-4'>
-                            <div className='text-center mb-3 col-md-12'>
+
                                 <MDBBtn
                                     onClick={handleSignUp}
                                     type="submit"
@@ -318,7 +314,7 @@ export function SignUp(props) {
                                 >
                                     Sign up
                                 </MDBBtn>
-                            </div>
+
                         </MDBRow>
                     </div>
                 </MDBCard>
@@ -381,7 +377,6 @@ export function ResetPassword(props) {
 
                             </div>
 
-                            <div className="text-center mt-4">
                                 <MDBBtn
                                     onClick={handleResetPassword}
                                     className="mb-3"
@@ -390,7 +385,7 @@ export function ResetPassword(props) {
                                 >
                                     Send
                                 </MDBBtn>
-                            </div>
+
                         </form>
                         <MDBModalFooter style={{
                             display: "flex",

@@ -7,11 +7,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import {ConfirmCheckoutModal, DeleteModal} from "./Client_functions";
-import {Button, Col, Container, Navbar, Row} from "react-bootstrap";
-import { Products} from "./Store_functions";
-import background from "../assets/StorePics/productback.jpg";
+import {Button, Card, Col, Container, ListGroup, Navbar, Row} from "react-bootstrap";
+import {Products} from "./Store_functions";
 import "./Client.css";
 import MaterialTable from 'material-table';
+import { BsFillPlusCircleFill } from "react-icons/bs";
+import { AiFillMinusCircle } from "react-icons/ai";
 
 /**
  * @param {firebase.User} u
@@ -49,7 +50,7 @@ export function ClientCart(props) {
     const [client_, setClientClass] = React.useState(null);
     const [deleteModalState, setDeleteModalState] = React.useState(false);
     const [checkoutModalState, setCheckoutModalState] = React.useState(false);
-    const [currentItemID, setCurrentItemID] = React.useState(-1);
+    const [currentItemID] = React.useState(-1);
     const [currentItemQuantity,] = React.useState([]);
     const [itemsPriceSum, setItemsPriceSum] = React.useState(0);
     useEffect(() => {
@@ -84,7 +85,7 @@ export function ClientCart(props) {
             {
                 title: 'Image',
                 field: 'img',
-                render: item => <img src={item.imagePath} alt="" border="3" height="100" width="100" />
+                render: item => <img src={item.imagePath} alt="" border="3" height="100" width="100"/>
             },
             {
                 title: "Price",
@@ -94,17 +95,22 @@ export function ClientCart(props) {
             {
                 title: "Quantity",
                 field: "quantity",
-                render: item => <h2>{client_.cart[item.id]}</h2> // Add plus and minus buttons
+                render: item => <div><BsFillPlusCircleFill size={19}></BsFillPlusCircleFill><h2>{client_.cart[item.id]}</h2><AiFillMinusCircle size={19}></AiFillMinusCircle></div> // Add plus and minus buttons
             },
             {
                 title: "",
-                render: item => <Button onClick={()=>{setDeleteModalState(true)}}>Delete</Button>
+                render: item => <Button variant="danger" onClick={() => {
+                    setDeleteModalState(true)
+                }}>Delete</Button>
             }
 
 
         ];
+
+
+
         let result = [];
-        for(const key in client_.cart){
+        for (const key in client_.cart) {
             result.push(itemsData[key]);
         }
 
@@ -120,7 +126,21 @@ export function ClientCart(props) {
                     </Container>
 
                 </Navbar>
-                <MaterialTable title="Employee Details" data={result} columns={columns} />
+                <MaterialTable title="Employee Details" data={result} columns={columns}/>
+                <Card style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    float: "right", width: '100%'
+                }}>
+                    <Card.Header>Cart Totals</Card.Header>
+                    <ListGroup variant="flush">
+                        <ListGroup.Item>Total : {itemsPriceSum}</ListGroup.Item>
+                        <ListGroup.Item><Button>buy</Button></ListGroup.Item>
+                    </ListGroup>
+                </Card>
+
+
             </div>
         );
     };
