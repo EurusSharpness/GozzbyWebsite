@@ -8,6 +8,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/js/bootstrap.min.js';
+import 'react-bootstrap/dist/react-bootstrap';
+import 'react-bootstrap/dist/react-bootstrap.min';
+
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
     MDBBtn,
     MDBCard,
@@ -20,6 +26,8 @@ import {
     MDBRow
 } from "mdb-react-ui-kit";
 import {Col, Row} from "reactstrap";
+
+import {Button} from "react-bootstrap";
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
@@ -71,7 +79,7 @@ export function SignIn(props) {
                             <h3 className='white-text mb-5 mt-4 font-weight-bold'>
 
                                 <strong>SIGN</strong>
-                                <a href='#!' className='green-text font-weight-bold'>
+                                <a href='/' className='green-text font-weight-bold'>
                                     <strong> IN</strong>
                                 </a>
                             </h3>
@@ -94,8 +102,8 @@ export function SignIn(props) {
                             onChange={e => {
                                 setPassword(e.target.value);
                             }}
-                            onKeyDown={(key) => {
-                                if (key.key === 'Enter') handleSignIn();
+                            onKeyDown={async (key) => {
+                                if (key.key === 'Enter') await handleSignIn();
                             }}
                             value={password}
                             type="password"
@@ -113,7 +121,7 @@ export function SignIn(props) {
                                 justifyContent: "center",
                                 alignItems: "center"
                             }}>
-                                Don't have an account? <Link to="/signup">Sign up!</Link>
+                                Don't have an account?&nbsp; <Link style={{color: '#ECF706'}} to="/signup">Sign up!</Link>
                             </Col>
                         </Row>
                         <br/>
@@ -123,23 +131,23 @@ export function SignIn(props) {
                                 justifyContent: "center",
                                 alignItems: "center"
                             }}>
-                                Forgot your password? <Link to="/reset_password">Reset password!</Link>
+                                Forgot your password?&nbsp;  <Link style={{color: '#ECF706'}} to="/reset_password">Reset password!</Link>
                             </Col>
                         </Row>
                         <br/><br/>
 
-                        <MDBRow className='d-flex align-items-center mb-4'>
+                        <MDBRow className='d-flex align-items-center mb-6'>
 
-                                <MDBBtn
-                                    onClick={handleSignIn}
-                                    type="submit"
-                                    className="btn-block z-depth-1"
-                                    color='success'
-                                    rounded
-                                    style={{width:"150px",fontSize: "18px"}}
-                                >
-                                    Sign in
-                                </MDBBtn>
+                            <MDBBtn
+                                onClick={handleSignIn}
+                                type="submit"
+                                className="btn-block z-depth-1"
+                                color='success'
+                                rounded
+                                style={{width: "150px", fontSize: "18px"}}
+                            >
+                                Sign in
+                            </MDBBtn>
 
                         </MDBRow>
                     </div>
@@ -159,13 +167,8 @@ export function SignUp(props) {
     const [confirm_password, setConfirm_Password] = useState("");
     const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
     const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    useEffect(() => {
-        return FirebaseAuth.onAuthStateChanged(u => {
-            if (u) {
-                props.history.push("/store");
-            }
-        });
-    }, [props.history]);
+
+
     let flag = false;
     const handlePasswordChange = () => {
         const p = document.getElementById("password").value;
@@ -210,16 +213,42 @@ export function SignUp(props) {
             return;
 
         // if got here then all good.
-        await FirebaseAuth
-            .createUserWithEmailAndPassword(email, password)
-            .then(async () => {
-                console.log('Email created successfully');
-                await createUserInDatabase(email);
-            })
-            .catch(error => {
-                alert(error.message);
-            });
+        if (toast.isActive('this is love'))
+            return;
+        const response = await toast.promise(
+            FirebaseAuth.createUserWithEmailAndPassword(email, password), {
+                pending: {
+                    render() {
+                        return "Creating account"
+                    },
+                    icon: false,
+                },
+                success: {
+                    render() {
+                        console.log('creating account');
+                        createUserInDatabase(email).then(() => {
+                            console.log('account created');
+                            props.history.push('/');
+                        });
+                        return `Account has been created`
+                    },
+                    // other options
+                    icon: "✔️",
+                },
+                error: {
+                    render({data}) {
+                        // When the promise reject, data will contains the error
+                        return `Failed to create account - ${data.message}`
+                    }
+                },
+            }, {
+                toastId: 'this is love'
+            }
+        );
+
+        console.log(response);
     };
+
 
     return (
         <div style={{padding: "50px", height: "1500px", backgroundImage: `url(${loginbackground})`}}>
@@ -245,7 +274,7 @@ export function SignUp(props) {
                             <h3 className='white-text mb-5 mt-4 font-weight-bold'>
 
                                 <strong>SIGN</strong>
-                                <a href='#!' className='green-text font-weight-bold'>
+                                <a link='/signup' className='green-text font-weight-bold'>
                                     <strong> Up</strong>
                                 </a>
                             </h3>
@@ -267,8 +296,8 @@ export function SignUp(props) {
                                 setPassword(e.target.value);
                                 handlePasswordChange();
                             }}
-                            onKeyDown={(key) => {
-                                if (key.key === 'Enter') handleSignUp();
+                            onKeyDown={ async (key) => {
+                                if (key.key === 'Enter') await handleSignUp();
                             }}
                             value={password}
                             type="password"
@@ -284,8 +313,8 @@ export function SignUp(props) {
                                 setConfirm_Password(e.target.value);
                                 handlePasswordChange();
                             }}
-                            onKeyDown={(key) => {
-                                if (key.key === 'Enter') handleSignUp();
+                            onKeyDown={async (key) => {
+                                if (key.key === 'Enter') await handleSignUp();
                             }}
                             value={confirm_password}
                             type="password"
@@ -299,25 +328,36 @@ export function SignUp(props) {
                         <span className={"error"}><p id="password2error"/></span>
                         <br/>
                         <div>
-                            login into existing account <Link to="/">Sign in!</Link>
+                            login into existing account <Link style={{color: '#ECF706'}} to="/">Sign in!</Link>
                         </div>
 
                         <br/><br/><br/>
-                        <MDBRow className='d-flex align-items-center mb-4'>
+                        <MDBRow className='d-flex align-items-center mb-6'>
 
-                                <MDBBtn
-                                    onClick={handleSignUp}
-                                    type="submit"
-                                    className="btn btn-primary btn-block mb-4"
-                                    color='success'
+                            <MDBBtn
+                                onClick={handleSignUp}
+                                type="submit"
+                                className="btn btn-primary btn-block mb-6 center"
+                                color='success'
 
-                                >
-                                    Sign up
-                                </MDBBtn>
+                            >
+                                Sign up
+                            </MDBBtn>
 
                         </MDBRow>
                     </div>
                 </MDBCard>
+                <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover={false}
+                />
             </MDBContainer>
         </div>
     );
@@ -332,15 +372,40 @@ export function ResetPassword(props) {
             }
         });
     }, [props.history]);
-    const handleResetPassword = () => {
-        console.log(email);
-        FirebaseAuth.sendPasswordResetEmail(email).then(() => {
-            alert('Email send successfully!');
-            props.history.push('/'); // Go back to Sign in page if the mail was successfully sent!
-        }).catch((e) => {
-            alert('something went wrong!\n' + e);
-        });
-
+    const handleResetPassword = async () => {
+        if (toast.isActive('resetToast'))
+            return;
+        let success = false;
+        await toast.promise(FirebaseAuth.sendPasswordResetEmail(email), {
+                pending: {
+                    render() {
+                        return "Sending Email"
+                    },
+                    icon: false,
+                },
+                success: {
+                    render() {
+                        success = true;
+                        return `Email successfully sent`
+                    },
+                    // other options
+                    icon: "🟢", autoClose: 1500
+                },
+                error: {
+                    render({data}) {
+                        // When the promise reject, data will contains the error
+                        return `Failed to send email - ${data.message}`
+                    }
+                },
+            }, {
+                toastId: 'resetToast',
+                onClose: props1 => {
+                    console.log(props1);
+                    if(success)
+                        props.history.push('/');
+                }
+            }
+        );
     }
     return (
         <div style={{padding: "50px", height: "1500px", backgroundImage: `url(${loginbackground})`}}>
@@ -370,21 +435,23 @@ export function ResetPassword(props) {
                                     onChange={e => {
                                         setEmail(e.target.value);
                                     }}
-                                    onKeyDown={(key) => {
-                                        if (key.key === 'Enter') handleResetPassword();
+                                    onKeyDown={async (key) => {
+                                        if (key.key === 'Enter') await handleResetPassword();
                                     }}
                                 />
 
                             </div>
 
-                                <MDBBtn
-                                    onClick={handleResetPassword}
-                                    className="mb-3"
-                                    type="submit"
-                                    color="deep-orange"
-                                >
-                                    Send
-                                </MDBBtn>
+                            <Button
+                                onClick={async (e) => {
+                                    e.preventDefault();
+                                    await handleResetPassword();
+                                }}
+                                color={'#F45F0A'}
+                                className={'rounded deep-orange'}
+                            >
+                                Send
+                            </Button>
 
                         </form>
                         <MDBModalFooter style={{
@@ -392,13 +459,27 @@ export function ResetPassword(props) {
                             justifyContent: "center",
                             alignItems: "center"
                         }}>
-                            <div
-                                className="font-weight-light">
+                             <div className="font-weight-light">
                                 Not a member? <Link to="/signup">Sign up!</Link>
+                                 <br/>
+                                Your memories came back? <Link to="/">Sign in!</Link>
                             </div>
                         </MDBModalFooter>
                     </MDBCardBody>
                 </MDBCard>
+
+                <ToastContainer
+                    position="top-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover={false}
+                    style={{width: 'auto'}}
+                />
             </MDBContainer>
         </div>
     )

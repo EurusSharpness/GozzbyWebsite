@@ -24,7 +24,6 @@ export const users = firestore.collection('users');
 export const items = firestore.collection('products');
 
 
-
 export class ClientClass {
     constructor(document, document_data) {
         this.doc = document;
@@ -48,7 +47,7 @@ export class ClientClass {
         await this.doc.update({cart: this.cart});
     };
 
-    async changeItemQuantity(item_id, quantity){
+    async changeItemQuantity(item_id, quantity) {
         if (this.cart === null) {
             console.error('Cannot remove item, something is wrong with data!');
             return;
@@ -59,8 +58,7 @@ export class ClientClass {
             return;
         }
 
-        if(quantity === 0)
-        {
+        if (quantity === 0) {
             await this.deleteItem(item_id);
             return;
         }
@@ -85,14 +83,24 @@ export class ClientClass {
             return;
         }
 
+        let tcart = this.copyCart();
+        delete tcart[item_id];
+        await this.doc.update({cart: tcart});
         delete this.cart[item_id];
-        await this.doc.update({cart: this.cart});
     }
 
-    async clearCart(){
-        if(this.cart === {})
+    async clearCart() {
+        if (this.cart === {})
             return;
         await this.doc.update({cart: {}});
         this.cart = {};
+    }
+
+    copyCart() {
+        let result = {};
+        for (let i in this.cart) {
+            result[i] = this.cart[i];
+        }
+        return result;
     }
 }

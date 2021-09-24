@@ -25,7 +25,7 @@ export function DeleteModal(props) {
                 <Modal.Body>
                     <Button variant={"danger"} className={'shadow-none'} style={{textShadow: false}}
                             onClick={async () => {
-                                await props.onDelete(props.currentitemid);
+                                props.onDelete(props.currentitemid);
                                 props.onHide();
                             }}>Yes</Button>
                     <Button variant={"outline-secondary"} className={'shadow-none'}
@@ -37,7 +37,12 @@ export function DeleteModal(props) {
     );
 }
 
-
+/**
+ *
+ * @param {{doconfirm: function, onHide: function, itemsum: number }} props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export function ConfirmCheckoutModal(props) {
     return (
         <Modal

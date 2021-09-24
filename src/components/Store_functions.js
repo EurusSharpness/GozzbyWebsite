@@ -9,8 +9,10 @@ import
     'bootstrap-css-only/css/bootstrap.min.css';
 import
     'mdbreact/dist/css/mdb.css';
-import { MDBCard, MDBCardBody, MDBCardFooter, MDBCardImage, MDBCardText, MDBCardTitle} from "mdb-react-ui-kit";
+import {MDBCard, MDBCardBody, MDBCardFooter, MDBCardImage, MDBCardText, MDBCardTitle} from "mdb-react-ui-kit";
 
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const SortByAscending = 1;
 export const SortByDescending = 2;
@@ -25,9 +27,7 @@ export class Products {
     /**
      *
      * @param {number} item_id
-     * @param {{
-     *     name: string, imagePath: string, price: number, quantity: number, brand: string, description: string
-     * }} item_data
+     * @param {{quantity: any, imagePath: any, price: any, name: any, description: any, brand: any}} item_data
      */
     constructor(item_id, item_data) {
         this.name = item_data.name;
@@ -45,7 +45,15 @@ export async function handleSignIn(setProducts) {
     await items.get().then((products) => {
             let result = [];
             products.docs.forEach((product) => {
-                result.push(new Products(Number(product.id), product.data()));
+                const t = product.data();
+                result.push(new Products(Number(product.id), {
+                    name: t.name,
+                    imagePath: t.imagePath,
+                    quantity: t.quantity,
+                    brand: t.brand,
+                    price: t.price,
+                    description: t.description
+                }));
             });
             setProducts(result);
         }
@@ -64,9 +72,45 @@ export function handleSignOut(props) {
 /**+
  * @param {Products} product The product to handle
  */
+let handleItemToastActive = false;
 const handleItem = (product) => {
     //<button> add to cart..price$
     //left in stock
+    const itemToast = async () => {
+        if (handleItemToastActive) {
+            toast.error('Wait for the process to finish');
+            return;
+        } else {
+            handleItemToastActive = true;
+        }
+        await toast.promise(Client.addItem(product.id), {
+            pending: {
+                render() {
+                    return "Adding item " + product.name + " to the cart"
+                },
+                icon: false,
+            },
+            success: {
+                render() {
+                    console.log('adding to cart');
+                    return `${product.name} been successfully added to your cart`
+                },
+                // other options
+                icon: "🟢",
+            },
+            error: {
+                render({data}) {
+                    // When the promise reject, data will contains the error
+                    return `Failed to add item to the cart - ${data.message}`
+                }
+            },
+        }, {
+            toastId: '1234',
+            autoClose: 1000,
+            onClose: () => handleItemToastActive = false
+        });
+
+    }
 
     return (
 
@@ -86,12 +130,11 @@ const handleItem = (product) => {
                     <div style={{backgroundColor: "lightgray"}}>
                         <MDBCardTitle>$ {product.price}</MDBCardTitle>
                     </div>
-                    <Button onClick={() => Client.addItem(product.id)} style={{width: "100%"}} variant="outlined">Add
+                    <Button onClick={itemToast} style={{width: "100%"}} variant="outlined">Add
                         to cart</Button>{' '}
 
                 </MDBCardFooter>
             </MDBCard>
-
         </div>
 
     );
@@ -103,6 +146,7 @@ const handleItem = (product) => {
  * @param {Array<Products>} products
  * @param {number} sortBy
  * @param {string} filterBy
+ * @param {ClientClass} client_
  */
 export function getProducts(products, sortBy, filterBy, client_) {
     Client = client_;
@@ -128,6 +172,18 @@ export function getProducts(products, sortBy, filterBy, client_) {
     return (
         <Container>
             {modified.map((value => handleItem(value)))}
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                draggable
+                pauseOnFocusLoss={false}
+                pauseOnHover={false}
+                style={{width: 'auto'}}
+            />
         </Container>
     );
 }
@@ -198,9 +254,10 @@ export function UserModal(props) {
                                 type={'password'}
                             />
                         </InputGroup>
-                        <p style={{color: "yellowgreen"}}>
-                            * Password must contain:
-                            1 upper case letter, 1 lower case, 1 number, password length must be at least 6.
+                        <p style={{color: "#320D8F", fontSize: 'large'}}>
+                            * Password must contain: <br/>
+                            1 Upper case character <br/>
+                            1 Lower case character <br/>1 Number<br/>Password length must be at least 6.
                         </p>
                         <Button variant={"primary"} className={'shadow-none'} onClick={async () => {
                             const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
