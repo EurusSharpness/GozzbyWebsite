@@ -59,6 +59,9 @@ export function Store(props) {
                     if (client_ === null) {
                         setClientClass(new ClientClass(users.doc(u.email), data.data()));
                     }
+                }).catch((e) => {
+                    console.log(e.message);
+                    handleSignOut(props);
                 });
                 setUserdocument(users.doc(u.email));
                 setIsLoading(false);

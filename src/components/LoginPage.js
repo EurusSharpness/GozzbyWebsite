@@ -19,7 +19,7 @@ import {
     MDBModalFooter,
     MDBRow
 } from "mdb-react-ui-kit";
-import {Col, Row} from "reactstrap";
+import {Button, Col, Row} from "react-bootstrap";
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
@@ -129,17 +129,20 @@ export function SignIn(props) {
                         <br/><br/>
 
                         <MDBRow className='d-flex align-items-center mb-4'>
-
-                                <MDBBtn
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}>
+                                <Button
+                                    variant="success"
                                     onClick={handleSignIn}
-                                    type="submit"
-                                    className="btn-block z-depth-1"
-                                    color='success'
                                     rounded
-                                    style={{width:"150px",fontSize: "18px"}}
+                                    style={{width: "150px", fontSize: "18px"}}
                                 >
                                     Sign in
-                                </MDBBtn>
+                                </Button>
+                            </div>
 
                         </MDBRow>
                     </div>
@@ -304,17 +307,21 @@ export function SignUp(props) {
 
                         <br/><br/><br/>
                         <MDBRow className='d-flex align-items-center mb-4'>
-
-                                <MDBBtn
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}>
+                                <Button
                                     onClick={handleSignUp}
+                                    variant="success"
                                     type="submit"
-                                    className="btn btn-primary btn-block mb-4"
                                     color='success'
-
+                                    style={{width: "150px", fontSize: "18px"}}
                                 >
                                     Sign up
-                                </MDBBtn>
-
+                                </Button>
+                            </div>
                         </MDBRow>
                     </div>
                 </MDBCard>
@@ -376,7 +383,11 @@ export function ResetPassword(props) {
                                 />
 
                             </div>
-
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}>
                                 <MDBBtn
                                     onClick={handleResetPassword}
                                     className="mb-3"
@@ -385,7 +396,7 @@ export function ResetPassword(props) {
                                 >
                                     Send
                                 </MDBBtn>
-
+                            </div>
                         </form>
                         <MDBModalFooter style={{
                             display: "flex",

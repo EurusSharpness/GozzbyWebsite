@@ -13,6 +13,8 @@ import "./Client.css";
 import MaterialTable from 'material-table';
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { AiFillMinusCircle } from "react-icons/ai";
+import { AiOutlineRollback } from "react-icons/ai";
+import {Link} from "react-router-dom";
 
 /**
  * @param {firebase.User} u
@@ -120,7 +122,7 @@ export function ClientCart(props) {
                 <Navbar variant="light" bg="light" expand="lg">
                     <Container fluid>
                         <Row>
-                            <Col> <Navbar.Brand>Shoping cart</Navbar.Brand></Col>
+                            <Col> <Navbar.Brand><Button variant="light"><Link to="/Store"></Link><AiOutlineRollback size={25}></AiOutlineRollback>back to shop</Button></Navbar.Brand></Col>
 
                         </Row>
                     </Container>
@@ -136,7 +138,7 @@ export function ClientCart(props) {
                     <Card.Header>Cart Totals</Card.Header>
                     <ListGroup variant="flush">
                         <ListGroup.Item>Total : {itemsPriceSum}</ListGroup.Item>
-                        <ListGroup.Item><Button>buy</Button></ListGroup.Item>
+                        <ListGroup.Item><Button onClick={() => setCheckoutModalState(true)}>Check out items</Button></ListGroup.Item>
                     </ListGroup>
                 </Card>
 
