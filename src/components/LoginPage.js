@@ -3,6 +3,7 @@ import {FirebaseAuth, users} from "./firebase_functions";
 import {Link} from "react-router-dom";
 import "./login.css"
 import loginbackground from "../assets/LoginPagePics/woodback.jpg"
+import background from "../assets/StorePics/productback.jpg"
 import Loading from "./Loading";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -48,10 +49,13 @@ export function SignIn(props) {
         return <Loading/>
     return (
 
-        <div style={{padding: "50px", height: "1500px", backgroundImage: `url(${loginbackground})`}}>
+        <div style={{padding: "50px",
+            height: "1500px",
+            backgroundImage: `url(${background})`}}>
             <MDBContainer style={{
                 width: "100%",
                 textAlign: "center",
+
             }}>
                 <MDBCard
                     className='card-image'
@@ -128,7 +132,9 @@ export function SignIn(props) {
                         </Row>
                         <br/><br/>
 
-                        <MDBRow className='d-flex align-items-center mb-4'>
+                        <MDBRow style={{display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"}} className='d-flex align-items-center mb-4'>
 
                                 <MDBBtn
                                     onClick={handleSignIn}
@@ -222,7 +228,7 @@ export function SignUp(props) {
     };
 
     return (
-        <div style={{padding: "50px", height: "1500px", backgroundImage: `url(${loginbackground})`}}>
+        <div style={{padding: "50px", height: "1500px", backgroundImage: `url(${background})`}}>
             <MDBContainer style={{
                 width: "100%",
                 textAlign: "center",
@@ -343,7 +349,7 @@ export function ResetPassword(props) {
 
     }
     return (
-        <div style={{padding: "50px", height: "1500px", backgroundImage: `url(${loginbackground})`}}>
+        <div style={{padding: "50px", height: "1500px", backgroundImage: `url(${background})`}}>
             <MDBContainer style={{
                 width: "100%",
                 textAlign: "center",
