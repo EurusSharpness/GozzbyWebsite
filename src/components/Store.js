@@ -69,7 +69,7 @@ export function Store(props) {
                 props.history.push("/");
             }
         });
-    }, [client_, props.history]);
+    }, [props ,client_, props.history]);
 
 
     if (!user) {
@@ -171,8 +171,8 @@ function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
                                 title="SortBy"
                                 menuVariant="dark"
                             >
-                                <Dropdown.Item onSelect={() => setSortBy(SortByAscending)}>Ascending</Dropdown.Item>
-                                <Dropdown.Item onSelect={() => setSortBy(SortByDescending)}>descending</Dropdown.Item>
+                                <Dropdown.Item onSelect={() => setSortBy(SortByAscending)}>Low --> High</Dropdown.Item>
+                                <Dropdown.Item onSelect={() => setSortBy(SortByDescending)}>High --> Low</Dropdown.Item>
                             </NavDropdown>
                         </Nav>
 
