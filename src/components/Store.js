@@ -26,6 +26,7 @@ import {
 } from "./Store_functions";
 import {Container, Dropdown, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {Col, Row} from "reactstrap";
+import {BackTop} from "antd";
 
 
 
@@ -41,6 +42,7 @@ export function Store(props) {
     const [userdocument, setUserdocument] = React.useState(null);
     const [userName, setuserName] = React.useState('');
     const [client_, setClientClass] = React.useState(null);
+
 
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
@@ -132,7 +134,9 @@ export function Store(props) {
 
             {AddSortAndFilterButtonsForTest(setSortBy, setFilterBy)}
             {/*--------------------------- END TEST ----------------------*/}
+
             {products ? getProducts(products, sortBy, filterBy, client_) : ''}
+
         </div>
     );
 }

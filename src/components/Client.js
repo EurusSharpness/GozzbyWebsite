@@ -6,73 +6,75 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import {ConfirmCheckoutModal, DeleteModal} from "./Client_functions";
+import {DeleteModal} from "./Client_functions";
 import {Button, Card, Col, Container, ListGroup, Navbar, Row} from "react-bootstrap";
 import {Products} from "./Store_functions";
 import "./Client.css";
 import MaterialTable from 'material-table';
-import { BsFillPlusCircleFill } from "react-icons/bs";
-import { AiFillMinusCircle } from "react-icons/ai";
+import {BsFillPlusCircleFill} from "react-icons/bs";
+import {AiFillMinusCircle} from "react-icons/ai";
+import { AiOutlineRollback } from "react-icons/ai";
+
+
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+let needUpdate = true;
 
 /**
  * @param {firebase.User} u
  * @param setItemsData
  * @param setClientClass
  */
-async function loadClient(u, setItemsData, setClientClass) {
-
-
-    let client = await users.doc(u.email).get();
-
-    let data = client.data();
-    setClientClass(new ClientClass(users.doc(u.email), data));
-    let m = {};
-    for (let key in data.cart) {
-        let t = (await items.doc(key).get()).data();
-        m[key] = new Products(key, {
-            name: t.name,
-            imagePath: t.imagePath,
-            quantity: t.quantity,
-            brand: t.brand,
-            price: t.price,
-            description: t.description
+async function loadClient(u, setItemsData, setClientClass, updatedPrices) {
+    if (needUpdate) {
+        console.log('load client started')
+        let client = await users.doc(u.email).get();
+        let data = client.data();
+        setClientClass(new ClientClass(users.doc(u.email), data));
+        let m = {};
+        let allItems = await items.get();
+        allItems.docs.forEach((item) => {
+            if (data.cart[item.id] !== undefined) {
+                let t = item.data();
+                m[item.id] = new Products(Number(item.id), {
+                    name: t.name,
+                    imagePath: t.imagePath,
+                    quantity: t.quantity,
+                    brand: t.brand,
+                    price: t.price,
+                    description: t.description
+                });
+            }
         });
-
+        setItemsData(m);
+        needUpdate = false;
+        updatedPrices();
     }
-    setItemsData(m);
 }
 
 
 export function ClientCart(props) {
     const [isLoading, setIsLoading] = useState(true);
-    const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [itemsData, setItemsData] = useState(null);
     const [client_, setClientClass] = React.useState(null);
     const [deleteModalState, setDeleteModalState] = React.useState(false);
-    const [checkoutModalState, setCheckoutModalState] = React.useState(false);
-    const [currentItemID] = React.useState(-1);
-    const [currentItemQuantity,] = React.useState([]);
+    const [toasterOpen, setToasterOpen] = React.useState(false);
+    const [currentItemID, setCurrentItemID] = React.useState(-1);
     const [itemsPriceSum, setItemsPriceSum] = React.useState(0);
+    const [, setNeedUpdate] = React.useState(true);
+
     useEffect(() => {
         return FirebaseAuth.onAuthStateChanged(async u => {
-            await loadClient(u, setItemsData, setClientClass);
+            await loadClient(u, setItemsData, setClientClass, calculateItemsSum);
             if (!client_) return;
-            if (isLoading) {
-                let sum = 0;
-                for (let key in client_.cart) {
-                    currentItemQuantity[key] = client_.cart[key];
-                    if (itemsData)
-                        sum += Number(Number(itemsData[key] ? itemsData[key].price : 0).toFixed()) * Number(currentItemQuantity[key]);
-                }
-                setItemsPriceSum(sum);
-            }
             setIsLoading(false);
         })
-    }, [client_, currentItemQuantity, isLoading, itemsData, props.history]);
+    }, [client_, props]);
 
 
     const getClientCart = () => {
-
         const columns = [
             {
                 title: "Name",
@@ -90,43 +92,53 @@ export function ClientCart(props) {
             {
                 title: "Price",
                 field: "price",
+                type: 'numeric',
                 render: item => <h2>${item.price}</h2>
             },
             {
                 title: "Quantity",
                 field: "quantity",
-                render: item => <div><BsFillPlusCircleFill size={19}></BsFillPlusCircleFill><h2>{client_.cart[item.id]}</h2><AiFillMinusCircle size={19}></AiFillMinusCircle></div> // Add plus and minus buttons
+                type: 'numeric',
+                render: item =>
+                    <div>
+                        <BsFillPlusCircleFill size={19} onClick={() => handleItemIncrease(item.id)}/>
+                        <h2>{client_.cart[item.id]}</h2>
+                        <AiFillMinusCircle size={19} onClick={() => handleItemDecrease(item.id)}/>
+                    </div>
             },
             {
                 title: "",
                 render: item => <Button variant="danger" onClick={() => {
+                    setCurrentItemID(item.id);
                     setDeleteModalState(true)
                 }}>Delete</Button>
             }
-
-
         ];
-
-
 
         let result = [];
         for (const key in client_.cart) {
             result.push(itemsData[key]);
         }
 
-
         return (
             <div>
                 <Navbar variant="light" bg="light" expand="lg">
                     <Container fluid>
                         <Row>
-                            <Col> <Navbar.Brand>Shoping cart</Navbar.Brand></Col>
-
+                            <Col> <Navbar.Brand>
+                                <AiOutlineRollback size={28}></AiOutlineRollback> Back to store</Navbar.Brand></Col>
                         </Row>
                     </Container>
 
                 </Navbar>
-                <MaterialTable title="Employee Details" data={result} columns={columns}/>
+                <MaterialTable title="Your Cart" data={result} columns={columns}
+                               options={{
+                                   showFirstLastPageButtons: false,
+                                   showSelectAllCheckbox: false,
+                                   tableLayout: "auto",
+                                   showTextRowsSelected: false,
+                                   pageSize: [result.length]
+                               }}/>
                 <Card style={{
                     display: "flex",
                     justifyContent: "center",
@@ -136,58 +148,76 @@ export function ClientCart(props) {
                     <Card.Header>Cart Totals</Card.Header>
                     <ListGroup variant="flush">
                         <ListGroup.Item>Total : {itemsPriceSum}</ListGroup.Item>
-                        <ListGroup.Item><Button>buy</Button></ListGroup.Item>
+                        <ListGroup.Item><Button>Checkout</Button></ListGroup.Item>
                     </ListGroup>
                 </Card>
-
-
             </div>
         );
     };
 
     const handleItemIncrease = async (itemID) => {
-        await client_.changeItemQuantity(itemID, client_.cart[itemID] + 1);
+        if (toasterOpen)
+            return;
+        setToasterOpen(true);
+        await toast.promise(client_.changeItemQuantity(itemID, client_.cart[itemID] + 1), {
+            pending: 'Processing',
+            success: 'Item quantity increased',
+            error: 'Failed to increase quantity'
+        }, {
+            onClose: () => setToasterOpen(false)
+        });
+        calculateItemsSum();
+        needUpdate = true;
+        setNeedUpdate(true);
     };
 
     const handleItemDecrease = async (itemID) => {
-        await client_.changeItemQuantity(itemID, client_.cart[itemID] - 1);
+        if (toasterOpen)
+            return;
+        setToasterOpen(true);
+        await toast.promise(client_.changeItemQuantity(itemID, client_.cart[itemID] - 1), {
+            pending: 'Processing',
+            success: 'Item quantity decreased',
+            error: 'Failed to decrease quantity'
+        }, {
+            onClose: () => setToasterOpen(false)
+        });
+        calculateItemsSum();
+        needUpdate = true;
+        setNeedUpdate(true);
     };
 
     const handleItemDelete = async (itemID) => {
-        await client_.deleteItem(itemID);
+        if (toasterOpen)
+            return;
+        setToasterOpen(true);
+        await toast.promise(client_.deleteItem(itemID), {
+            pending: 'Processing',
+            success: 'Item deleted',
+            error: 'Failed to delete item'
+        }, {
+            onClose: () => setToasterOpen(false)
+        });
         calculateItemsSum();
+        needUpdate = true;
+        setNeedUpdate(true);
     };
 
     const calculateItemsSum = () => {
         let sum = 0;
+        if(!client_ || !client_.cart || !itemsData)
+            return;
         for (let key in client_.cart) {
-            sum += Number(Number(itemsData[key].price).toFixed()) * Number(currentItemQuantity[key]);
+            sum += Number(Number(itemsData[key].price).toFixed()) * client_.cart[key];
         }
         console.log('Sum = ' + sum);
         setItemsPriceSum(sum);
     }
 
-    const handleCheckOut = async () => {
-            setIsCheckingOut(true);
-            await client_.clearCart();
-            client_.cart = [];
-            calculateItemsSum();
-            setIsCheckingOut(false);
-        }
-    ;
 
     if (isLoading) {
         return (
             <div className={'Container'}>
-                <Loading/>
-            </div>
-        );
-    }
-
-    if (isCheckingOut) {
-        return (
-            <div className={'Container'}>
-                Checking out...
                 <Loading/>
             </div>
         );
@@ -205,20 +235,19 @@ export function ClientCart(props) {
                     onDelete={handleItemDelete}
                     currentitemid={currentItemID}
                 />
-                <Row>
-                    Total item price: {itemsPriceSum}
-                    <Button variant={"primary"} className={'shadow-none'} onClick={() => setCheckoutModalState(true)}>Check
-                        Out Items
-                        = {itemsPriceSum}</Button>
-                </Row>
-                <ConfirmCheckoutModal
-                    show={checkoutModalState}
-                    onHide={() => setCheckoutModalState(false)}
-                    doconfirm={handleCheckOut}
-                    itemsum={itemsPriceSum}
+                <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    limit={1}
+                    pauseOnFocusLoss={false}
+                    pauseOnHover={false}
+                    rtl={false}
+                    draggable
                 />
             </Container>
         </div>
     );
-
 }

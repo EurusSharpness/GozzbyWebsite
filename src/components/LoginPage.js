@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import {FirebaseAuth, users} from "./firebase_functions";
 import {Link} from "react-router-dom";
 import "./login.css"
-import loginbackground from "../assets/LoginPagePics/woodback.jpg"
 import background from "../assets/StorePics/productback.jpg"
+import loginback from "../assets/StorePics/loginback.jpg"
 import Loading from "./Loading";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -112,7 +112,7 @@ export function SignIn(props) {
                         />
                         <br/><br/>
                         <Row>
-                            <Col md={12} sm={12} style={{
+                            <Col md={12} sm={12} xs={12} style={{
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center"
@@ -122,7 +122,7 @@ export function SignIn(props) {
                         </Row>
                         <br/>
                         <Row>
-                            <Col md={12} sm={12} style={{
+                            <Col md={12} sm={12} xs={12} style={{
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center"
@@ -309,14 +309,17 @@ export function SignUp(props) {
                         </div>
 
                         <br/><br/><br/>
-                        <MDBRow className='d-flex align-items-center mb-4'>
+                        <MDBRow style={{display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"}} className='d-flex align-items-center mb-4'>
 
                                 <MDBBtn
                                     onClick={handleSignUp}
                                     type="submit"
-                                    className="btn btn-primary btn-block mb-4"
+                                    className="btn-block z-depth-1"
                                     color='success'
-
+                                    rounded
+                                    style={{width:"150px",fontSize: "18px"}}
                                 >
                                     Sign up
                                 </MDBBtn>
