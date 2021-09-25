@@ -3,7 +3,6 @@ import {FirebaseAuth, users} from "./firebase_functions";
 import {Link} from "react-router-dom";
 import "./login.css"
 import background from "../assets/StorePics/productback.jpg"
-import loginback from "../assets/StorePics/loginback.jpg"
 import Loading from "./Loading";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
