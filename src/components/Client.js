@@ -13,7 +13,7 @@ import "./Client.css";
 import MaterialTable from 'material-table';
 import {BsFillPlusCircleFill} from "react-icons/bs";
 import {AiFillMinusCircle} from "react-icons/ai";
-import { AiOutlineRollback } from "react-icons/ai";
+import {AiOutlineRollback} from "react-icons/ai";
 
 
 import {ToastContainer, toast} from 'react-toastify';
@@ -126,7 +126,11 @@ export function ClientCart(props) {
                     <Container fluid>
                         <Row>
                             <Col> <Navbar.Brand>
-                                <AiOutlineRollback size={28}></AiOutlineRollback> Back to store</Navbar.Brand></Col>
+                                <AiOutlineRollback size={28} onClick={() => {
+                                    needUpdate = true;
+                                    props.history.push('/store')
+                                }}/> Back to
+                                store</Navbar.Brand></Col>
                         </Row>
                     </Container>
 
@@ -205,7 +209,7 @@ export function ClientCart(props) {
 
     const calculateItemsSum = () => {
         let sum = 0;
-        if(!client_ || !client_.cart || !itemsData)
+        if (!client_ || !client_.cart || !itemsData)
             return;
         for (let key in client_.cart) {
             sum += Number(Number(itemsData[key].price).toFixed()) * client_.cart[key];

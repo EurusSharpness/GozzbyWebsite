@@ -63,8 +63,10 @@ export class ClientClass {
             return;
         }
 
-        this.cart[item_id] = quantity;
-        await this.doc.update({cart: this.cart});
+        let tcart = this.copyCart();
+        delete tcart[item_id];
+        await this.doc.update({cart: tcart});
+        delete this.cart[item_id];
     }
 
     /**

@@ -7,6 +7,7 @@ import Loading from "./Loading";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap';
+import SendIcon from '@material-ui/icons/SendRounded';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import {
     MDBBtn,
@@ -20,6 +21,9 @@ import {
     MDBRow
 } from "mdb-react-ui-kit";
 import {Col, Row} from "reactstrap";
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Button from "@material-ui/core/Button";
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
@@ -215,15 +219,40 @@ export function SignUp(props) {
             return;
 
         // if got here then all good.
-        await FirebaseAuth
-            .createUserWithEmailAndPassword(email, password)
-            .then(async () => {
-                console.log('Email created successfully');
-                await createUserInDatabase(email);
-            })
-            .catch(error => {
-                alert(error.message);
-            });
+        if (toast.isActive('this is love'))
+            return;
+        const response = await toast.promise(
+            FirebaseAuth.createUserWithEmailAndPassword(email, password), {
+                pending: {
+                    render() {
+                        return "Creating account"
+                    },
+                    icon: false,
+                },
+                success: {
+                    render() {
+                        console.log('creating account');
+                        createUserInDatabase(email).then(() => {
+                            console.log('account created');
+                            props.history.push('/');
+                        });
+                        return `Account has been created`
+                    },
+                    // other options
+                    icon: "✔️",
+                },
+                error: {
+                    render({data}) {
+                        // When the promise reject, data will contains the error
+                        return `Failed to create account - ${data.message}`
+                    }
+                },
+            }, {
+                toastId: 'this is love'
+            }
+        );
+
+        console.log(response);
     };
 
     return (
@@ -272,9 +301,6 @@ export function SignUp(props) {
                                 setPassword(e.target.value);
                                 handlePasswordChange();
                             }}
-                            onKeyDown={(key) => {
-                                if (key.key === 'Enter') handleSignUp();
-                            }}
                             value={password}
                             type="password"
                             id="password"
@@ -289,8 +315,8 @@ export function SignUp(props) {
                                 setConfirm_Password(e.target.value);
                                 handlePasswordChange();
                             }}
-                            onKeyDown={(key) => {
-                                if (key.key === 'Enter') handleSignUp();
+                            onKeyDown={async (key) => {
+                                if (key.key === 'Enter') await handleSignUp();
                             }}
                             value={confirm_password}
                             type="password"
@@ -312,20 +338,31 @@ export function SignUp(props) {
                             justifyContent: "center",
                             alignItems: "center"}} className='d-flex align-items-center mb-4'>
 
-                                <MDBBtn
-                                    onClick={handleSignUp}
-                                    type="submit"
-                                    className="btn-block z-depth-1"
-                                    color='success'
-                                    rounded
-                                    style={{width:"150px",fontSize: "18px"}}
-                                >
-                                    Sign up
-                                </MDBBtn>
-
+                            <Button
+                                onClick={handleSignUp}
+                                className="btn-block z-depth-1"
+                                color='primary'
+                                variant={'contained'}
+                                rounded={true}
+                                style={{width:"150px",fontSize: "18px"}}
+                            >
+                                Sign up
+                            </Button>
                         </MDBRow>
                     </div>
                 </MDBCard>
+                <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover={false}
+                    style={{width: 'auto'}}
+                />
             </MDBContainer>
         </div>
     );
@@ -340,15 +377,40 @@ export function ResetPassword(props) {
             }
         });
     }, [props.history]);
-    const handleResetPassword = () => {
-        console.log(email);
-        FirebaseAuth.sendPasswordResetEmail(email).then(() => {
-            alert('Email send successfully!');
-            props.history.push('/'); // Go back to Sign in page if the mail was successfully sent!
-        }).catch((e) => {
-            alert('something went wrong!\n' + e);
-        });
-
+    const handleResetPassword = async () => {
+        if (toast.isActive('resetToast'))
+            return;
+        let success = false;
+        await toast.promise(FirebaseAuth.sendPasswordResetEmail(email), {
+                pending: {
+                    render() {
+                        return "Sending Email"
+                    },
+                    icon: false,
+                },
+                success: {
+                    render() {
+                        success = true;
+                        return `Email successfully sent`
+                    },
+                    // other options
+                    icon: "🟢", autoClose: 1500
+                },
+                error: {
+                    render({data}) {
+                        // When the promise reject, data will contains the error
+                        return `Failed to send email - ${data.message}`
+                    }
+                },
+            }, {
+                toastId: 'resetToast',
+                onClose: props1 => {
+                    console.log(props1);
+                    if(success)
+                        props.history.push('/');
+                }
+            }
+        );
     }
     return (
         <div style={{padding: "50px", height: "1500px", backgroundImage: `url(${background})`}}>
@@ -378,23 +440,27 @@ export function ResetPassword(props) {
                                     onChange={e => {
                                         setEmail(e.target.value);
                                     }}
-                                    onKeyDown={(key) => {
-                                        if (key.key === 'Enter') handleResetPassword();
+                                    onKeyDown={async (key) => {
+                                        if (key.key === 'Enter') await handleResetPassword();
                                     }}
                                 />
 
                             </div>
-
-                                <MDBBtn
-                                    onClick={handleResetPassword}
-                                    className="mb-3"
-                                    type="submit"
-                                    color="deep-orange"
-                                >
-                                    Send
-                                </MDBBtn>
+                            <br/>
+                            <Button
+                                onClick={handleResetPassword}
+                                className="btn-block z-depth-1"
+                                color='primary'
+                                variant={'contained'}
+                                startIcon={<SendIcon/>}
+                                rounded={true}
+                                style={{width:"150px",fontSize: "18px"}}
+                            >
+                                Send
+                            </Button>
 
                         </form>
+                        <br/>
                         <MDBModalFooter style={{
                             display: "flex",
                             justifyContent: "center",
@@ -402,11 +468,25 @@ export function ResetPassword(props) {
                         }}>
                             <div
                                 className="font-weight-light">
+                                Did you remember your password? <Link to="/">Sign in!</Link>
+                                <br/>
                                 Not a member? <Link to="/signup">Sign up!</Link>
                             </div>
                         </MDBModalFooter>
                     </MDBCardBody>
                 </MDBCard>
+                <ToastContainer
+                    position="top-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover={false}
+                    style={{width: 'auto'}}
+                />
             </MDBContainer>
         </div>
     )
