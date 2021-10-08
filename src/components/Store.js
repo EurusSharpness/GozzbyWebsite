@@ -14,6 +14,8 @@ import "./Store.css";
 import background from "../assets/StorePics/productback.jpg"
 import {AiTwotoneShopping} from "react-icons/ai"
 import { BsPerson } from "react-icons/bs";
+import {AiFillShop} from "react-icons/ai";
+import {FaSignOutAlt} from "react-icons/all";
 
 import {
     handleSignIn,
@@ -43,6 +45,7 @@ export function Store(props) {
     const [client_, setClientClass] = React.useState(null);
 
 
+    let keyID = 0;
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
     };
@@ -80,22 +83,23 @@ export function Store(props) {
         return <div className={'Container'}><Loading/></div>
     return (
         //style={{ backgroundImage: `url(${background})` }}
-        <div  style={{ backgroundImage: `url(${background})` }}>
-            <AppBar position="static" color="red">
+        <div key={'storekey' + keyID++}  style={{ backgroundImage: `url(${background})` }}>
+            <AppBar key={'storekey' + keyID++} position="static" color="default">
                 <Toolbar>
 
 
                     <Typography
-                        color="black"
+                        key={'storekey' + keyID++}
                         variant="h6"
                         style={{marginLeft: 15, flexGrow: 1}}
                     >
-                        Gozzby Store
+                        Gozzby Store <AiFillShop/>
 
                     </Typography>
 
 
                     <Button
+                        key={'storekey' + keyID++}
                         style={{
                             resize: 'horizontal',
                             overflow: 'hidden',
@@ -106,13 +110,14 @@ export function Store(props) {
                         <AiTwotoneShopping size={50} width="100%"/>
                             Go to cart
                     </Button>
-                    <Typography color="black" style={{marginRight: 30}} onClick={() => {
+                    <Typography style={{marginRight: 30}} onClick={() => {
                         // props.history.push('/client')
                         setUserModalShow(true);
                     }}><BsPerson  size={50}>a</BsPerson>
-                        Hi!{userName}
+                        Hi! {userName}
                     </Typography>
                     <Button color="inherit" onClick={() => handleSignOut(props)}>
+                        <FaSignOutAlt size={30}/>
                         Sign out
                     </Button>
 
@@ -151,19 +156,19 @@ function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
                     <Navbar.Brand>Gozzby brands</Navbar.Brand>
                         </Col>
                         <Col>
-                    <Button onClick={() => setFilterBy(NoFilter)} variant="secondary">All</Button>{' '}
+                    <Button onClick={() => setFilterBy(NoFilter)} variant="contained">All</Button>{' '}
                         </Col>
                         <Col>
-                    <Button onClick={() => setFilterBy('vodka')} variant="secondary">Vokda</Button>{' '}
+                    <Button onClick={() => setFilterBy('vodka')} variant="contained">Vokda</Button>{' '}
                         </Col>
                         <Col>
-                    <Button onClick={() => setFilterBy('beer')} variant="secondary">Beers</Button>{' '}
+                    <Button onClick={() => setFilterBy('beer')} variant="contained">Beers</Button>{' '}
                         </Col>
                         <Col>
-                    <Button onClick={() => setFilterBy('whiskey')} variant="secondary">Whiskey</Button>{' '}
+                    <Button onClick={() => setFilterBy('whiskey')} variant="contained">Whiskey</Button>{' '}
                         </Col>
                         <Col >
-                    <Button onClick={() => setFilterBy('tequila')} variant="secondary">Tequila</Button>{' '}
+                    <Button onClick={() => setFilterBy('tequila')} variant="contained">Tequila</Button>{' '}
                         </Col>
                         <Col>
                     <Navbar.Collapse id="navbar-dark-example">
@@ -172,7 +177,6 @@ function AddSortAndFilterButtonsForTest(setSortBy, setFilterBy) {
                             <NavDropdown
                                 id="nav-dropdown-dark-example"
                                 title="SortBy"
-                                menuVariant="dark"
                             >
                                 <Dropdown.Item onSelect={() => setSortBy(SortByAscending)}>Low --> High</Dropdown.Item>
                                 <Dropdown.Item onSelect={() => setSortBy(SortByDescending)}>High --> Low</Dropdown.Item>

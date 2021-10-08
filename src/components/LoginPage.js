@@ -78,7 +78,7 @@ export function SignIn(props) {
                             <h3 className='white-text mb-5 mt-4 font-weight-bold'>
 
                                 <strong>SIGN</strong>
-                                <a href='#!' className='green-text font-weight-bold'>
+                                <a href='/' className='green-text font-weight-bold'>
                                     <strong> IN</strong>
                                 </a>
                             </h3>
@@ -93,7 +93,7 @@ export function SignIn(props) {
                             className="form-control"
                             placeholder="Email address"
                             label='Your email'
-                            validate
+                            validate={'true'}
                             labelClass='white-text'
 
                         />
@@ -110,7 +110,7 @@ export function SignIn(props) {
                             className="form-control"
                             placeholder="Password"
                             label='Your password'
-                            validate
+                            validate={'true'}
                             labelClass='white-text'
                         />
                         <br/><br/>
@@ -144,7 +144,7 @@ export function SignIn(props) {
                                     type="submit"
                                     className="btn-block z-depth-1"
                                     color='success'
-                                    rounded
+                                    rounded={'true'}
                                     style={{width:"150px",fontSize: "18px"}}
                                 >
                                     Sign in
@@ -168,13 +168,7 @@ export function SignUp(props) {
     const [confirm_password, setConfirm_Password] = useState("");
     const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
     const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    useEffect(() => {
-        return FirebaseAuth.onAuthStateChanged(u => {
-            if (u) {
-                props.history.push("/store");
-            }
-        });
-    }, [props.history]);
+
     let flag = false;
     const handlePasswordChange = () => {
         const p = document.getElementById("password").value;
@@ -210,19 +204,33 @@ export function SignUp(props) {
         console.log(flag);
     };
     const createUserInDatabase = async (email) => {
+        console.log(email);
         await users.doc(email).set({cart: {}, name: email.split('@')[0]});
     }
+
+    const createRandom = () => {
+        const rmail = Math.random().toString(36).substring(2, 15) + '@test.test';
+        const pass = 'qwer1234'
+        document.getElementById('emailInput').value = rmail;
+        document.getElementById("password").value = pass;
+        document.getElementById("cpassword").value = pass;
+    }
+
     const handleSignUp = async () => {
+        if(email === '')
+            createRandom();
         handlePasswordChange();
         console.log(flag);
+        let success = false;
         if (!flag)
             return;
-
         // if got here then all good.
         if (toast.isActive('this is love'))
             return;
+        const emailAddress =  document.getElementById('emailInput').value;
+        const emailPassword = document.getElementById("password").value;
         const response = await toast.promise(
-            FirebaseAuth.createUserWithEmailAndPassword(email, password), {
+            FirebaseAuth.createUserWithEmailAndPassword(emailAddress, emailPassword), {
                 pending: {
                     render() {
                         return "Creating account"
@@ -232,23 +240,29 @@ export function SignUp(props) {
                 success: {
                     render() {
                         console.log('creating account');
-                        createUserInDatabase(email).then(() => {
-                            console.log('account created');
-                            props.history.push('/');
-                        });
+                        console.log('account created');
+                        success = true;
+                        toast.info('logging in');
                         return `Account has been created`
                     },
                     // other options
                     icon: "✔️",
+                    autoClose: 1000
                 },
                 error: {
                     render({data}) {
+                        console.log(email);
                         // When the promise reject, data will contains the error
                         return `Failed to create account - ${data.message}`
                     }
                 },
             }, {
-                toastId: 'this is love'
+                toastId: 'this is love',
+                onClose: () => {if(success) {
+                    createUserInDatabase(emailAddress).then(() => {
+                        props.history.push('/');
+                    });
+                }}
             }
         );
 
@@ -279,7 +293,7 @@ export function SignUp(props) {
                             <h3 className='white-text mb-5 mt-4 font-weight-bold'>
 
                                 <strong>SIGN</strong>
-                                <a href='#!' className='green-text font-weight-bold'>
+                                <a href={'/signup'} link='/signup' className='green-text font-weight-bold'>
                                     <strong> Up</strong>
                                 </a>
                             </h3>
@@ -290,10 +304,10 @@ export function SignUp(props) {
                                 setEmail(e.target.value);
                             }}
                             type="email"
-                            id="form2Example1"
+                            id="emailInput"
                             className="form-control"
                             label='Your email'
-                            validate
+                            validate={'true'}
                             labelClass='white-text'
                         />
                         <MDBInput
@@ -306,7 +320,7 @@ export function SignUp(props) {
                             id="password"
                             className="form-control"
                             label='password'
-                            validate
+                            validate={'true'}
                             labelClass='white-text'
                         />
 
@@ -323,7 +337,7 @@ export function SignUp(props) {
                             id="cpassword"
                             className="form-control"
                             label='Confirm password '
-                            validate
+                            validate={'true'}
                             labelClass='white-text'
                         />
                         <span className={"error"}><p id="password1error"/></span>
@@ -343,7 +357,7 @@ export function SignUp(props) {
                                 className="btn-block z-depth-1"
                                 color='primary'
                                 variant={'contained'}
-                                rounded={true}
+                                rounded={'true'}
                                 style={{width:"150px",fontSize: "18px"}}
                             >
                                 Sign up
@@ -370,13 +384,7 @@ export function SignUp(props) {
 
 export function ResetPassword(props) {
     const [email, setEmail] = useState("");
-    useEffect(() => {
-        return FirebaseAuth.onAuthStateChanged(u => {
-            if (u) {
-                props.history.push("/store");
-            }
-        });
-    }, [props.history]);
+
     const handleResetPassword = async () => {
         if (toast.isActive('resetToast'))
             return;
@@ -434,7 +442,6 @@ export function ResetPassword(props) {
                             <br/><br/>
                             <div className="grey-text">
                                 <MDBInput
-                                    fullWidth={true}
                                     placeholder="email"
                                     value={email}
                                     onChange={e => {
@@ -453,7 +460,7 @@ export function ResetPassword(props) {
                                 color='primary'
                                 variant={'contained'}
                                 startIcon={<SendIcon/>}
-                                rounded={true}
+                                rounded={'true'}
                                 style={{width:"150px",fontSize: "18px"}}
                             >
                                 Send

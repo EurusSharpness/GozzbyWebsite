@@ -114,9 +114,9 @@ const handleItem = (product) => {
 
     return (
 
-        <div style={{paddingTop: "50px", paddingBottom: "50px"}} className="col-md-4 mb-4 d-flex align-items-stretch">
+        <div key={'unique item id' + product.id} style={{paddingTop: "50px", paddingBottom: "50px"}} className="col-md-4 mb-4 d-flex align-items-stretch">
             <MDBCard alignment="center">
-                <MDBCardImage class="img-fluid" src={product.imagePath} alt='...' position='top'/>
+                <MDBCardImage className="img-fluid" src={product.imagePath} alt='...' position='top'/>
                 <br/>
 
 
@@ -214,7 +214,7 @@ export function UserModal(props) {
                                 type={'text'}
                             />
                         </InputGroup>
-                        <Button variant={"primary"} className={'shadow-none'} onClick={async () => {
+                        <Button variant={"contained"} className={'shadow-none'} onClick={async () => {
                             props.onHide();
                             let name = document.getElementById('NicknameValue').value;
                             if (name.length === 0) return;
@@ -259,7 +259,7 @@ export function UserModal(props) {
                             1 Upper case character <br/>
                             1 Lower case character <br/>1 Number<br/>Password length must be at least 6.
                         </p>
-                        <Button variant={"primary"} className={'shadow-none'} onClick={async () => {
+                        <Button variant={"contained"} className={'shadow-none'} onClick={async () => {
                             const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
                             const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
                             let password = document.getElementById('Password').value;

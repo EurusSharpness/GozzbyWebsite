@@ -64,9 +64,9 @@ export class ClientClass {
         }
 
         let tcart = this.copyCart();
-        delete tcart[item_id];
+        tcart[item_id] = quantity;
         await this.doc.update({cart: tcart});
-        delete this.cart[item_id];
+        this.cart[item_id] = quantity;
     }
 
     /**

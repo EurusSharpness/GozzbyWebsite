@@ -21,11 +21,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 let needUpdate = true;
-
+let totalPrice = 0;
 /**
  * @param {firebase.User} u
  * @param setItemsData
  * @param setClientClass
+ * @param {function} updatedPrices
  */
 async function loadClient(u, setItemsData, setClientClass, updatedPrices) {
     if (needUpdate) {
@@ -62,7 +63,7 @@ export function ClientCart(props) {
     const [deleteModalState, setDeleteModalState] = React.useState(false);
     const [toasterOpen, setToasterOpen] = React.useState(false);
     const [currentItemID, setCurrentItemID] = React.useState(-1);
-    const [itemsPriceSum, setItemsPriceSum] = React.useState(0);
+    const [, setItemsPriceSum] = React.useState(0);
     const [, setNeedUpdate] = React.useState(true);
 
     useEffect(() => {
@@ -71,6 +72,7 @@ export function ClientCart(props) {
             if (!client_) return;
             setIsLoading(false);
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client_, props]);
 
 
@@ -151,7 +153,7 @@ export function ClientCart(props) {
                 }}>
                     <Card.Header>Cart Totals</Card.Header>
                     <ListGroup variant="flush">
-                        <ListGroup.Item>Total : {itemsPriceSum}</ListGroup.Item>
+                        <ListGroup.Item>Total : {totalPrice}</ListGroup.Item>
                         <ListGroup.Item><Button>Checkout</Button></ListGroup.Item>
                     </ListGroup>
                 </Card>
@@ -215,6 +217,7 @@ export function ClientCart(props) {
             sum += Number(Number(itemsData[key].price).toFixed()) * client_.cart[key];
         }
         console.log('Sum = ' + sum);
+        totalPrice = sum;
         setItemsPriceSum(sum);
     }
 

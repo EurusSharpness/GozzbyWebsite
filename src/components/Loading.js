@@ -10,7 +10,7 @@ export default function Loading() {
         fontSize: 'x-large',
         marginTop: '5%'
     }}>
-        <FaWineBottle class="fa fa-spinner fa-spin fa-3x fa-fw" size={150} width="100%"/>
+        <FaWineBottle className="fa fa-spinner fa-spin fa-3x fa-fw" size={150} width="100%"/>
             <div style={{fontSize: 'xxx-large', marginLeft: '50px'}}>
                 Loading... Gozzby store
             </div>
