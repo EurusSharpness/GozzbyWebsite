@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/GozzbyWebsite/static/css/main.7d8f9639.chunk.css",
+    "main.js": "/GozzbyWebsite/static/js/main.909aa9d6.chunk.js",
+    "main.js.map": "/GozzbyWebsite/static/js/main.909aa9d6.chunk.js.map",
+    "runtime-main.js": "/GozzbyWebsite/static/js/runtime-main.767172d3.js",
+    "runtime-main.js.map": "/GozzbyWebsite/static/js/runtime-main.767172d3.js.map",
+    "static/css/2.ca20806a.chunk.css": "/GozzbyWebsite/static/css/2.ca20806a.chunk.css",
+    "static/js/2.45169ae8.chunk.js": "/GozzbyWebsite/static/js/2.45169ae8.chunk.js",
+    "static/js/2.45169ae8.chunk.js.map": "/GozzbyWebsite/static/js/2.45169ae8.chunk.js.map",
+    "static/js/3.acf04cb3.chunk.js": "/GozzbyWebsite/static/js/3.acf04cb3.chunk.js",
+    "static/js/3.acf04cb3.chunk.js.map": "/GozzbyWebsite/static/js/3.acf04cb3.chunk.js.map",
+    "static/js/4.68ae4576.chunk.js": "/GozzbyWebsite/static/js/4.68ae4576.chunk.js",
+    "static/js/4.68ae4576.chunk.js.map": "/GozzbyWebsite/static/js/4.68ae4576.chunk.js.map",
+    "static/js/5.5aa05130.chunk.js": "/GozzbyWebsite/static/js/5.5aa05130.chunk.js",
+    "static/js/5.5aa05130.chunk.js.map": "/GozzbyWebsite/static/js/5.5aa05130.chunk.js.map",
+    "index.html": "/GozzbyWebsite/index.html",
+    "static/css/2.ca20806a.chunk.css.map": "/GozzbyWebsite/static/css/2.ca20806a.chunk.css.map",
+    "static/css/main.7d8f9639.chunk.css.map": "/GozzbyWebsite/static/css/main.7d8f9639.chunk.css.map",
+    "static/js/2.45169ae8.chunk.js.LICENSE.txt": "/GozzbyWebsite/static/js/2.45169ae8.chunk.js.LICENSE.txt",
+    "static/js/3.acf04cb3.chunk.js.LICENSE.txt": "/GozzbyWebsite/static/js/3.acf04cb3.chunk.js.LICENSE.txt",
+    "static/js/4.68ae4576.chunk.js.LICENSE.txt": "/GozzbyWebsite/static/js/4.68ae4576.chunk.js.LICENSE.txt",
+    "static/js/5.5aa05130.chunk.js.LICENSE.txt": "/GozzbyWebsite/static/js/5.5aa05130.chunk.js.LICENSE.txt",
+    "static/media/mdb.css": "/GozzbyWebsite/static/media/arrow_right.f7c6ac6d.svg",
+    "static/media/Store.css": "/GozzbyWebsite/static/media/blackbricks.f44a2f4c.jpg",
+    "static/media/all.min.css": "/GozzbyWebsite/static/media/fa-solid-900.eeccf4f6.woff",
+    "static/media/productback.9e338053.jpg": "/GozzbyWebsite/static/media/productback.9e338053.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.767172d3.js",
+    "static/css/2.ca20806a.chunk.css",
+    "static/js/2.45169ae8.chunk.js",
+    "static/css/main.7d8f9639.chunk.css",
+    "static/js/main.909aa9d6.chunk.js"
+  ]
+}
