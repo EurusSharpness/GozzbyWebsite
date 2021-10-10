@@ -24,6 +24,8 @@ import {Col, Row} from "reactstrap";
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from "@material-ui/core/Button";
+import {AccountCircleRounded} from "@material-ui/icons";
+import {LoginRounded} from "@mui/icons-material";
 
 export function SignIn(props) {
     const [email, setEmail] = useState("");
@@ -53,7 +55,7 @@ export function SignIn(props) {
     return (
 
         <div style={{padding: "50px",
-            height: "1500px",
+            height: "100vh",
             backgroundImage: `url(${background})`}}>
             <MDBContainer style={{
                 width: "100%",
@@ -139,16 +141,18 @@ export function SignIn(props) {
                             justifyContent: "center",
                             alignItems: "center"}} className='d-flex align-items-center mb-4'>
 
-                                <MDBBtn
+                                <Button
                                     onClick={handleSignIn}
                                     type="submit"
                                     className="btn-block z-depth-1"
-                                    color='success'
+                                    color='primary'
+                                    variant={'contained'}
                                     rounded={'true'}
+                                    startIcon={<LoginRounded/>}
                                     style={{width:"150px",fontSize: "18px"}}
                                 >
                                     Sign in
-                                </MDBBtn>
+                                </Button>
 
                         </MDBRow>
                     </div>
@@ -357,6 +361,7 @@ export function SignUp(props) {
                                 className="btn-block z-depth-1"
                                 color='primary'
                                 variant={'contained'}
+                                startIcon={<AccountCircleRounded/>}
                                 rounded={'true'}
                                 style={{width:"150px",fontSize: "18px"}}
                             >
