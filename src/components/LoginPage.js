@@ -10,7 +10,6 @@ import 'bootstrap/dist/js/bootstrap';
 import SendIcon from '@material-ui/icons/SendRounded';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import {
-    MDBBtn,
     MDBCard,
     MDBCardBody,
     MDBCardHeader,
