@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/GozzbyWebsite/static/css/main.7d8f9639.chunk.css",
-    "main.js": "/GozzbyWebsite/static/js/main.909aa9d6.chunk.js",
-    "main.js.map": "/GozzbyWebsite/static/js/main.909aa9d6.chunk.js.map",
+    "main.js": "/GozzbyWebsite/static/js/main.3e7e33d1.chunk.js",
+    "main.js.map": "/GozzbyWebsite/static/js/main.3e7e33d1.chunk.js.map",
     "runtime-main.js": "/GozzbyWebsite/static/js/runtime-main.767172d3.js",
     "runtime-main.js.map": "/GozzbyWebsite/static/js/runtime-main.767172d3.js.map",
     "static/css/2.ca20806a.chunk.css": "/GozzbyWebsite/static/css/2.ca20806a.chunk.css",
@@ -31,6 +31,6 @@
     "static/css/2.ca20806a.chunk.css",
     "static/js/2.45169ae8.chunk.js",
     "static/css/main.7d8f9639.chunk.css",
-    "static/js/main.909aa9d6.chunk.js"
+    "static/js/main.3e7e33d1.chunk.js"
   ]
 }
