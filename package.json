@@ -1,8 +1,8 @@
 {
+  "homepage": "https://eurussharpness.github.io/GozzbyWebsite",
   "name": "web_project",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://eurussharpness.github.io/GozzbyWebsite",
   "dependencies": {
     "@emotion/styled": "^11.3.0",
     "@material-ui/utils": "^4.11.2",

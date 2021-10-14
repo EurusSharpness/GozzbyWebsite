@@ -5,13 +5,13 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import {Store} from "./components/Store";
 import {SignUp, SignIn, ResetPassword} from "./components/LoginPage";
-import {BrowserRouter, Route} from "react-router-dom";
+import {HashRouter, Route} from "react-router-dom";
 import {ClientCart} from "./components/Client";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
-    <BrowserRouter>
+    <HashRouter>
         <div>
             <Route exact path="/" component={SignIn}/>
             <Route path="/signup" component={SignUp}/>
@@ -20,7 +20,7 @@ ReactDOM.render(
 
             <Route path="/client-cart" component={ClientCart}/>
         </div>
-    </BrowserRouter>,
+    </HashRouter>,
     document.getElementById("root")
 );
 
